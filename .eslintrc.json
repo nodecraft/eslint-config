@@ -1,0 +1,15 @@
+{
+	"extends": [
+		"eslint:recommended",
+		"plugin:node/recommended",
+		"./index.js"
+	],
+	"plugins": [
+		"json",
+		"node"
+	],
+	"env": {
+		"browser": true,
+		"node": true
+	}
+}

@@ -1,0 +1,39 @@
+{
+  "name": "eslint-config-nodecraft",
+  "version": "1.0.0",
+  "description": "NodeCraft base JS ESLint config",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nodecraft/eslint-config-nodecraft"
+  },
+  "keywords": [
+    "eslint",
+    "eslintconfig",
+    "config",
+    "javascript",
+    "nodecraft"
+  ],
+  "author": "NodeCraft Hosting LLC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nodecraft/eslint-config-nodecraft/issues"
+  },
+  "homepage": "https://github.com/nodecraft/eslint-config-nodecraft",
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-json": "^1.2.0"
+  },
+  "peerDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-json": "^1.2.0"
+  },
+  "engines": {
+    "node": ">= 6"
+  }
+}
