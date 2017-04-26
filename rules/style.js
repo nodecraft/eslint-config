@@ -28,5 +28,21 @@ module.exports = {
 			"beforeColon": false,
 			"afterColon": true
 		}],
+
+		// enforce consistent spacing before and after keywords
+		"keyword-spacing": ["error", {
+			"before": false,
+			"after": false,
+			"overrides": {
+				"return": {
+					"before": false,
+					"after": true
+				},
+				"case": {
+					"before": false,
+					"after": true
+				}
+			}
+		}]
 	}
 };
