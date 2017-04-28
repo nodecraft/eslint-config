@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-nodecraft",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "NodeCraft base JS ESLint config",
   "main": "index.js",
   "scripts": {

@@ -43,6 +43,9 @@ module.exports = {
 					"after": true
 				}
 			}
-		}]
+		}],
+
+		// disallow or enforce spaces inside of parentheses
+		"space-in-parens": ["error", "never"]
 	}
 };
