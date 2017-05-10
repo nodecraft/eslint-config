@@ -1,18 +1,30 @@
 "use strict";
+
+var extendData = ["eslint:recommended", "plugin:node/recommended"];
+var internalExtends = [
+	"./rules/best-practices",
+	"./rules/errors",
+	"./rules/node",
+	"./rules/style",
+	"./rules/variables",
+	"./rules/es6",
+	"./rules/plugin-node",
+].map(require.resolve);
+
 module.exports = {
-	extends: [
-		"./rules/best-practices",
-		"./rules/errors",
-		"./rules/node",
-		"./rules/style",
-		"./rules/variables",
-		"./rules/es6",
-		"./rules/plugin-node",
-	].map(require.resolve),
+	extends: extendData.concat(internalExtends),
 	parserOptions: {
 		ecmaVersion: 2017,
 	},
 	rules: {
 		strict: ["error", "global"]
+	},
+	"plugins": [
+		"json",
+		"node"
+	],
+	"env": {
+		"browser": true,
+		"node": true
 	}
 };
