@@ -41,6 +41,14 @@ module.exports = {
 				"case": {
 					"before": false,
 					"after": true
+				},
+				"from": {
+					"before": false,
+					"after": true
+				},
+				"import": {
+					"before": false,
+					"after": true
 				}
 			}
 		}],
