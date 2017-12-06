@@ -61,6 +61,10 @@ module.exports = {
 				"import": {
 					"before": false,
 					"after": true
+				},
+				"as": {
+					"before": true,
+					"after": true
 				}
 			}
 		}],
