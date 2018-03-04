@@ -55,7 +55,7 @@ module.exports = {
 					"after": true
 				},
 				"from": {
-					"before": false,
+					"before": true,
 					"after": true
 				},
 				"import": {

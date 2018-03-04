@@ -14,7 +14,7 @@ var internalExtends = [
 module.exports = {
 	extends: extendData.concat(internalExtends),
 	parserOptions: {
-		ecmaVersion: 2017,
+		ecmaVersion: 2018,
 	},
 	rules: {
 		strict: ["error", "global"]
