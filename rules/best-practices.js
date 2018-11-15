@@ -4,6 +4,9 @@ module.exports = {
 		// enforce return statements in callbacks of array methods
 		"callback-return": "error",
 
+		// enforce consistent brace style for all control statements
+		"curly": "error",
+
 		// require the use of === and !==
 		"eqeqeq": "error",
 
