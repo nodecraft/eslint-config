@@ -4,6 +4,9 @@ module.exports = {
 		// enforce consistent spacing inside array brackets
 		"array-bracket-spacing": ["error", "never"],
 
+		// enforce spaces inside of blocks after opening block and before closing block
+		"block-spacing": ["error", "always"],
+
 		// enforce consistent brace style for blocks
 		"brace-style": ["error", "1tbs", {
 			"allowSingleLine": true
