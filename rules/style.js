@@ -18,6 +18,9 @@ module.exports = {
 			"after": true
 		}],
 
+		// enforce consistent comma style
+		"comma-style": ["error", "last"],
+
 		// require or disallow spacing between function identifiers and their invocations
 		"func-call-spacing": "error",
 
