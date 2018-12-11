@@ -75,6 +75,10 @@ module.exports = {
 				"default": {
 					"before": true,
 					"after": true
+				},
+				"class": {
+					"before": true,
+					"after": true
 				}
 			}
 		}],
