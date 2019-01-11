@@ -10,6 +10,6 @@ module.exports = {
 		}],
 
 		// disallow null comparisons without type-checking operators
-		"no-eq-null": "error",
+		"no-eq-null": "error"
 	}
 };

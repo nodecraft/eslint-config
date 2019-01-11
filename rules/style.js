@@ -18,6 +18,9 @@ module.exports = {
 			"after": true
 		}],
 
+		// require or disallow trailing commas
+		"comma-dangle": ["error", "never"],
+
 		// enforce consistent comma style
 		"comma-style": ["error", "last"],
 

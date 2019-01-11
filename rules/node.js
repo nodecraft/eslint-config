@@ -7,6 +7,6 @@ module.exports = {
 		}],
 
 		// disallow trailing whitespace at the end of lines
-		"no-trailing-spaces": "error",
+		"no-trailing-spaces": "error"
 	}
 };

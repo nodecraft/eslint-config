@@ -8,13 +8,13 @@ var internalExtends = [
 	"./rules/style",
 	"./rules/variables",
 	"./rules/es6",
-	"./rules/plugin-node",
+	"./rules/plugin-node"
 ].map(require.resolve);
 
 module.exports = {
 	extends: extendData.concat(internalExtends),
 	parserOptions: {
-		ecmaVersion: 2018,
+		ecmaVersion: 2018
 	},
 	rules: {
 		strict: ["error", "global"]

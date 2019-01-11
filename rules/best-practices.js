@@ -35,6 +35,6 @@ module.exports = {
 			"overrides": {
 				"typeof": false
 			}
-		}],
+		}]
 	}
 };
