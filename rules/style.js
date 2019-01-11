@@ -82,6 +82,8 @@ module.exports = {
 				}
 			}
 		}],
+		// disallow nested ternary expressions
+		"no-nested-ternary": ["error"],
 
 		// disallow or enforce spaces inside of parentheses
 		"space-in-parens": ["error", "never"]
