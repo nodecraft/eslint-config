@@ -10,6 +10,12 @@ module.exports = {
 		// require the use of === and !==
 		"eqeqeq": "error",
 
+		// isallow the use of eval()
+		"no-eval": "error",
+
+		// disallow the use of eval()-like methods
+		"no-implied-eval": "error",
+
 		// disallow multiple spaces
 		"no-multi-spaces": "error",
 
