@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-nodecraft",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Nodecraft base JS ESLint config",
   "main": "index.js",
   "scripts": {
@@ -24,12 +24,12 @@
   },
   "homepage": "https://github.com/nodecraft/eslint-config-nodecraft",
   "devDependencies": {
-    "eslint": "^5.15.0",
+    "eslint": "^5.16.0",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-json": "^1.4.0"
   },
   "peerDependencies": {
-    "eslint": "^5.15.0",
+    "eslint": "^5.16.0",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-json": "^1.4.0"
   },

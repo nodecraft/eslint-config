@@ -29,7 +29,11 @@ module.exports = {
 		"space-before-blocks": ["error", "never"],
 
 		// enforce consistent spacing before function definition opening parenthesis
-		"space-before-function-paren": ["error", "never"],
+		"space-before-function-paren": ["error", {
+			"anonymous": "never",
+			"named": "never",
+			"asyncArrow": "always"
+		}],
 
 		// require spacing around infix operators
 		"space-infix-ops": ["error"],
