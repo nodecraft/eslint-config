@@ -75,6 +75,10 @@ module.exports = {
 					"before": true,
 					"after": true
 				},
+				"of": {
+					"before": true,
+					"after": true
+				},
 				"default": {
 					"before": true,
 					"after": true
