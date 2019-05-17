@@ -79,6 +79,10 @@ module.exports = {
 					"before": true,
 					"after": true
 				},
+				"in": {
+					"before": true,
+					"after": true
+				},
 				"default": {
 					"before": true,
 					"after": true
