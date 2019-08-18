@@ -14,17 +14,17 @@ var internalExtends = [
 module.exports = {
 	extends: extendData.concat(internalExtends),
 	parserOptions: {
-		ecmaVersion: 2018
+		ecmaVersion: 2019
 	},
 	rules: {
 		strict: ["error", "global"]
 	},
-	"plugins": [
+	plugins: [
 		"json",
 		"node"
 	],
-	"env": {
-		"browser": true,
-		"node": true
+	env: {
+		browser: true,
+		node: true
 	}
 };
