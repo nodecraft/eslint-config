@@ -1,4 +1,5 @@
 # eslint-config-nodecraft
+[![Actions Status](https://github.com/nodecraft/eslint-config-nodecraft/workflows/Test/badge.svg)](https://github.com/nodecraft/eslint-config-nodecraft/actions)
 
 This package is modeled heavily off of [Airbnb's base config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base). A huge thanks to their team.
 
