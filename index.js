@@ -1,6 +1,6 @@
 "use strict";
 
-var extendData = ["eslint:recommended", "plugin:node/recommended"];
+var extendData = ["eslint:recommended", "plugin:node/recommended", "plugin:json/recommended-with-comments"];
 var internalExtends = [
 	"./rules/best-practices",
 	"./rules/errors",
