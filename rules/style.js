@@ -90,6 +90,10 @@ module.exports = {
 				"class": {
 					"before": true,
 					"after": true
+				},
+				"extends": {
+					"before": true,
+					"after": true
 				}
 			}
 		}],
