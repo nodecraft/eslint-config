@@ -113,7 +113,11 @@ module.exports = {
 		"semi": "error",
 
 		// enforce consistent spacing before blocks
-		"space-before-blocks": ["error", "never"],
+		"space-before-blocks": ["error", {
+			"functions": "never",
+			"keywords": "never",
+			"classes": "always"
+		}],
 
 		// enforce consistent spacing before function definition opening parenthesis
 		"space-before-function-paren": ["error", {
