@@ -94,13 +94,47 @@ module.exports = {
 				"extends": {
 					"before": true,
 					"after": true
+				},
+				"export": {
+					"before": false,
+					"after": true
+				},
+				"catch": {
+					"before": false,
+					"after": false
 				}
 			}
 		}],
+
 		// disallow nested ternary expressions
 		"no-nested-ternary": ["error"],
 
+		// require or disallow semicolons instead of ASI
+		"semi": "error",
+
+		// enforce consistent spacing before blocks
+		"space-before-blocks": ["error", "never"],
+
+		// enforce consistent spacing before function definition opening parenthesis
+		"space-before-function-paren": ["error", {
+			"anonymous": "never",
+			"named": "never",
+			"asyncArrow": "always"
+		}],
+
 		// disallow or enforce spaces inside of parentheses
-		"space-in-parens": ["error", "never"]
+		"space-in-parens": ["error", "never"],
+
+		// require spacing around infix operators
+		"space-infix-ops": ["error"],
+
+		// enforce consistent spacing before or after unary operators
+		"space-unary-ops": ["error", {
+			"words": true,
+			"nonwords": false,
+			"overrides": {
+				"typeof": false
+			}
+		}]
 	}
 };

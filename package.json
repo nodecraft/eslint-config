@@ -1,39 +1,39 @@
 {
-  "name": "eslint-config-nodecraft",
-  "version": "1.8.0",
-  "description": "Nodecraft base JS ESLint config",
-  "main": "index.js",
-  "scripts": {
-    "lint": "eslint ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nodecraft/eslint-config-nodecraft"
-  },
-  "keywords": [
-    "eslint",
-    "eslintconfig",
-    "config",
-    "javascript",
-    "nodecraft"
-  ],
-  "author": "Nodecraft Inc.",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/nodecraft/eslint-config-nodecraft/issues"
-  },
-  "homepage": "https://github.com/nodecraft/eslint-config-nodecraft",
-  "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-json": "^2.0.1"
-  },
-  "peerDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-json": "^2.0.1"
-  },
-  "engines": {
-    "node": ">= 12"
-  }
+	"name": "eslint-config-nodecraft",
+	"version": "2.0.0",
+	"description": "Nodecraft base JS ESLint config",
+	"keywords": [
+		"eslint",
+		"eslintconfig",
+		"config",
+		"javascript",
+		"nodecraft"
+	],
+	"homepage": "https://github.com/nodecraft/eslint-config-nodecraft",
+	"bugs": {
+		"url": "https://github.com/nodecraft/eslint-config-nodecraft/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nodecraft/eslint-config-nodecraft"
+	},
+	"license": "MIT",
+	"author": "Nodecraft Inc.",
+	"main": "index.js",
+	"scripts": {
+		"lint": "eslint ."
+	},
+	"devDependencies": {
+		"eslint": "^6.8.0",
+		"eslint-plugin-json": "^2.1.0",
+		"eslint-plugin-node": "^11.0.0"
+	},
+	"peerDependencies": {
+		"eslint": "^6.8.0",
+		"eslint-plugin-json": "^2.1.0",
+		"eslint-plugin-node": "^11.0.0"
+	},
+	"engines": {
+		"node": ">= 12"
+	}
 }

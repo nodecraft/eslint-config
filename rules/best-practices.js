@@ -10,7 +10,7 @@ module.exports = {
 		// require the use of === and !==
 		"eqeqeq": "error",
 
-		// isallow the use of eval()
+		// disallow the use of eval()
 		"no-eval": "error",
 
 		// disallow the use of eval()-like methods
@@ -19,32 +19,10 @@ module.exports = {
 		// disallow multiple spaces
 		"no-multi-spaces": "error",
 
+		// disallow assignment operators in `return` statements
+		"no-return-assign": ["error"],
+
 		// disallow redundant return statements
-		"no-useless-return": "error",
-
-		// require or disallow semicolons instead of ASI
-		"semi": "error",
-
-		// enforce consistent spacing before blocks
-		"space-before-blocks": ["error", "never"],
-
-		// enforce consistent spacing before function definition opening parenthesis
-		"space-before-function-paren": ["error", {
-			"anonymous": "never",
-			"named": "never",
-			"asyncArrow": "always"
-		}],
-
-		// require spacing around infix operators
-		"space-infix-ops": ["error"],
-
-		// enforce consistent spacing before or after unary operators
-		"space-unary-ops": ["error", {
-			"words": true,
-			"nonwords": false,
-			"overrides": {
-				"typeof": false
-			}
-		}]
+		"no-useless-return": "error"
 	}
 };

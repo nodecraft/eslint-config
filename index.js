@@ -1,7 +1,7 @@
 "use strict";
 
-var extendData = ["eslint:recommended", "plugin:node/recommended", "plugin:json/recommended-with-comments"];
-var internalExtends = [
+const extendData = ["eslint:recommended", "plugin:node/recommended", "plugin:json/recommended-with-comments"];
+const internalExtends = [
 	"./rules/best-practices",
 	"./rules/errors",
 	"./rules/node",
@@ -14,7 +14,7 @@ var internalExtends = [
 module.exports = {
 	extends: extendData.concat(internalExtends),
 	parserOptions: {
-		ecmaVersion: 2019
+		ecmaVersion: 2020
 	},
 	rules: {
 		strict: ["error", "global"]
@@ -25,6 +25,7 @@ module.exports = {
 	],
 	env: {
 		browser: true,
-		node: true
+		node: true,
+		es2020: true
 	}
 };
