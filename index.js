@@ -8,7 +8,8 @@ const internalExtends = [
 	"./rules/style",
 	"./rules/variables",
 	"./rules/es6",
-	"./rules/plugin-node"
+	"./rules/plugin-node",
+	"./rules/plugin-vue"
 ].map(require.resolve);
 
 module.exports = {
