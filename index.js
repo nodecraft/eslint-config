@@ -1,3 +1,5 @@
+'use strict';
+
 const extendData = ["eslint:recommended", "plugin:node/recommended", "plugin:json/recommended-with-comments", "plugin:vue/recommended"];
 const internalExtends = [
 	"./rules/best-practices",
@@ -13,7 +15,8 @@ module.exports = {
 	extends: extendData.concat(internalExtends),
 	parser: "vue-eslint-parser",
 	parserOptions: {
-		ecmaVersion: 2020
+		ecmaVersion: 2020,
+		sourceType: "script"
 	},
 	rules: {
 		strict: ["error", "global"]
