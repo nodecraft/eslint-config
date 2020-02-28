@@ -1,4 +1,4 @@
-"use strict";
+
 module.exports = {
 	rules: {
 		// Disallow require()s for files that npm ignores

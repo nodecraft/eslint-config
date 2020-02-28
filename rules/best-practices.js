@@ -1,4 +1,4 @@
-"use strict";
+
 module.exports = {
 	rules: {
 		// enforce return statements in callbacks of array methods

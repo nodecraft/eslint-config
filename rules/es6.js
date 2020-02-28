@@ -1,4 +1,4 @@
-"use strict";
+
 module.exports = {
 	rules: {
 		// require `let` or `const` instead of `var`

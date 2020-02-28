@@ -1,4 +1,4 @@
-"use strict";
+
 module.exports = {
 	rules: {
 		// disallow the use of console
