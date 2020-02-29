@@ -23,3 +23,5 @@ npx install-peerdeps --dev eslint-config-nodecraft
 
 
 2. Add `"extends": "nodecraft"` to your .eslintrc
+
+If your application uses Vue.js, also add `nodecraft/vue` to your `extends` array to inherit our Vue rules.
