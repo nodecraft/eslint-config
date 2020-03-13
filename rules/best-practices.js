@@ -12,6 +12,9 @@ module.exports = {
 		// require the use of === and !==
 		"eqeqeq": "error",
 
+		// disallow `else` blocks after `return` statements in `if` statements
+		"no-else-return": "error",
+
 		// disallow the use of eval()
 		"no-eval": "error",
 

@@ -104,6 +104,10 @@ module.exports = {
 				"catch": {
 					"before": false,
 					"after": false
+				},
+				"this": {
+					"before": true,
+					"after": false
 				}
 			}
 		}],
