@@ -39,7 +39,7 @@ module.exports = {
 		"func-call-spacing": "error",
 
 		// enforce the location of arrow function bodies
-		"implicit-arrow-linebreak": ["error", "below"],
+		"implicit-arrow-linebreak": ["error", "beside"],
 
 		// enforce consistent indentation
 		"indent": ["error", "tab", {
