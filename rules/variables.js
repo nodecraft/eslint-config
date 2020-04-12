@@ -7,7 +7,7 @@ module.exports = {
 		"no-restricted-globals": [
 			"error",
 			{
-				"name": "IsNaN",
+				"name": "isNaN",
 				"message": "Please use Number.IsNaN instead, with explicit coercion beforehand if necessary"
 			},
 			{
