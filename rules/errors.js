@@ -11,8 +11,8 @@ module.exports = {
 			"allowEmptyCatch": true
 		}],
 
-		// disallow null comparisons without type-checking operators
-		"no-eq-null": "error",
+		// disallow template literal placeholder syntax in regular strings
+		"no-template-curly-in-string": "warn",
 
 		// disallow assignments that can lead to race conditions due to usage of await or yield
 		"require-atomic-updates": "warn"
