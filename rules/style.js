@@ -130,6 +130,9 @@ module.exports = {
 		// disallow nested ternary expressions
 		"no-nested-ternary": ["error"],
 
+		// disallow trailing whitespace at the end of lines
+		"no-trailing-spaces": "error",
+
 		// disallow ternary operators when simpler alternatives exist
 		"no-unneeded-ternary": ["error"],
 

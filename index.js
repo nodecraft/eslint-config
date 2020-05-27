@@ -4,7 +4,6 @@ const extendData = ["eslint:recommended", "plugin:node/recommended", "plugin:jso
 const internalExtends = [
 	"./rules/best-practices",
 	"./rules/errors",
-	"./rules/node",
 	"./rules/style",
 	"./rules/variables",
 	"./rules/es6",
