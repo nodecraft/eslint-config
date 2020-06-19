@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [8, 10]
+        node: [12, 14]
     name: Node ${{ matrix.node }} Lint
     steps:
       - uses: actions/checkout@v1
