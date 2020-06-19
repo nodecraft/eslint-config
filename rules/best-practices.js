@@ -30,11 +30,17 @@ module.exports = {
 		// disallow the use of eval()-like methods
 		"no-implied-eval": "error",
 
+		// disallow the use of the `__iterator__` property
+		"no-iterator": "error",
+
 		// disallow labeled statements
 		"no-labels": "error",
 
 		// disallow multiple spaces
 		"no-multi-spaces": "error",
+
+		// disallow the use of the `__proto__` property
+		"no-proto": "error",
 
 		// disallow certain object properties
 		'no-restricted-properties': [
@@ -106,6 +112,9 @@ module.exports = {
 
 		// disallow comma operators
 		"no-sequences": "error",
+
+		// disallow throwing literals as exceptions
+		"no-throw-literal": "error",
 
 		// require or disallow "Yoda" conditions
 		"yoda": ["error", "never"]
