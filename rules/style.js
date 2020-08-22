@@ -139,6 +139,17 @@ module.exports = {
 		// enforce consistent spacing inside braces
 		"object-curly-spacing": ["error", "never"],
 
+		// enforce variables to be declared separately
+		"one-var": ["error", {
+			"var": "never",
+			"let": "never",
+			"const": "never",
+			"separateRequires": true
+		}],
+
+		// require newlines around variable declarations
+		"one-var-declaration-per-line": ["error", "always"],
+
 		// disallow the use of `Math.pow` in favor of the `**` operator
 		"prefer-exponentiation-operator": ["error"],
 
