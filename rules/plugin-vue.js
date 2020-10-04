@@ -35,7 +35,7 @@ module.exports = {
 		"vue/multiline-html-element-content-newline": "error",
 
 		// Enforce specific casing for the name property in Vue components
-		"vue/name-property-casing": ["error", "kebab-case"],
+		"vue/component-definition-name-casing": ["error", "kebab-case"],
 
 		// Enforce order of properties in components
 		"vue/order-in-components": "error"
