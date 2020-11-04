@@ -34,6 +34,12 @@ module.exports = {
 		// Require a line break before and after the contents of a multiline element
 		"vue/multiline-html-element-content-newline": "error",
 
+		// Disallow target="_blank" attribute without rel="noopener"
+		"vue/no-template-target-blank": ["error", {
+			"allowReferrer": true,
+			"enforceDynamicLinks": "always"
+		}],
+
 		// Enforce specific casing for the name property in Vue components
 		"vue/component-definition-name-casing": ["error", "kebab-case"],
 
