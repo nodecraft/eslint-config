@@ -23,6 +23,9 @@ module.exports = {
 		// disallow loops with a body that allows only one iteration
 		"no-unreachable-loop": "error",
 
+		// disallow use of optional chaining in contexts where the `undefined` value is not allowed
+		"no-unsafe-optional-chaining": "error",
+
 		// disallow assignments that can lead to race conditions due to usage of await or yield
 		"require-atomic-updates": "warn"
 	}
