@@ -3,7 +3,7 @@
 const extendData = ["plugin:vue/recommended"];
 const internalExtends = [
 	"./rules/plugin-vue"
-].map(require.resolve);
+].map(require.resolve); // eslint-disable-line unicorn/no-array-callback-reference
 
 module.exports = {
 	extends: extendData.concat(internalExtends),

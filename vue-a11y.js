@@ -3,7 +3,7 @@
 const extendData = ["plugin:vuejs-accessibility/recommended"];
 const internalExtends = [
 	"./rules/plugin-vuejs-accessibility"
-].map(require.resolve);
+].map(require.resolve); // eslint-disable-line unicorn/no-array-callback-reference
 
 module.exports = {
 	extends: extendData.concat(internalExtends),

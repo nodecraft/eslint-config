@@ -128,7 +128,8 @@ module.exports = {
 		"no-lonely-if": ["error"],
 
 		// disallow nested ternary expressions
-		"no-nested-ternary": ["error"],
+		// handled by eslint-plugin-unicorn
+		"no-nested-ternary": "off",
 
 		// disallow trailing whitespace at the end of lines
 		"no-trailing-spaces": "error",

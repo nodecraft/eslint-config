@@ -7,8 +7,9 @@ const internalExtends = [
 	"./rules/style",
 	"./rules/variables",
 	"./rules/es6",
-	"./rules/plugin-node"
-].map(require.resolve);
+	"./rules/plugin-node",
+	"./rules/plugin-unicorn"
+].map(require.resolve); // eslint-disable-line unicorn/no-array-callback-reference
 
 module.exports = {
 	extends: extendData.concat(internalExtends),
@@ -21,7 +22,8 @@ module.exports = {
 	},
 	plugins: [
 		"json",
-		"node"
+		"node",
+		"unicorn"
 	],
 	env: {
 		browser: true,
