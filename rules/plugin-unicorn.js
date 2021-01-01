@@ -46,7 +46,7 @@ module.exports = {
 		"unicorn/no-abusive-eslint-disable": "error",
 
 		// Prevent passing a function reference directly to iterator methods
-		"unicorn/no-array-callback-reference": "error",
+		"unicorn/no-array-callback-reference": "warn",
 
 		// Disallow Array#reduce() and Array#reduceRight()
 		"unicorn/no-array-reduce": "off",
