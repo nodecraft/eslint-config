@@ -72,6 +72,9 @@ module.exports = {
 		// Disallow nested ternary expressions
 		"unicorn/no-nested-ternary": "error",
 
+		// Disallow new Array()
+		"unicorn/no-new-array": "error",
+
 		// Enforce the use of Buffer.from() and Buffer.alloc() instead of the deprecated new Buffer()
 		"unicorn/no-new-buffer": "error",
 
@@ -132,6 +135,9 @@ module.exports = {
 		// Prefer .flatMap(…) over .map(…).flat()
 		"unicorn/prefer-array-flat-map": "error",
 
+		// Prefer Array#indexOf() over Array#findIndex() when looking for the index of an item
+		"unicorn/prefer-array-index-of": "error",
+
 		// Prefer .some(…) over .find(…)
 		"unicorn/prefer-array-some": "error",
 
@@ -179,6 +185,9 @@ module.exports = {
 
 		// Prefer Reflect.apply() over Function#apply()
 		"unicorn/prefer-reflect-apply": "error",
+
+		// Prefer RegExp#test() over String#match() and RegExp#exec()
+		"unicorn/prefer-regexp-test": "error",
 
 		// Prefer Set#has() over Array#includes() when checking for existence or non-existence
 		"unicorn/prefer-set-has": "error",

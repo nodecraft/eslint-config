@@ -38,6 +38,18 @@ module.exports = {
 		// require or disallow spacing between function identifiers and their invocations
 		"func-call-spacing": "error",
 
+		// enforce minimum and maximum identifier lengths
+		"id-length": ["error", {
+			"min": 2, // prevent 1 character variables,
+			"exceptions": [
+				"i", // allow i for iterators
+				"x", // allow for coordinates
+				"y", // allow for coordinates
+				"_" // allow _ for lodash (TODO: remove when enforcing unicorn/import-style for lodash)
+			],
+			"properties": "never"
+		}],
+
 		// enforce the location of arrow function bodies
 		"implicit-arrow-linebreak": ["error", "beside"],
 
