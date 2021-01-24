@@ -55,7 +55,7 @@ module.exports = {
 		"unicorn/no-array-for-each": "warn",
 
 		// Enforce combining multiple Array#push() into one call
-		"unicorn/no-array-push-push": "error",
+		"unicorn/no-array-push-push": "off",
 
 		// Disallow Array#reduce() and Array#reduceRight()
 		"unicorn/no-array-reduce": "off",
