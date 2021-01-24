@@ -6,7 +6,7 @@ const internalExtends = [
 ].map(require.resolve); // eslint-disable-line unicorn/no-array-callback-reference
 
 module.exports = {
-	extends: extendData.concat(internalExtends),
+	extends: [...extendData, ...internalExtends],
 	parser: "vue-eslint-parser",
 	parserOptions: {
 		ecmaVersion: 2020,

@@ -44,6 +44,9 @@ module.exports = {
 		"vue/component-definition-name-casing": ["error", "kebab-case"],
 
 		// Enforce order of properties in components
-		"vue/order-in-components": "error"
+		"vue/order-in-components": "error",
+
+		// Enforce valid nextTick function calls
+		"vue/valid-next-tick": "error"
 	}
 };

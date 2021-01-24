@@ -8,6 +8,9 @@ module.exports = {
 		// Enforce a specific parameter name in catch clauses
 		"unicorn/catch-error-name": "off",
 
+		// Use destructured variables over properties
+		"unicorn/consistent-destructuring": "off",
+
 		// Move function definitions to the highest possible scope
 		"unicorn/consistent-function-scoping": "off",
 
@@ -48,6 +51,12 @@ module.exports = {
 		// Prevent passing a function reference directly to iterator methods
 		"unicorn/no-array-callback-reference": "warn",
 
+		// Prefer for…of over Array#forEach(…)
+		"unicorn/no-array-for-each": "warn",
+
+		// Enforce combining multiple Array#push() into one call
+		"unicorn/no-array-push-push": "error",
+
 		// Disallow Array#reduce() and Array#reduceRight()
 		"unicorn/no-array-reduce": "off",
 
@@ -87,6 +96,9 @@ module.exports = {
 		// Disallow process.exit()
 		// handled by eslint-plugin-node
 		"unicorn/no-process-exit": "off",
+
+		// Disallow assigning this to a variable
+		"unicorn/no-this-assignment": "warn",
 
 		// Disallow unreadable array destructuring
 		"unicorn/no-unreadable-array-destructuring": "error",

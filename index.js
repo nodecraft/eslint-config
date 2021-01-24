@@ -12,7 +12,7 @@ const internalExtends = [
 ].map(require.resolve); // eslint-disable-line unicorn/no-array-callback-reference
 
 module.exports = {
-	extends: extendData.concat(internalExtends),
+	extends: [...extendData, ...internalExtends],
 	parserOptions: {
 		ecmaVersion: 2020,
 		sourceType: "script"
