@@ -20,6 +20,9 @@ module.exports = {
 		// Enforce v-on directive style
 		"vue/v-on-style": ["error", "longform"],
 
+		// Disallow usage of button without an explicit type attribute
+		"vue/html-button-has-type": ["error"],
+
 		// Enforce self-closing style
 		"vue/html-self-closing": ["error", {
 			"html": {
