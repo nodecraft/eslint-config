@@ -9,13 +9,13 @@
 		"javascript",
 		"nodecraft"
 	],
-	"homepage": "https://github.com/nodecraft/eslint-config-nodecraft",
+	"homepage": "https://github.com/nodecraft/eslint-config",
 	"bugs": {
-		"url": "https://github.com/nodecraft/eslint-config-nodecraft/issues"
+		"url": "https://github.com/nodecraft/eslint-config/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/nodecraft/eslint-config-nodecraft"
+		"url": "https://github.com/nodecraft/eslint-config"
 	},
 	"license": "MIT",
 	"author": "Nodecraft Inc.",
