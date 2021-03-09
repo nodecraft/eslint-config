@@ -1,5 +1,5 @@
 # @nodecraft/eslint-config
-[![Actions Status](https://github.com/nodecraft/eslint-config-nodecraft/workflows/Test/badge.svg)](https://github.com/nodecraft/eslint-config-nodecraft/actions)
+[![Actions Status](https://github.com/nodecraft/eslint-config/workflows/Test/badge.svg)](https://github.com/nodecraft/eslint-config/actions)
 
 This package is modeled heavily off of [Airbnb's base config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base). A huge thanks to their team.
 
@@ -24,4 +24,4 @@ npx install-peerdeps --dev @nodecraft/eslint-config
 
 2. Add `"extends": "@nodecraft"` to your .eslintrc
 
-If your application uses Vue.js, also add `nodecraft/vue` to your `extends` array to inherit our Vue rules, as well as `nodecraft/vue-a11y` for our Vue Accessibility rules.
+If your application uses Vue.js, also add `@nodecraft/eslint-config/vue` to your `extends` array to inherit our Vue rules, as well as `@nodecraft/eslint-config/vue-a11y` for our Vue Accessibility rules.
