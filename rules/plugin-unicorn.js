@@ -144,6 +144,9 @@ module.exports = {
 		//  Prefer .find(…) over the first element from .filter(…)
 		"unicorn/prefer-array-find": "error",
 
+		// Prefer Array#flat() over legacy techniques to flatten arrays
+		"unicorn/prefer-array-flat": "error",
+
 		// Prefer .flatMap(…) over .map(…).flat()
 		"unicorn/prefer-array-flat-map": "error",
 
