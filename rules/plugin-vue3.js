@@ -20,6 +20,13 @@ module.exports = {
 		// Enforce v-on directive style
 		"vue/v-on-style": ["error", "longform"],
 
+		// Enforce v-slot directive style
+		"vue/v-slot-style": ["error", {
+			"atComponent": "longform",
+			"default": "longform",
+			"named": "longform",
+		}],
+
 		// Disallow usage of button without an explicit type attribute
 		"vue/html-button-has-type": ["error"],
 
