@@ -5,12 +5,12 @@ module.exports = {
 	rules: {
 		// require braces around arrow function bodies
 		"arrow-body-style": ["error", "as-needed", {
-			"requireReturnForObjectLiteral": true
+			"requireReturnForObjectLiteral": true,
 		}],
 
 		// require parentheses around arrow function arguments
 		"arrow-parens": ["error", "as-needed", {
-			"requireForBlockBody": true
+			"requireForBlockBody": true,
 		}],
 
 		// enforce consistent spacing before and after the arrow in arrow functions
@@ -29,7 +29,7 @@ module.exports = {
 		"no-useless-rename": ["error", {
 			"ignoreDestructuring": false,
 			"ignoreImport": false,
-			"ignoreExport": false
+			"ignoreExport": false,
 		}],
 
 		// require `let` or `const` instead of `var`
@@ -39,6 +39,6 @@ module.exports = {
 		"prefer-const": "error",
 
 		// require or disallow spacing around embedded expressions of template strings
-		"template-curly-spacing": ["error", "never"]
-	}
+		"template-curly-spacing": ["error", "never"],
+	},
 };

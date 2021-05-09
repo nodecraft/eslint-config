@@ -8,7 +8,7 @@ module.exports = {
 
 		// disallow empty block statements
 		"no-empty": ["error", {
-			"allowEmptyCatch": true
+			"allowEmptyCatch": true,
 		}],
 
 		// disallow literal numbers that lose precision
@@ -27,6 +27,6 @@ module.exports = {
 		"no-unsafe-optional-chaining": "error",
 
 		// disallow assignments that can lead to race conditions due to usage of await or yield
-		"require-atomic-updates": "warn"
-	}
+		"require-atomic-updates": "warn",
+	},
 };

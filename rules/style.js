@@ -17,16 +17,16 @@ module.exports = {
 
 		// enforce consistent brace style for blocks
 		"brace-style": ["error", "1tbs", {
-			"allowSingleLine": true
+			"allowSingleLine": true,
 		}],
 
 		// require or disallow trailing commas
-		"comma-dangle": ["error", "never"],
+		"comma-dangle": ["error", "always-multiline"],
 
 		// enforce consistent spacing before and after commas
 		"comma-spacing": ["error", {
 			"before": false,
-			"after": true
+			"after": true,
 		}],
 
 		// enforce consistent comma style
@@ -45,9 +45,9 @@ module.exports = {
 				"i", // allow i for iterators
 				"x", // allow for coordinates
 				"y", // allow for coordinates
-				"_" // allow _ for lodash (TODO: remove when enforcing unicorn/import-style for lodash)
+				"_", // allow _ for lodash (TODO: remove when enforcing unicorn/import-style for lodash)
 			],
-			"properties": "never"
+			"properties": "never",
 		}],
 
 		// enforce the location of arrow function bodies
@@ -55,13 +55,13 @@ module.exports = {
 
 		// enforce consistent indentation
 		"indent": ["error", "tab", {
-			"SwitchCase": 1
+			"SwitchCase": 1,
 		}],
 
 		// enforce consistent spacing between keys and values in object literal properties
 		"key-spacing": ["error", {
 			"beforeColon": false,
-			"afterColon": true
+			"afterColon": true,
 		}],
 
 		// enforce consistent spacing before and after keywords
@@ -71,69 +71,69 @@ module.exports = {
 			"overrides": {
 				"var": {
 					"before": false,
-					"after": true
+					"after": true,
 				},
 				"let": {
 					"before": false,
-					"after": true
+					"after": true,
 				},
 				"const": {
 					"before": false,
-					"after": true
+					"after": true,
 				},
 				"return": {
 					"before": false,
-					"after": true
+					"after": true,
 				},
 				"case": {
 					"before": false,
-					"after": true
+					"after": true,
 				},
 				"from": {
 					"before": true,
-					"after": true
+					"after": true,
 				},
 				"import": {
 					"before": false,
-					"after": true
+					"after": true,
 				},
 				"as": {
 					"before": true,
-					"after": true
+					"after": true,
 				},
 				"of": {
 					"before": true,
-					"after": true
+					"after": true,
 				},
 				"in": {
 					"before": true,
-					"after": true
+					"after": true,
 				},
 				"default": {
 					"before": true,
-					"after": true
+					"after": true,
 				},
 				"class": {
 					"before": true,
-					"after": true
+					"after": true,
 				},
 				"extends": {
 					"before": true,
-					"after": true
+					"after": true,
 				},
 				"export": {
 					"before": false,
-					"after": true
+					"after": true,
 				},
 				"catch": {
 					"before": false,
-					"after": false
+					"after": false,
 				},
 				"this": {
 					"before": true,
-					"after": false
-				}
-			}
+					"after": false,
+				},
+			},
 		}],
 
 		// disallow `if` statements as the only statement in `else` blocks
@@ -157,7 +157,7 @@ module.exports = {
 			"var": "never",
 			"let": "never",
 			"const": "never",
-			"separateRequires": true
+			"separateRequires": true,
 		}],
 
 		// require newlines around variable declarations
@@ -176,14 +176,14 @@ module.exports = {
 		"space-before-blocks": ["error", {
 			"functions": "never",
 			"keywords": "never",
-			"classes": "always"
+			"classes": "always",
 		}],
 
 		// enforce consistent spacing before function definition opening parenthesis
 		"space-before-function-paren": ["error", {
 			"anonymous": "never",
 			"named": "never",
-			"asyncArrow": "always"
+			"asyncArrow": "always",
 		}],
 
 		// disallow or enforce spaces inside of parentheses
@@ -197,8 +197,8 @@ module.exports = {
 			"words": true,
 			"nonwords": false,
 			"overrides": {
-				"typeof": false
-			}
-		}]
-	}
+				"typeof": false,
+			},
+		}],
+	},
 };

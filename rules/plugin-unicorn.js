@@ -122,20 +122,20 @@ module.exports = {
 		"unicorn/numeric-separators-style": ["error", {
 			"hexadecimal": {
 				"minimumDigits": 0,
-				"groupLength": 2
+				"groupLength": 2,
 			},
 			"binary": {
 				"minimumDigits": 0,
-				"groupLength": 4
+				"groupLength": 4,
 			},
 			"octal": {
 				"minimumDigits": 0,
-				"groupLength": 4
+				"groupLength": 4,
 			},
 			"number": {
 				"minimumDigits": 7,
-				"groupLength": 3
-			}
+				"groupLength": 3,
+			},
 		}],
 
 		// Prefer .addEventListener() and .removeEventListener() over on-functions
@@ -236,6 +236,6 @@ module.exports = {
 		"unicorn/string-content": "off",
 
 		// Require new when throwing an error
-		"unicorn/throw-new-error": "error"
-	}
+		"unicorn/throw-new-error": "error",
+	},
 };

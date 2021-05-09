@@ -8,20 +8,20 @@ module.exports = {
 			"error",
 			{
 				"name": "isNaN",
-				"message": "Please use Number.IsNaN instead, with explicit coercion beforehand if necessary"
+				"message": "Please use Number.IsNaN instead, with explicit coercion beforehand if necessary",
 			},
 			{
 				"name": "isFinite",
-				"message": "Please use Number.isFinite instead"
-			}
+				"message": "Please use Number.isFinite instead",
+			},
 		],
 
 		// disallow unused variables
 		"no-unused-vars": ["error", {
-			"ignoreRestSiblings": true
+			"ignoreRestSiblings": true,
 		}],
 
 		// disallow the use of variables before they are defined
-		"no-use-before-define": ["error"]
-	}
+		"no-use-before-define": ["error"],
+	},
 };
