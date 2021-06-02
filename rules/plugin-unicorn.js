@@ -63,6 +63,10 @@ module.exports = {
 		// Do not use leading/trailing space between console.log parameters
 		"unicorn/no-console-spaces": "off",
 
+		// Do not use document.cookie directly
+		// TODO: enforce once Cookie Store API becomes more ubiquitous
+		"unicorn/no-document-cookie": "off",
+
 		// Do not use a for loop that can be replaced with a for-of loop
 		"unicorn/no-for-loop": "error",
 
@@ -96,6 +100,9 @@ module.exports = {
 		// Disallow process.exit()
 		// handled by eslint-plugin-node
 		"unicorn/no-process-exit": "off",
+
+		// Forbid classes that only have static members
+		"unicorn/no-static-only-class": "error",
 
 		// Disallow assigning this to a variable
 		"unicorn/no-this-assignment": "warn",
@@ -186,14 +193,25 @@ module.exports = {
 		// Prefer .before() over .insertBefore(), .replaceWith() over .replaceChild(), prefer one of .before(), .after(), .append() or .prepend() over insertAdjacentText() and insertAdjacentElement()
 		"unicorn/prefer-modern-dom-apis": "error",
 
+		// Prefer JavaScript modules (ESM) over CommonJS
+		// TODO: enforce as we transition our codebase to ESM
+		"unicorn/prefer-module": "off",
+
 		// Prefer negative index over .length - index for {String,Array,TypedArray}#slice() and Array#splice()
 		"unicorn/prefer-negative-index": "error",
+
+		// Prefer using the node: protocol when importing Node.js builtin modules
+		// TODO: enable for Node 16+
+		"unicorn/prefer-node-protocol": "off",
 
 		// Prefer Number static properties over global ones
 		"unicorn/prefer-number-properties": "error",
 
 		// Prefer omitting the catch binding parameter
 		"unicorn/prefer-optional-catch-binding": "error",
+
+		// Prefer borrowing methods from the prototype instead of methods from an instance
+		"unicorn/prefer-prototype-methods": "off",
 
 		// Prefer .querySelector() over .getElementById(), .querySelectorAll() over .getElementsByClassName() and .getElementsByTagName()
 		"unicorn/prefer-query-selector": "error",
@@ -223,6 +241,9 @@ module.exports = {
 		// Prefer String#trimStart() / String#trimEnd() over String#trimLeft() / String#trimRight()
 		"unicorn/prefer-string-trim-start-end": "error",
 
+		// Prefer switch over multiple else-if
+		"unicorn/prefer-switch": "off",
+
 		// Prefer ternary expressions over simple if-else statements
 		"unicorn/prefer-ternary": "off",
 
@@ -231,6 +252,12 @@ module.exports = {
 
 		// Prevent abbreviations
 		"unicorn/prevent-abbreviations": "off",
+
+		// Enforce using the separator argument with Array#join()
+		"unicorn/require-array-join-separator": "error",
+
+		// Enforce using the digits argument with Number#toFixed()
+		"unicorn/require-number-to-fixed-digits-argument": "error",
 
 		// Enforce better string content
 		"unicorn/string-content": "off",
