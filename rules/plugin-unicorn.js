@@ -54,6 +54,9 @@ module.exports = {
 		// Prefer for…of over Array#forEach(…)
 		"unicorn/no-array-for-each": "warn",
 
+		// Disallow using the this argument in array methods
+		"unicorn/no-array-method-this-argument": "error",
+
 		// Enforce combining multiple Array#push() into one call
 		"unicorn/no-array-push-push": "off",
 
@@ -258,6 +261,9 @@ module.exports = {
 
 		// Enforce using the digits argument with Number#toFixed()
 		"unicorn/require-number-to-fixed-digits-argument": "error",
+
+		// Enforce using the targetOrigin argument with window.postMessage()
+		"unicorn/require-post-message-target-origin": "error",
 
 		// Enforce better string content
 		"unicorn/string-content": "off",
