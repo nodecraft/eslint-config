@@ -120,7 +120,9 @@ module.exports = {
 		"unicorn/no-unused-properties": "off",
 
 		// Disallow useless undefined
-		"unicorn/no-useless-undefined": "error",
+		"unicorn/no-useless-undefined": ["error", {
+			checkArguments: false,
+		}],
 
 		// Disallow number literals with zero fractions or dangling dots
 		"unicorn/no-zero-fractions": "error",
