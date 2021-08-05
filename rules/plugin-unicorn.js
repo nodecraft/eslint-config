@@ -119,6 +119,12 @@ module.exports = {
 		// Disallow unused object properties
 		"unicorn/no-unused-properties": "off",
 
+		// Disallow useless array length check
+		"unicorn/no-useless-length-check": "error",
+
+		// Disallow useless spread
+		"unicorn/no-useless-spread": "error",
+
 		// Disallow useless undefined
 		"unicorn/no-useless-undefined": ["error", {
 			checkArguments: false,
