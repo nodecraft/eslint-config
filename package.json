@@ -1,6 +1,6 @@
 {
 	"name": "@nodecraft/eslint-config",
-	"version": "10.0.1",
+	"version": "10.1.0",
 	"description": "Nodecraft base JS ESLint config",
 	"keywords": [
 		"eslint",
@@ -29,7 +29,7 @@
 		"eslint-plugin-json": "^3.1.0",
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-unicorn": "^35.0.0",
-		"eslint-plugin-vue": "^7.16.0",
+		"eslint-plugin-vue": "^7.17.0",
 		"eslint-plugin-vuejs-accessibility": "^0.7.1"
 	},
 	"peerDependencies": {
@@ -37,7 +37,7 @@
 		"eslint-plugin-json": "^3.1.0",
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-unicorn": "^35.0.0",
-		"eslint-plugin-vue": "^7.16.0",
+		"eslint-plugin-vue": "^7.17.0",
 		"eslint-plugin-vuejs-accessibility": "^0.7.1"
 	},
 	"engines": {

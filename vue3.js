@@ -24,4 +24,11 @@ module.exports = {
 		node: true,
 		es2020: true,
 	},
+	globals: {
+		/* Vue 3 compiler macros used in <script setup> */
+		defineProps: "readonly",
+		defineEmits: "readonly",
+		defineExpose: "readonly",
+		withDefaults: "readonly",
+	},
 };
