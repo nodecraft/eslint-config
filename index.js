@@ -14,7 +14,7 @@ const internalExtends = [
 module.exports = {
 	extends: [...extendData, ...internalExtends],
 	parserOptions: {
-		ecmaVersion: 2020,
+		ecmaVersion: "latest",
 		sourceType: "script",
 	},
 	rules: {

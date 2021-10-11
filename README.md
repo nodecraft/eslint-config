@@ -26,6 +26,6 @@ npx install-peerdeps --dev @nodecraft/eslint-config
 
 ### Vue.js
 
-If your application uses Vue.js 2.x, also add `@nodecraft/eslint-config/vue` to your `extends` array to inherit our Vue rules. If using Vue.js 3.x, add `@nodecraft/eslint-config/vue3`.
+If your application uses Vue.js 3.x, also add `@nodecraft/eslint-config/vue3` to your `extends` array to inherit our Vue rules. If using Vue.js 2.x, add `@nodecraft/eslint-config/vue`.
 
-Also add `@nodecraft/eslint-config/vue-a11y` for our Vue Accessibility rules.
+Also add `@nodecraft/eslint-config/vue-a11y` for our Vue Accessibility rules (compatible with both Vue.js 3 and Vue.js 2.

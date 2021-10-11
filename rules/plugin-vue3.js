@@ -50,6 +50,9 @@ module.exports = {
 			"enforceDynamicLinks": "always",
 		}],
 
+		// Disallow useless attribute on <template>
+		"vue/no-useless-template-attributes": "error",
+
 		// Enforce specific casing for the name property in Vue components
 		"vue/component-definition-name-casing": ["error", "kebab-case"],
 
