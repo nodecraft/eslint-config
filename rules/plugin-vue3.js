@@ -61,5 +61,8 @@ module.exports = {
 
 		// Enforce valid nextTick function calls
 		"vue/valid-next-tick": "error",
+
+		// Require component names to be always multi-word
+		"vue/multi-word-component-names": "off",
 	},
 };
