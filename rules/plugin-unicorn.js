@@ -70,6 +70,9 @@ module.exports = {
 		// TODO: enforce once Cookie Store API becomes more ubiquitous
 		"unicorn/no-document-cookie": "off",
 
+		// Disallow empty files
+		"unicorn/no-empty-file": "off",
+
 		// Do not use a for loop that can be replaced with a for-of loop
 		"unicorn/no-for-loop": "error",
 
@@ -197,6 +200,9 @@ module.exports = {
 
 		// Prefer .textContent over .innerText
 		"unicorn/prefer-dom-node-text-content": "error",
+
+		// Prefer export…from when re-exporting
+		"unicorn/prefer-export-from": "error",
 
 		// Prefer .includes() over .indexOf() when checking for existence or non-existence
 		"unicorn/prefer-includes": "error",
