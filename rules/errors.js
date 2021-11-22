@@ -27,6 +27,8 @@ module.exports = {
 		"no-unsafe-optional-chaining": "error",
 
 		// disallow assignments that can lead to race conditions due to usage of await or yield
-		"require-atomic-updates": "warn",
+		"require-atomic-updates": ["warn", {
+			"allowProperties": true,
+		}],
 	},
 };

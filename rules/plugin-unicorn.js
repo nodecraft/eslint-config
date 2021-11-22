@@ -63,6 +63,9 @@ module.exports = {
 		// Disallow Array#reduce() and Array#reduceRight()
 		"unicorn/no-array-reduce": "off",
 
+		// Forbid member access from await expression
+		"unicorn/no-await-expression-member": "error",
+
 		// Do not use leading/trailing space between console.log parameters
 		"unicorn/no-console-spaces": "off",
 
@@ -183,6 +186,9 @@ module.exports = {
 		// Prefer .some(…) over .find(…)
 		"unicorn/prefer-array-some": "error",
 
+		// Prefer String#codePointAt(…) over String#charCodeAt(…) and String.fromCodePoint(…) over String.fromCharCode(…)
+		"unicorn/prefer-code-point": "error",
+
 		// Prefer Date.now() to get the number of milliseconds since the Unix Epoch
 		"unicorn/prefer-date-now": "error",
 
@@ -202,7 +208,9 @@ module.exports = {
 		"unicorn/prefer-dom-node-text-content": "error",
 
 		// Prefer export…from when re-exporting
-		"unicorn/prefer-export-from": "error",
+		"unicorn/prefer-export-from": ["error", {
+			"ignoreUsedVariables": true,
+		}],
 
 		// Prefer .includes() over .indexOf() when checking for existence or non-existence
 		"unicorn/prefer-includes": "error",
