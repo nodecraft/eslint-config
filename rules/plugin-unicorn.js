@@ -308,6 +308,9 @@ module.exports = {
 		// Enforce better string content
 		"unicorn/string-content": "off",
 
+		// Enforce consistent case for text encoding identifiers
+		"unicorn/text-encoding-identifier-case": "error",
+
 		// Require new when throwing an error
 		"unicorn/throw-new-error": "error",
 	},
