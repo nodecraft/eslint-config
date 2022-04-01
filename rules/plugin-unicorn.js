@@ -125,6 +125,9 @@ module.exports = {
 		// Disallow unreadable array destructuring
 		"unicorn/no-unreadable-array-destructuring": "error",
 
+		// Disallow unreadable IIFEs
+		"unicorn/no-unreadable-iife": "error",
+
 		// Disallow unsafe regular expressions
 		"unicorn/no-unsafe-regex": "off",
 
@@ -142,6 +145,9 @@ module.exports = {
 
 		// Disallow useless spread
 		"unicorn/no-useless-spread": "error",
+
+		// Disallow useless case in switch statements
+		"unicorn/no-useless-switch-case": "error",
 
 		// Disallow useless undefined
 		"unicorn/no-useless-undefined": ["error", {
@@ -222,7 +228,7 @@ module.exports = {
 		"unicorn/prefer-includes": "error",
 
 		// Prefer reading a JSON file as a buffer
-		"unicorn/prefer-json-parse-buffer": "error",
+		"unicorn/prefer-json-parse-buffer": "warn",
 
 		// Prefer KeyboardEvent#key over KeyboardEvent#keyCode
 		"unicorn/prefer-keyboard-event-key": "error",
@@ -233,9 +239,15 @@ module.exports = {
 		// Prefer .before() over .insertBefore(), .replaceWith() over .replaceChild(), prefer one of .before(), .after(), .append() or .prepend() over insertAdjacentText() and insertAdjacentElement()
 		"unicorn/prefer-modern-dom-apis": "error",
 
+		// Prefer modern Math APIs over legacy patterns
+		"unicorn/prefer-modern-math-apis": "error",
+
 		// Prefer JavaScript modules (ESM) over CommonJS
 		// TODO: enforce as we transition our codebase to ESM
 		"unicorn/prefer-module": "off",
+
+		// Prefer using String, Number, BigInt, Boolean, and Symbol directly.
+		"unicorn/prefer-native-coercion-functions": "error",
 
 		// Prefer negative index over .length - index for {String,Array,TypedArray}#slice() and Array#splice()
 		"unicorn/prefer-negative-index": "error",
@@ -307,6 +319,9 @@ module.exports = {
 
 		// Enforce better string content
 		"unicorn/string-content": "off",
+
+		// Fix whitespace-insensitive template indentation.
+		"unicorn/template-indent": "error",
 
 		// Enforce consistent case for text encoding identifiers
 		"unicorn/text-encoding-identifier-case": "error",
