@@ -1,10 +1,12 @@
 'use strict';
 
-
 module.exports = {
 	rules: {
 		// disallow the use of console
 		"no-console": "off",
+
+		// disallows expressions where the operation doesn't affect the value
+		"no-constant-binary-expression": "error",
 
 		// disallow empty block statements
 		"no-empty": ["error", {
