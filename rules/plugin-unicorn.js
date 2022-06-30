@@ -35,9 +35,6 @@ module.exports = {
 		// Enforce a case style for filenames
 		"unicorn/filename-case": "off",
 
-		// Enforce importing index files with .
-		"unicorn/import-index": "off",
-
 		// Enforce specific import styles per module
 		// TODO expand
 		"unicorn/import-style": "error",
@@ -219,6 +216,9 @@ module.exports = {
 		// Prefer .textContent over .innerText
 		"unicorn/prefer-dom-node-text-content": "error",
 
+		// Prefer EventTarget over EventEmitter
+		"unicorn/prefer-event-target": "warn",
+
 		// Prefer export…from when re-exporting
 		"unicorn/prefer-export-from": ["error", {
 			"ignoreUsedVariables": true,
@@ -232,6 +232,9 @@ module.exports = {
 
 		// Prefer KeyboardEvent#key over KeyboardEvent#keyCode
 		"unicorn/prefer-keyboard-event-key": "error",
+
+		// Prefer using a logical operator over a ternary
+		"unicorn/prefer-logical-operator-over-ternary": "error",
 
 		// Enforce the use of Math.trunc instead of bitwise operators
 		"unicorn/prefer-math-trunc": "error",
@@ -253,8 +256,7 @@ module.exports = {
 		"unicorn/prefer-negative-index": "error",
 
 		// Prefer using the node: protocol when importing Node.js builtin modules
-		// TODO: enable for Node 16+
-		"unicorn/prefer-node-protocol": "off",
+		"unicorn/prefer-node-protocol": "error",
 
 		// Prefer Number static properties over global ones
 		"unicorn/prefer-number-properties": "error",
