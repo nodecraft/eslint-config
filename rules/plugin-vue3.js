@@ -64,5 +64,8 @@ module.exports = {
 
 		// Require component names to be always multi-word
 		"vue/multi-word-component-names": "off",
+
+		// Disallow use of undefined components in <template>
+		"vue/no-undef-components": "warn",
 	},
 };
