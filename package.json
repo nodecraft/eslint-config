@@ -1,6 +1,6 @@
 {
 	"name": "@nodecraft/eslint-config",
-	"version": "19.1.0",
+	"version": "20.0.0",
 	"description": "Nodecraft base JS ESLint config",
 	"keywords": [
 		"eslint",
