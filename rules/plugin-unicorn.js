@@ -91,6 +91,9 @@ module.exports = {
 		// Disallow if statements as the only statement in if blocks without else
 		"unicorn/no-lonely-if": "error",
 
+		// Disallow negated conditions
+		"unicorn/no-negated-condition": "off",
+
 		// Disallow nested ternary expressions
 		"unicorn/no-nested-ternary": "error",
 
@@ -118,6 +121,9 @@ module.exports = {
 
 		// Disallow assigning this to a variable
 		"unicorn/no-this-assignment": "warn",
+
+		// Disallow comparing undefined using typeof
+		"unicorn/no-typeof-undefined": "error",
 
 		// Disallow awaiting non-promise values
 		"unicorn/no-unnecessary-await": "warn",
@@ -281,6 +287,9 @@ module.exports = {
 
 		// Prefer Set#has() over Array#includes() when checking for existence or non-existence
 		"unicorn/prefer-set-has": "error",
+
+		// Prefer using Set#size instead of Array#length
+		"unicorn/prefer-set-size": "error",
 
 		// Prefer the spread operator over Array.from()
 		"unicorn/prefer-spread": "error",
