@@ -7,20 +7,13 @@ This package is modeled heavily off of [Airbnb's base config](https://github.com
 
 We export our standard ESLint configuration.
 
-Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-node`, `eslint-plugin-json` & `eslint-plugin-unicorn` & `eslint-plugin-vue`.
+Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-node`, `eslint-plugin-json` & `eslint-plugin-unicorn.
 
-1. Install the correct versions of each package, which are listed by the command:
-
-```sh
-npm info "@nodecraft/eslint-config@latest" peerDependencies
-```
-
-If using npm 5+, use this shortcut:
+1. Install package:
 
 ```sh
-npx install-peerdeps --dev @nodecraft/eslint-config
+npm install --save-dev @nodecraft/eslint-config
 ```
-
 
 2. Add `"extends": "@nodecraft"` to your .eslintrc
 
@@ -30,9 +23,14 @@ If your application uses Vue.js 3.x, also add `@nodecraft/eslint-config/vue3` to
 
 Also add `@nodecraft/eslint-config/vue-a11y` for our Vue Accessibility rules (compatible with both Vue.js 3 and Vue.js 2.
 
+Be sure to also install the following optional peer dependencies:
+
+- `eslint-plugin-vue`
+- `eslint-plugin-vue-a11y`
+
 ### TypeScript
 
-If your application uses TypeScript, instead of extending `@nodecraft/eslint-config`, extend `@nodecraft/eslint-config/typescript`. Also eensure you install the following peer depenendies:
+If your application uses TypeScript, instead of extending `@nodecraft/eslint-config`, extend `@nodecraft/eslint-config/typescript`. Also ensure you install the following optional peer depenendies:
 
 - `@typescript-eslint/eslint-plugin`
 - `@typescript-eslint/parser`
