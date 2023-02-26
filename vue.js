@@ -1,23 +1,23 @@
 'use strict';
 
-const extendData = ["plugin:vue/recommended"];
+const extendData = ['plugin:vue/recommended'];
 const internalExtends = [
-	"./rules/plugin-vue",
+	'./rules/plugin-vue',
 ].map(require.resolve); // eslint-disable-line unicorn/no-array-callback-reference
 
 module.exports = {
 	extends: [...extendData, ...internalExtends],
-	parser: "vue-eslint-parser",
+	parser: 'vue-eslint-parser',
 	parserOptions: {
 		ecmaVersion: 2020,
-		sourceType: "script",
+		sourceType: 'script',
 	},
 	rules: {
-		strict: ["error", "global"],
+		strict: ['error', 'global'],
 	},
 	plugins: [
-		"json",
-		"node",
+		'json',
+		'node',
 	],
 	env: {
 		browser: true,
