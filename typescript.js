@@ -25,6 +25,8 @@ module.exports = {
 	},
 	rules: {
 		'node/no-unsupported-features/es-syntax': 'off',
+
+		// disablee a bunch of native rules and use their typescript versions
 		'no-unused-vars': 'off',
 		'@typescript-eslint/no-unused-vars': ['warn', {
 			'ignoreRestSiblings': true,
@@ -80,5 +82,8 @@ module.exports = {
 
 		'quotes ': 'off',
 		'@typescript-eslint/quotes': ['error', 'single'],
+
+		'func-call-spacing': 'off',
+		'@typescript-eslint/func-call-spacing': 'error',
 	},
 };
