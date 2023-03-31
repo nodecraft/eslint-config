@@ -1,6 +1,6 @@
 {
 	"name": "@nodecraft/eslint-config",
-	"version": "23.0.3",
+	"version": "24.0.0",
 	"description": "Nodecraft base JS ESLint config",
 	"keywords": [
 		"eslint",
@@ -25,26 +25,26 @@
 		"lint:fix": "eslint . --fix"
 	},
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^5.54.0",
-		"@typescript-eslint/parser": "^5.54.0",
-		"eslint": "^8.35.0",
+		"@typescript-eslint/eslint-plugin": "^5.57.0",
+		"@typescript-eslint/parser": "^5.57.0",
+		"eslint": "^8.37.0",
 		"eslint-plugin-json": "^3.1.0",
 		"eslint-plugin-node": "^11.1.0",
-		"eslint-plugin-unicorn": "^45.0.2",
-		"eslint-plugin-vue": "^9.9.0",
+		"eslint-plugin-unicorn": "^46.0.0",
+		"eslint-plugin-vue": "^9.10.0",
 		"eslint-plugin-vuejs-accessibility": "^2.1.0",
-		"typescript": "^4.9.5"
+		"typescript": "^5.0.3"
 	},
 	"peerDependencies": {
-		"@typescript-eslint/eslint-plugin": "^5.53.0",
-		"@typescript-eslint/parser": "^5.53.0",
-		"eslint": "^8.28.0",
+		"@typescript-eslint/eslint-plugin": "^5.57.0",
+		"@typescript-eslint/parser": "^5.57.0",
+		"eslint": "^8.37.0",
 		"eslint-plugin-json": "^3.1.0",
 		"eslint-plugin-node": "^11.1.0",
-		"eslint-plugin-unicorn": "^45.0.0",
-		"eslint-plugin-vue": "^9.7.0",
-		"eslint-plugin-vuejs-accessibility": "^2.0.0",
-		"typescript": "^4.9.5"
+		"eslint-plugin-unicorn": "^46.0.0",
+		"eslint-plugin-vue": "^9.10.0",
+		"eslint-plugin-vuejs-accessibility": "^2.1.0",
+		"typescript": "^5.0.3"
 	},
 	"peerDependenciesMeta": {
 		"@typescript-eslint/eslint-plugin": {
