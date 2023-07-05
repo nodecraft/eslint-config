@@ -85,5 +85,10 @@ module.exports = {
 
 		'func-call-spacing': 'off',
 		'@typescript-eslint/func-call-spacing': 'error',
+
+		'indent': 'off',
+		'@typescript-eslint/indent': ['error', 'tab', {
+			'SwitchCase': 1,
+		}],
 	},
 };
