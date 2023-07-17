@@ -134,9 +134,6 @@ module.exports = {
 		// Disallow unreadable IIFEs
 		'unicorn/no-unreadable-iife': 'error',
 
-		// Disallow unsafe regular expressions
-		'unicorn/no-unsafe-regex': 'off',
-
 		// Disallow unused object properties
 		'unicorn/no-unused-properties': 'off',
 
