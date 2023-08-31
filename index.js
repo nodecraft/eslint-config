@@ -9,6 +9,7 @@ const internalExtends = [
 	'./rules/es6',
 	'./rules/plugin-node',
 	'./rules/plugin-unicorn',
+	'./rules/plugin-import-newlines',
 ].map(require.resolve); // eslint-disable-line unicorn/no-array-callback-reference
 
 module.exports = {
@@ -24,6 +25,7 @@ module.exports = {
 		'json',
 		'node',
 		'unicorn',
+		'import-newlines',
 	],
 	env: {
 		browser: true,
