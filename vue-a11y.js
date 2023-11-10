@@ -9,7 +9,7 @@ module.exports = {
 	extends: [...extendData, ...internalExtends],
 	parser: 'vue-eslint-parser',
 	parserOptions: {
-		ecmaVersion: 2020,
+		ecmaVersion: 2022,
 		sourceType: 'script',
 	},
 	rules: {

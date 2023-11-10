@@ -7,7 +7,7 @@ This package is modeled heavily off of [Airbnb's base config](https://github.com
 
 We export our standard ESLint configuration.
 
-Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-node`, `eslint-plugin-json` & `eslint-plugin-unicorn.
+Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-node`, `eslint-plugin-json`, `eslint-plugin-unicorn, `@stylistic/eslint-plugin` and `eslint-plugin-import`.
 
 1. Install package:
 

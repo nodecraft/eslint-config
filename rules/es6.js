@@ -14,7 +14,7 @@ module.exports = {
 		}],
 
 		// enforce consistent spacing before and after the arrow in arrow functions
-		'arrow-spacing': ['error', {'before': true, 'after': true}],
+		'arrow-spacing': ['error', { 'before': true, 'after': true }],
 
 		// disallow duplicate module imports
 		'no-duplicate-imports': 'error',

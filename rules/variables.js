@@ -1,6 +1,5 @@
 'use strict';
 
-
 module.exports = {
 	rules: {
 		// disallow specified global variables
