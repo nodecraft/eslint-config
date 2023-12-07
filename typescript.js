@@ -26,16 +26,11 @@ module.exports = {
 	rules: {
 		'node/no-unsupported-features/es-syntax': 'off',
 
-		// disable a bunch of native rules and use their typescript versions
+		// disable a few native rules and use their typescript versions
 		'no-unused-vars': 'off',
 		'@typescript-eslint/no-unused-vars': ['warn', {
-			'ignoreRestSiblings': true,
+			ignoreRestSiblings: true,
 		}],
-		'@typescript-eslint/type-annotation-spacing': ['error', {
-			'before': false,
-			'after': true,
-		}],
-		'@typescript-eslint/member-delimiter-style': 'error',
 
 		'no-use-before-define': 'off',
 		'@typescript-eslint/no-use-before-define': 'error',

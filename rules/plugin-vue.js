@@ -4,11 +4,11 @@ module.exports = {
 	rules: {
 		// Enforce consistent indentation in <template>
 		'vue/html-indent': ['error', 'tab', {
-			'attribute': 1,
-			'baseIndent': 1,
-			'closeBracket': 0,
-			'alignAttributesVertically': false,
-			'ignores': [],
+			attribute: 1,
+			baseIndent: 1,
+			closeBracket: 0,
+			alignAttributesVertically: false,
+			ignores: [],
 		}],
 
 		// Enforce the maximum number of attributes per line
@@ -22,9 +22,9 @@ module.exports = {
 
 		// Enforce v-slot directive style
 		'vue/v-slot-style': ['error', {
-			'atComponent': 'longform',
-			'default': 'longform',
-			'named': 'longform',
+			atComponent: 'longform',
+			default: 'longform',
+			named: 'longform',
 		}],
 
 		// Disallow usage of button without an explicit type attribute
@@ -32,13 +32,13 @@ module.exports = {
 
 		// Enforce self-closing style
 		'vue/html-self-closing': ['error', {
-			'html': {
-				'void': 'never',
-				'normal': 'never',
-				'component': 'never',
+			html: {
+				void: 'never',
+				normal: 'never',
+				component: 'never',
 			},
-			'svg': 'always',
-			'math': 'always',
+			svg: 'always',
+			math: 'always',
 		}],
 
 		// Require a line break before and after the contents of a multiline element
@@ -46,8 +46,8 @@ module.exports = {
 
 		// Disallow target="_blank" attribute without rel="noopener"
 		'vue/no-template-target-blank': ['error', {
-			'allowReferrer': true,
-			'enforceDynamicLinks': 'always',
+			allowReferrer: true,
+			enforceDynamicLinks: 'always',
 		}],
 
 		// Enforce specific casing for the name property in Vue components

@@ -11,6 +11,7 @@ const internalExtends = [
 	'./rules/variables',
 	'./rules/es6',
 	'./rules/suggestions',
+	'./rules/old-and-deprecated',
 	'./rules/plugin-import-newlines',
 	'./rules/plugin-import',
 	'./rules/plugin-node',

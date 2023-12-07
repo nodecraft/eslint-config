@@ -6,8 +6,8 @@ module.exports = {
 		'import-newlines/enforce': [
 			'error',
 			{
-				'items': 3,
-				'semi': true,
+				items: 3,
+				semi: true,
 			},
 		],
 	},

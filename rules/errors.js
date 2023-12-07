@@ -10,7 +10,7 @@ module.exports = {
 
 		// disallow empty block statements
 		'no-empty': ['error', {
-			'allowEmptyCatch': true,
+			allowEmptyCatch: true,
 		}],
 
 		// disallow literal numbers that lose precision
@@ -30,7 +30,7 @@ module.exports = {
 
 		// disallow assignments that can lead to race conditions due to usage of await or yield
 		'require-atomic-updates': ['warn', {
-			'allowProperties': true,
+			allowProperties: true,
 		}],
 	},
 };

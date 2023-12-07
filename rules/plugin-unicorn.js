@@ -165,21 +165,21 @@ module.exports = {
 
 		// Enforce the style of numeric separators by correctly grouping digits
 		'unicorn/numeric-separators-style': ['error', {
-			'hexadecimal': {
-				'minimumDigits': 0,
-				'groupLength': 2,
+			hexadecimal: {
+				minimumDigits: 0,
+				groupLength: 2,
 			},
-			'binary': {
-				'minimumDigits': 0,
-				'groupLength': 4,
+			binary: {
+				minimumDigits: 0,
+				groupLength: 4,
 			},
-			'octal': {
-				'minimumDigits': 0,
-				'groupLength': 4,
+			octal: {
+				minimumDigits: 0,
+				groupLength: 4,
 			},
-			'number': {
-				'minimumDigits': 7,
-				'groupLength': 3,
+			number: {
+				minimumDigits: 7,
+				groupLength: 3,
 			},
 		}],
 
@@ -227,7 +227,7 @@ module.exports = {
 
 		// Prefer export…from when re-exporting
 		'unicorn/prefer-export-from': ['error', {
-			'ignoreUsedVariables': true,
+			ignoreUsedVariables: true,
 		}],
 
 		// Prefer .includes() over .indexOf() when checking for existence or non-existence

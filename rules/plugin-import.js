@@ -4,8 +4,8 @@ module.exports = {
 	rules: {
 		'import/order': ['error', {
 			'alphabetize': {
-				'order': 'asc',
-				'caseInsensitive': true,
+				order: 'asc',
+				caseInsensitive: true,
 			},
 			'groups': [
 				'builtin',
