@@ -2,6 +2,7 @@
 
 const internalExtends = [
 	'./index',
+	'./rules/plugin-typescript',
 ].map(require.resolve); // eslint-disable-line unicorn/no-array-callback-reference
 
 module.exports = {
