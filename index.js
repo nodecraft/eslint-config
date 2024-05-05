@@ -2,7 +2,7 @@
 
 const extendData = [
 	'eslint:recommended',
-	'plugin:node/recommended',
+	'plugin:n/recommended',
 	'plugin:json/recommended-with-comments',
 ];
 const internalExtends = [
@@ -31,7 +31,7 @@ module.exports = {
 	plugins: [
 		'@stylistic',
 		'json',
-		'node',
+		'n',
 		'unicorn',
 		'import',
 		'import-newlines',
