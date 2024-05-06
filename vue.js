@@ -17,7 +17,7 @@ module.exports = {
 	},
 	plugins: [
 		'json',
-		'node',
+		'n',
 	],
 	env: {
 		browser: true,

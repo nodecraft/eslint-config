@@ -17,7 +17,7 @@ module.exports = {
 	},
 	plugins: [
 		'json',
-		'node',
+		'n',
 	],
 	env: {
 		browser: true,
@@ -25,7 +25,7 @@ module.exports = {
 		es2020: true,
 	},
 	rules: {
-		'node/no-unsupported-features/es-syntax': 'off',
+		'n/no-unsupported-features/es-syntax': 'off',
 
 		// disable a few native rules and use their typescript versions
 		'no-unused-vars': 'off',
@@ -36,7 +36,7 @@ module.exports = {
 		'no-use-before-define': 'off',
 		'@typescript-eslint/no-use-before-define': 'error',
 
-		'node/no-missing-import': 'off',
+		'n/no-missing-import': 'off',
 		'no-duplicate-imports': 'off',
 		'no-undef': 'off',
 
