@@ -48,6 +48,9 @@ module.exports = {
 		// require or disallow spacing between function identifiers and their invocations
 		'@stylistic/function-call-spacing': 'error',
 
+		// enforce line breaks between arguments of a function call
+		'@stylistic/function-call-argument-newline': ['error', 'consistent'],
+
 		// enforces consistent line breaks inside parentheses of function parameters or arguments
 		'@stylistic/function-paren-newline': ['error', 'consistent'],
 
