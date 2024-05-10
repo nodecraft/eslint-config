@@ -11,6 +11,9 @@ module.exports = {
 		// Use destructured variables over properties
 		'unicorn/consistent-destructuring': 'off',
 
+		// Prefer consistent types when spreading a ternary in an array literal.
+		'unicorn/consistent-empty-array-spread': 'error',
+
 		// Move function definitions to the highest possible scope
 		'unicorn/consistent-function-scoping': 'off',
 
@@ -292,8 +295,7 @@ module.exports = {
 		'unicorn/prefer-spread': 'error',
 
 		// Prefer String#replaceAll() over regex searches with the global flag
-		// TODO: enable for Node 15+
-		'unicorn/prefer-string-replace-all': 'off',
+		'unicorn/prefer-string-replace-all': 'error',
 
 		// Prefer String#slice() over String#substr() and String#substring()
 		'unicorn/prefer-string-slice': 'error',
@@ -303,6 +305,9 @@ module.exports = {
 
 		// Prefer String#trimStart() / String#trimEnd() over String#trimLeft() / String#trimRight()
 		'unicorn/prefer-string-trim-start-end': 'error',
+
+		// Prefer using structuredClone to create a deep clone
+		'unicorn/prefer-structured-clone': 'error',
 
 		// Prefer switch over multiple else-if
 		'unicorn/prefer-switch': 'off',
