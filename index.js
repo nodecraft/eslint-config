@@ -3,7 +3,7 @@
 const extendData = [
 	'eslint:recommended',
 	'plugin:n/recommended',
-	'plugin:json/recommended-with-comments',
+	'plugin:json/recommended-with-comments-legacy',
 ];
 const internalExtends = [
 	'./rules/best-practices',
