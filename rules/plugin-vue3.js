@@ -12,7 +12,14 @@ module.exports = {
 		}],
 
 		// Enforce the maximum number of attributes per line
-		'vue/max-attributes-per-line': 'off',
+		'vue/max-attributes-per-line': ['error', {
+			singleline: {
+				max: 1,
+			},
+			multiline: {
+				max: 1,
+			},
+		}],
 
 		// Enforce v-bind directive style
 		'vue/v-bind-style': ['error', 'longform'],
