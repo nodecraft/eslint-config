@@ -12,7 +12,7 @@ module.exports = {
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
-		ecmaVersion: 2022,
+		ecmaVersion: 2023,
 		sourceType: 'module',
 	},
 	plugins: [
@@ -43,5 +43,13 @@ module.exports = {
 		'unicorn/custom-error-definition': 'off',
 
 		'@typescript-eslint/no-explicit-any': 'warn',
+
+		'no-restricted-syntax': [
+			'error',
+			{
+				selector: 'TSEnumDeclaration',
+				message: 'Don\'t declare enums - they\'re difficult to transpile. Use object literals instead.',
+			},
+		],
 	},
 };
