@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
 		// Enforce consistent indentation in <template>
 		'vue/html-indent': ['error', 'tab', {

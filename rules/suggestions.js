@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
 		// enforce minimum and maximum identifier lengths
 		'id-length': ['error', {

@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
 		// disallow specified global variables
 		'no-restricted-globals': [

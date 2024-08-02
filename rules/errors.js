@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
 		// disallow the use of console
 		'no-console': 'off',

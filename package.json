@@ -19,46 +19,46 @@
 	},
 	"license": "MIT",
 	"author": "Nodecraft Inc.",
+	"type": "module",
 	"main": "index.js",
 	"scripts": {
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix"
 	},
+	"dependencies": {
+		"@eslint/js": "^9.8.0",
+		"globals": "^15.9.0"
+	},
 	"devDependencies": {
-		"@stylistic/eslint-plugin": "^2.3.0",
-		"@typescript-eslint/eslint-plugin": "^7.17.0",
-		"@typescript-eslint/parser": "^7.17.0",
-		"eslint": "^8.57.0",
-		"eslint-plugin-import": "^2.29.1",
+		"@stylistic/eslint-plugin": "^2.6.1",
+		"@types/eslint__js": "^8.42.3",
+		"eslint": "^9.8.0",
 		"eslint-plugin-import-newlines": "^1.4.0",
+		"eslint-plugin-import-x": "^3.1.0",
 		"eslint-plugin-json": "^4.0.0",
 		"eslint-plugin-n": "^17.10.1",
 		"eslint-plugin-unicorn": "^55.0.0",
 		"eslint-plugin-vue": "^9.27.0",
 		"eslint-plugin-vuejs-accessibility": "^2.4.1",
-		"typescript": "^5.5.4"
+		"typescript": "^5.5.4",
+		"typescript-eslint": "^8.0.0",
+		"vue-eslint-parser": "^9.4.3"
 	},
 	"peerDependencies": {
-		"@stylistic/eslint-plugin": "^2.3.0",
-		"@typescript-eslint/eslint-plugin": "^7.17.0",
-		"@typescript-eslint/parser": "^7.17.0",
-		"eslint": "^8.57.0",
-		"eslint-plugin-import": "^2.29.1",
+		"@stylistic/eslint-plugin": "^2.6.1",
+		"eslint": "^9.8.0",
 		"eslint-plugin-import-newlines": "^1.4.0",
+		"eslint-plugin-import-x": "^3.1.0",
 		"eslint-plugin-json": "^4.0.0",
 		"eslint-plugin-n": "^17.10.1",
 		"eslint-plugin-unicorn": "^55.0.0",
 		"eslint-plugin-vue": "^9.27.0",
 		"eslint-plugin-vuejs-accessibility": "^2.4.1",
-		"typescript": "^5.5.4"
+		"typescript": "^5.5.4",
+		"typescript-eslint": "^8.0.0",
+		"vue-eslint-parser": "^9.4.3"
 	},
 	"peerDependenciesMeta": {
-		"@typescript-eslint/eslint-plugin": {
-			"optional": true
-		},
-		"@typescript-eslint/parser": {
-			"optional": true
-		},
 		"eslint-plugin-vue": {
 			"optional": true
 		},
@@ -66,6 +66,12 @@
 			"optional": true
 		},
 		"typescript": {
+			"optional": true
+		},
+		"typescript-eslint": {
+			"optional": true
+		},
+		"vue-eslint-parser": {
 			"optional": true
 		}
 	},

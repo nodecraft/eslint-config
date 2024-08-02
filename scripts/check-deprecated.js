@@ -1,25 +1,25 @@
-'use strict';
-
 // manually run script with `node scripts/check-deprecated.js`
 // this is just a quick check to see if any deprecated rules are used
+import { ESLint } from 'eslint';
 
-const { ESLint } = require('eslint');
+import baseConfig from '../configs/base.js';
+import typescriptConfig from '../configs/typescript.js';
+import vueA11yConfig from '../configs/vue-a11y.js';
+import vue3Config from '../configs/vue3.js';
+
 
 (async function main() {
-	const configs = [
-		'./index',
-		'./typescript',
-		'./vue',
-		'./vue3',
-		'./vue-a11y',
-	];
-	for (const config of configs) {
+	const configs = {
+		base: baseConfig,
+		typescript: typescriptConfig,
+		vueA11y: vueA11yConfig,
+		vue3: vue3Config,
+	};
+	for (const [configName, config] of Object.entries(configs)) {
 		const eslint = new ESLint({
-			overrideConfig: {
-				extends: [config],
-			},
+			overrideConfig: config,
 		});
-		console.log(`Checking ${config}...`);
+		console.log(`Checking ${configName}...`);
 		const results = await eslint.lintFiles(['**/*.js']);
 
 		const deprecatedRules = new Set();

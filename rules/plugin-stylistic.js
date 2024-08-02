@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
 		// enforce line breaks after opening and before closing array brackets
 		'@stylistic/array-bracket-newline': ['error', 'consistent'],

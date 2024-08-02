@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
 		// disallow require calls to be mixed with regular variable declarations
 		'n/no-mixed-requires': ['error', {

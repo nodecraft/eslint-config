@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
 		// Improve regexes by making them shorter, consistent, and safer
 		'unicorn/better-regex': 'error',

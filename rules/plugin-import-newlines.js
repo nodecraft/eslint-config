@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
 		// require newlines in import statements past a certain number of items
 		'import-newlines/enforce': [

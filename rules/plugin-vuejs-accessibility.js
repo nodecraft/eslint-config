@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
 		// Emoji support has come a long way, so this is no longer good advice: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/627
 		'vuejs-accessibility/accessible-emoji': 'off',
