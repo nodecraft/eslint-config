@@ -28,7 +28,8 @@ module.exports = {
 		'vue/v-on-style': ['error', 'longform'],
 
 		// enforce writing style for handlers in v-on directives
-		'vue/v-on-handler-style': ['error', ['method', 'inline-function']],
+		// TODO in future
+		//'vue/v-on-handler-style': ['error', ['method', 'inline-function']],
 
 		// Enforce v-slot directive style
 		'vue/v-slot-style': ['error', {
