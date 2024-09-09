@@ -215,12 +215,6 @@ module.exports = {
 		'@stylistic/type-annotation-spacing': ['error', {
 			before: false,
 			after: true,
-			overrides: {
-				operator: {
-					before: true,
-					after: true,
-				},
-			},
 		}],
 
 		// enforces consistent spacing inside TypeScript type generics.
