@@ -127,6 +127,13 @@ module.exports = {
 		// disallow multiple spaces
 		'@stylistic/no-multi-spaces': 'error',
 
+		// disallow multiple empty lines, especially at start and end of files
+		'@stylistic/no-multiple-empty-lines': ['error', {
+			max: 3,
+			maxEOF: 1,
+			maxBOF: 0,
+		}],
+
 		// disallow nested ternary expressions
 		// handled by eslint-plugin-unicorn
 		'@stylistic/no-nested-ternary': 'off',
