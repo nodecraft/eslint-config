@@ -92,6 +92,7 @@ module.exports = {
 			ignoredNodes: [
 				'ContinueStatement',
 				'BreakStatement',
+				'ReturnStatement',
 			],
 		}],
 
