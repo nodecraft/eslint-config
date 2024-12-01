@@ -93,6 +93,7 @@ module.exports = {
 				'ContinueStatement',
 				'BreakStatement',
 				'ReturnStatement',
+				'ThrowStatement',
 			],
 		}],
 
