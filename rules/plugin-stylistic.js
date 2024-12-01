@@ -88,7 +88,11 @@ module.exports = {
 
 		// enforces a maximum number of statements allowed per line
 		'@stylistic/max-statements-per-line': ['error', {
-			max: 2, // TODO: revisit and set to 1 if https://github.com/eslint-stylistic/eslint-stylistic/issues/211 is implemented
+			max: 1,
+			ignoredNodes: [
+				'ContinueStatement',
+				'BreakStatement',
+			],
 		}],
 
 		// enforce semicolon member delimiters on typescript interfaces and types
