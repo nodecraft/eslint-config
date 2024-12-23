@@ -25,6 +25,10 @@ export default {
 		// Enforce v-on directive style
 		'vue/v-on-style': ['error', 'longform'],
 
+		// enforce writing style for handlers in v-on directives
+		// TODO in future
+		//'vue/v-on-handler-style': ['error', ['method', 'inline-function']],
+
 		// Enforce v-slot directive style
 		'vue/v-slot-style': ['error', {
 			atComponent: 'longform',
@@ -72,5 +76,21 @@ export default {
 
 		// Disallow use of undefined components in <template>
 		'vue/no-undef-components': 'warn',
+
+		// enforce v-for directive's delimiter style
+		'vue/v-for-delimiter-style': ['error', 'of'],
+
+		// disallow use other than available lang
+		'vue/block-lang': ['warn', {
+			script: {
+				lang: 'ts',
+				allowNoLang: false,
+			},
+		}],
+
+		// vue/component-api-style
+		'vue/component-api-style': [
+			'warn', ['script-setup', 'composition'],
+		],
 	},
 };

@@ -86,7 +86,13 @@ export default {
 
 		// enforces a maximum number of statements allowed per line
 		'@stylistic/max-statements-per-line': ['error', {
-			max: 2, // TODO: revisit and set to 1 if https://github.com/eslint-stylistic/eslint-stylistic/issues/211 is implemented
+			max: 1,
+			ignoredNodes: [
+				'ContinueStatement',
+				'BreakStatement',
+				'ReturnStatement',
+				'ThrowStatement',
+			],
 		}],
 
 		// enforce semicolon member delimiters on typescript interfaces and types
@@ -124,6 +130,13 @@ export default {
 
 		// disallow multiple spaces
 		'@stylistic/no-multi-spaces': 'error',
+
+		// disallow multiple empty lines, especially at start and end of files
+		'@stylistic/no-multiple-empty-lines': ['error', {
+			max: 3,
+			maxEOF: 1,
+			maxBOF: 0,
+		}],
 
 		// disallow nested ternary expressions
 		// handled by eslint-plugin-unicorn
@@ -213,6 +226,12 @@ export default {
 		'@stylistic/type-annotation-spacing': ['error', {
 			before: false,
 			after: true,
+			overrides: {
+				arrow: {
+					before: true,
+					after: true,
+				},
+			},
 		}],
 
 		// enforces consistent spacing inside TypeScript type generics.
