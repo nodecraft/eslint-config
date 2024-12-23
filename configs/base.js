@@ -3,7 +3,6 @@ import stylistic from '@stylistic/eslint-plugin';
 import importNewlines from 'eslint-plugin-import-newlines';
 import importPlugin from 'eslint-plugin-import-x';
 import jsonPlugin from 'eslint-plugin-json';
-import nodePlugin from 'eslint-plugin-n';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 
@@ -13,7 +12,6 @@ import es6Rules from '../rules/es6.js';
 import oldAndDeprecatedRules from '../rules/old-and-deprecated.js';
 import pluginImportNewlinesRules from '../rules/plugin-import-newlines.js';
 import pluginImportRules from '../rules/plugin-import.js';
-import pluginNodeRules from '../rules/plugin-node.js';
 import pluginStylisticRules from '../rules/plugin-stylistic.js';
 import pluginUnicornRules from '../rules/plugin-unicorn.js';
 import suggestionsRules from '../rules/suggestions.js';
@@ -21,7 +19,6 @@ import variablesRules from '../rules/variables.js';
 
 export default [
 	js.configs.recommended,
-	nodePlugin.configs['flat/recommended'],
 	jsonPlugin.configs['recommended-with-comments'],
 	bestPracticesRules,
 	errorsRules,
@@ -47,7 +44,6 @@ export default [
 		plugins: {
 			'@stylistic': stylistic,
 			'json': jsonPlugin,
-			'node': nodePlugin,
 			'unicorn': unicorn,
 			'import-x': importPlugin,
 			'import-newlines': importNewlines,
@@ -55,7 +51,6 @@ export default [
 	},
 	pluginImportNewlinesRules,
 	pluginImportRules,
-	pluginNodeRules,
 	pluginStylisticRules,
 	pluginUnicornRules,
 ];
