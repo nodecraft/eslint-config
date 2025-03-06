@@ -1,6 +1,6 @@
 'use strict';
 
-const extendData = ['plugin:vue/recommended'];
+const extendData = ['plugin:vue/vue2-recommended'];
 const internalExtends = [
 	'./rules/plugin-vue',
 ].map(require.resolve); // eslint-disable-line unicorn/no-array-callback-reference
