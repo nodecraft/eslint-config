@@ -138,10 +138,6 @@ export default {
 			maxBOF: 0,
 		}],
 
-		// disallow nested ternary expressions
-		// handled by eslint-plugin-unicorn
-		'@stylistic/no-nested-ternary': 'off',
-
 		// disallow trailing whitespace at the end of lines
 		'@stylistic/no-trailing-spaces': 'error',
 
