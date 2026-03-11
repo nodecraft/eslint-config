@@ -1,7 +1,4 @@
-'use strict';
-
-
-module.exports = {
+export default {
 	rules: {
 		// enforce consistent brace style for all control statements
 		'curly': ['error', 'all'],

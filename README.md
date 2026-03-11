@@ -7,7 +7,7 @@ This package is modeled heavily off of [Airbnb's base config](https://github.com
 
 We export our standard ESLint configuration.
 
-Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-node`, `eslint-plugin-json`, `eslint-plugin-unicorn`, `@stylistic/eslint-plugin` and `eslint-plugin-import`.
+Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-node`, `eslint-plugin-unicorn`, `@stylistic/eslint-plugin` and `eslint-plugin-import`.
 
 1. Install package:
 
@@ -15,23 +15,48 @@ Our default export contains all of our ESLint rules, including ECMAScript 6+. It
 npm install --save-dev @nodecraft/eslint-config
 ```
 
-2. Add `"extends": "@nodecraft"` to your .eslintrc
+2. ```js
+// eslint.config.js
+import nodecraftEslint from '@nodecraft/eslint-config';
+
+export default [
+	...nodecraftEslint.configs.base,
+];
+```
+
+### JSON
+
+To lint JSON files, extend `configs.json`. This uses `@eslint/json` with support for JSON with comments (JSONC).
+
+Since the base config's JS rules don't have `files` restrictions, they will cascade onto JSON files and cause errors. You need to scope the base configs to ignore JSON files:
+
+```js
+// eslint.config.js
+import nodecraftEslint from '@nodecraft/eslint-config';
+
+const jsonIgnore = ['**/*.json'];
+
+export default [
+	...nodecraftEslint.configs.base.map(config => ({ ...config, ignores: jsonIgnore })),
+	...nodecraftEslint.configs.json,
+];
+```
 
 ### Vue.js
 
-If your application uses Vue.js 3.x, also add `@nodecraft/eslint-config/vue3` to your `extends` array to inherit our Vue rules. If using Vue.js 2.x, add `@nodecraft/eslint-config/vue`.
+If your application uses Vue.js 3.x, also extend `configs.vue3` in your eslint config. Vue.js 2.x is no longer supported.
 
-Also add `@nodecraft/eslint-config/vue-a11y` for our Vue Accessibility rules (compatible with both Vue.js 3 and Vue.js 2.
+Also then extend `configs["vue-a11y"]` for our Vue Accessibility rules.
 
 Be sure to also install the following optional peer dependencies:
 
 - `eslint-plugin-vue`
 - `eslint-plugin-vue-a11y`
+- `vue-eslint-parser`
 
 ### TypeScript
 
-If your application uses TypeScript, instead of extending `@nodecraft/eslint-config`, extend `@nodecraft/eslint-config/typescript`. Also ensure you install the following optional peer depenendies:
+If your application uses TypeScript, instead of extending `configs.base`, extend `configs.typescript`. Also ensure you install the following optional peer depenendies:
 
-- `@typescript-eslint/eslint-plugin`
-- `@typescript-eslint/parser`
 - `typescript`
+- `typescript-eslint`

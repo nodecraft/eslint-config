@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
 		// enforce line breaks after opening and before closing array brackets
 		'@stylistic/array-bracket-newline': ['error', 'consistent'],
@@ -139,10 +137,6 @@ module.exports = {
 			maxEOF: 1,
 			maxBOF: 0,
 		}],
-
-		// disallow nested ternary expressions
-		// handled by eslint-plugin-unicorn
-		'@stylistic/no-nested-ternary': 'off',
 
 		// disallow trailing whitespace at the end of lines
 		'@stylistic/no-trailing-spaces': 'error',

@@ -1,7 +1,4 @@
-'use strict';
-
-
-module.exports = {
+export default {
 	rules: {
 		// require braces around arrow function bodies
 		'arrow-body-style': ['error', 'as-needed', {

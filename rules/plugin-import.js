@@ -1,8 +1,6 @@
-'use strict';
-
-module.exports = {
+export default {
 	rules: {
-		'import/order': ['error', {
+		'import-x/order': ['error', {
 			'alphabetize': {
 				order: 'asc',
 				caseInsensitive: true,
