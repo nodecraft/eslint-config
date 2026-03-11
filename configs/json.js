@@ -6,4 +6,10 @@ export default [
 		language: 'json/jsonc',
 		...json.configs.recommended,
 	},
+	{
+		files: ['package-lock.json'],
+		rules: {
+			'json/no-empty-keys': 'off',
+		},
+	},
 ];
