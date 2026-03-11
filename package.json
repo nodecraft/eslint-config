@@ -73,6 +73,11 @@
 			"optional": true
 		}
 	},
+	"files": [
+		"index.js",
+		"configs",
+		"rules"
+	],
 	"engines": {
 		"node": ">= 24"
 	}
