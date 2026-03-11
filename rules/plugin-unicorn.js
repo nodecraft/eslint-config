@@ -80,8 +80,8 @@ export default {
 		// Enforce the use of Unicode escapes instead of hexadecimal escapes
 		'unicorn/no-hex-escape': 'error',
 
-		// Require Array.isArray() instead of instanceof Array
-		'unicorn/no-instanceof-array': 'error',
+		// Disallow instanceof for builtins like Array, Error, etc.
+		'unicorn/no-instanceof-builtins': 'error',
 
 		// Prevent calling EventTarget#removeEventListener() with the result of an expression
 		'unicorn/no-invalid-remove-event-listener': 'error',

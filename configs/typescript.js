@@ -7,10 +7,8 @@ export default [
 	...tseslint.configs.recommended,
 	{
 		languageOptions: {
-			parserOptions: {
-				ecmaVersion: 2023,
-				sourceType: 'module',
-			},
+			ecmaVersion: 'latest',
+			sourceType: 'module',
 		},
 		rules: {
 			'n/no-unsupported-features/es-syntax': 'off',
@@ -30,8 +28,6 @@ export default [
 
 			'unicorn/custom-error-definition': 'off',
 
-			'@typescript-eslint/no-explicit-any': 'warn',
-
 			'no-restricted-syntax': [
 				'error',
 				{
@@ -39,6 +35,10 @@ export default [
 					message: 'Don\'t declare enums - they\'re difficult to transpile. Use object literals instead.',
 				},
 			],
+
+			// additional typescript eslint rules
+			'@typescript-eslint/no-explicit-any': 'warn',
+			'@typescript-eslint/no-non-null-assertion': 'error',
 		},
 	},
 ];

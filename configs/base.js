@@ -2,7 +2,6 @@ import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import importNewlines from 'eslint-plugin-import-newlines';
 import importPlugin from 'eslint-plugin-import-x';
-import jsonPlugin from 'eslint-plugin-json';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 
@@ -19,7 +18,6 @@ import variablesRules from '../rules/variables.js';
 
 export default [
 	js.configs.recommended,
-	jsonPlugin.configs['recommended-with-comments'],
 	bestPracticesRules,
 	errorsRules,
 	variablesRules,
@@ -28,10 +26,8 @@ export default [
 	oldAndDeprecatedRules,
 	{
 		languageOptions: {
-			parserOptions: {
-				ecmaVersion: 'latest',
-				sourceType: 'script',
-			},
+			ecmaVersion: 'latest',
+			sourceType: 'script',
 			globals: {
 				...globals.browser,
 				...globals.node,
@@ -43,7 +39,6 @@ export default [
 		},
 		plugins: {
 			'@stylistic': stylistic,
-			'json': jsonPlugin,
 			'unicorn': unicorn,
 			'import-x': importPlugin,
 			'import-newlines': importNewlines,

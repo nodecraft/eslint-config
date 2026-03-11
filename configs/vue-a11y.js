@@ -6,11 +6,14 @@ import pluginVuejsAccessibilityRules from '../rules/plugin-vuejs-accessibility.j
 export default [
 	...vuejsAccessibility.configs['flat/recommended'],
 	{
-		languageOptions: {
-			parser: vueEslintParser,
-		},
 		plugins: {
 			'vuejs-accessibility': vuejsAccessibility,
+		},
+	},
+	{
+		files: ['*.vue', '**/*.vue'],
+		languageOptions: {
+			parser: vueEslintParser,
 		},
 	},
 	pluginVuejsAccessibilityRules,

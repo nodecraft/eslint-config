@@ -7,7 +7,7 @@ This package is modeled heavily off of [Airbnb's base config](https://github.com
 
 We export our standard ESLint configuration.
 
-Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-node`, `eslint-plugin-json`, `eslint-plugin-unicorn`, `@stylistic/eslint-plugin` and `eslint-plugin-import`.
+Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-node`, `eslint-plugin-unicorn`, `@stylistic/eslint-plugin` and `eslint-plugin-import`.
 
 1. Install package:
 
@@ -20,10 +20,27 @@ npm install --save-dev @nodecraft/eslint-config
 import nodecraftEslint from '@nodecraft/eslint-config';
 
 export default [
-	nodecraftEslint.configs.base,
+	...nodecraftEslint.configs.base,
 ];
 ```
 
+### JSON
+
+To lint JSON files, extend `configs.json`. This uses `@eslint/json` with support for JSON with comments (JSONC).
+
+Since the base config's JS rules don't have `files` restrictions, they will cascade onto JSON files and cause errors. You need to scope the base configs to ignore JSON files:
+
+```js
+// eslint.config.js
+import nodecraftEslint from '@nodecraft/eslint-config';
+
+const jsonIgnore = ['**/*.json'];
+
+export default [
+	...nodecraftEslint.configs.base.map(config => ({ ...config, ignores: jsonIgnore })),
+	...nodecraftEslint.configs.json,
+];
+```
 
 ### Vue.js
 
