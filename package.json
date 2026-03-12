@@ -23,7 +23,9 @@
 	"main": "index.js",
 	"scripts": {
 		"lint": "eslint .",
-		"lint:fix": "eslint . --fix"
+		"lint:fix": "eslint . --fix",
+		"test": "vitest run",
+		"test:watch": "vitest"
 	},
 	"dependencies": {
 		"@eslint/js": "^10.0.1",
@@ -41,6 +43,7 @@
 		"eslint-plugin-vuejs-accessibility": "^2.5.0",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.57.0",
+		"vitest": "^4.0.18",
 		"vue-eslint-parser": "^10.4.0"
 	},
 	"peerDependencies": {
@@ -76,6 +79,7 @@
 	"files": [
 		"index.js",
 		"configs",
+		"plugins",
 		"rules"
 	],
 	"engines": {
