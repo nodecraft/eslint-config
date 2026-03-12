@@ -1,13 +1,12 @@
 # @nodecraft/eslint-config
 [![Actions Status](https://github.com/nodecraft/eslint-config/workflows/Test/badge.svg)](https://github.com/nodecraft/eslint-config/actions)
-
-This package is modeled heavily off of [Airbnb's base config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base). A huge thanks to their team.
-
 ## Usage
 
-We export our standard ESLint configuration.
+We export our standard ESLint configuration for use in all Nodecraft projects.
 
-Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-node`, `eslint-plugin-unicorn`, `@stylistic/eslint-plugin` and `eslint-plugin-import`.
+For ESLint v10, use version >47.0.0 of this package. For ESLint v8, use version 47.0.0.
+
+Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-unicorn`, `@stylistic/eslint-plugin` and `eslint-plugin-import-x`.
 
 1. Install package:
 
@@ -15,7 +14,9 @@ Our default export contains all of our ESLint rules, including ECMAScript 6+. It
 npm install --save-dev @nodecraft/eslint-config
 ```
 
-2. ```js
+2.
+
+```js
 // eslint.config.js
 import nodecraftEslint from '@nodecraft/eslint-config';
 
@@ -39,6 +40,20 @@ const jsonIgnore = ['**/*.json'];
 export default [
 	...nodecraftEslint.configs.base.map(config => ({ ...config, ignores: jsonIgnore })),
 	...nodecraftEslint.configs.json,
+];
+```
+
+### Node.js
+
+If your application runs in Node.js, also extend `configs.node`. Be sure to also install the following optional peer dependencies:
+- `eslint-plugin-node`
+
+```js
+// eslint.config.js
+import nodecraftEslint from '@nodecraft/eslint-config';
+export default [
+	...nodecraftEslint.configs.base,
+	...nodecraftEslint.configs.node,
 ];
 ```
 
