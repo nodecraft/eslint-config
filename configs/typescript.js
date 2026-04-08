@@ -34,6 +34,14 @@ export default [
 					selector: 'TSEnumDeclaration',
 					message: 'Don\'t declare enums - they\'re difficult to transpile. Use object literals instead.',
 				},
+				{
+					selector: 'VariableDeclarator[definite=true]',
+					message: 'Do not use definite assignment assertions (`!`) on variables.',
+				},
+				{
+					selector: 'PropertyDefinition[definite=true]',
+					message: 'Do not use definite assignment assertions (`!`) on class properties.',
+				},
 			],
 
 			// additional typescript eslint rules
