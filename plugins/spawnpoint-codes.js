@@ -12,7 +12,8 @@ const DEFAULT_PACKAGES = ['spawnpoint'];
 // Match the `spawnpoint` package and any installed `spawnpoint-*` plugin.
 const SPAWNPOINT_PACKAGE = /^spawnpoint(?:-|$)/;
 
-// Cache keeps the filesystem read to once per lint process, not once per file.
+// Discover once, but expire so codes added during a long editor session are picked up without a restart.
+const CACHE_TTL_MS = 30000;
 const cache = new Map();
 
 // spawnpoint flattens code files via `Object.assign`, so top-level keys are the codes.
@@ -80,11 +81,12 @@ export function collectCodes(cwd, options = {}) {
 
 function loadCodes(cwd, options) {
 	const key = `${cwd} ${JSON.stringify(options)}`;
-	let codes = cache.get(key);
-	if (!codes) {
-		codes = collectCodes(cwd, options);
-		cache.set(key, codes);
+	const cached = cache.get(key);
+	if (cached && cached.expires > Date.now()) {
+		return cached.codes;
 	}
+	const codes = collectCodes(cwd, options);
+	cache.set(key, { codes, expires: Date.now() + CACHE_TTL_MS });
 	return codes;
 }
 
