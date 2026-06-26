@@ -1,3 +1,5 @@
+import pkg from '../package.json' with { type: 'json' };
+
 // Mapping of async library method names to how their task/iteratee functions are structured.
 // type: 'iteratee'   = single function at argIndex
 //       'collection' = array OR object of functions at argIndex (series/parallel accept both)
@@ -258,7 +260,7 @@ const noMissingCallbackRule = {
 export default {
 	meta: {
 		name: 'eslint-plugin-async-callback',
-		version: '1.0.0',
+		version: pkg.version,
 	},
 	rules: {
 		'no-missing-callback': noMissingCallbackRule,
