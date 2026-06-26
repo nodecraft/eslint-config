@@ -1,12 +1,15 @@
 // Mapping of async library method names to how their task/iteratee functions are structured.
-// type: 'iteratee' = single function at argIndex
-//       'array'    = array of functions at argIndex
-//       'object'   = object of functions at argIndex (async.auto style)
+// type: 'iteratee'   = single function at argIndex
+//       'collection' = array OR object of functions at argIndex (series/parallel accept both)
+//       'array'      = array of functions at argIndex
+//       'object'     = object of functions at argIndex (async.auto style)
 const METHODS = {
-	// Array of task functions at arg 0
-	series: { type: 'array', argIndex: 0 },
-	parallel: { type: 'array', argIndex: 0 },
-	parallelLimit: { type: 'array', argIndex: 0 },
+	// Collection (array or object) of task functions at arg 0
+	series: { type: 'collection', argIndex: 0 },
+	parallel: { type: 'collection', argIndex: 0 },
+	parallelLimit: { type: 'collection', argIndex: 0 },
+
+	// Array of task functions at arg 0 (waterfall is ordered, array-only)
 	waterfall: { type: 'array', argIndex: 0 },
 
 	// Object of task functions at arg 0
@@ -79,6 +82,30 @@ const METHODS = {
 
 const FUNCTION_TYPES = new Set(['FunctionExpression', 'ArrowFunctionExpression']);
 
+function getFunctionsFromArray(arrayNode) {
+	return arrayNode.elements.filter(el => el && FUNCTION_TYPES.has(el.type));
+}
+
+function getFunctionsFromObject(objectNode, { allowDependencyArray }) {
+	const functions = [];
+	for (const prop of objectNode.properties) {
+		if (!prop.value) {
+			continue;
+		}
+		if (FUNCTION_TYPES.has(prop.value.type)) {
+			functions.push(prop.value);
+		}
+		// Handle async.auto [dependencies..., fn] pattern, where the task function is the last element.
+		if (allowDependencyArray && prop.value.type === 'ArrayExpression' && prop.value.elements.length > 0) {
+			const lastElement = prop.value.elements[prop.value.elements.length - 1];
+			if (lastElement && FUNCTION_TYPES.has(lastElement.type)) {
+				functions.push(lastElement);
+			}
+		}
+	}
+	return functions;
+}
+
 function getTaskFunctions(callNode, methodInfo) {
 	const arg = callNode.arguments[methodInfo.argIndex];
 	if (!arg) {
@@ -90,39 +117,34 @@ function getTaskFunctions(callNode, methodInfo) {
 	}
 
 	if (methodInfo.type === 'array') {
-		if (arg.type !== 'ArrayExpression') {
-			return [];
+		return arg.type === 'ArrayExpression' ? getFunctionsFromArray(arg) : [];
+	}
+
+	// series/parallel accept either an array or an object collection of tasks
+	if (methodInfo.type === 'collection') {
+		if (arg.type === 'ArrayExpression') {
+			return getFunctionsFromArray(arg);
 		}
-		return arg.elements.filter(el => el && FUNCTION_TYPES.has(el.type));
+		if (arg.type === 'ObjectExpression') {
+			return getFunctionsFromObject(arg, { allowDependencyArray: false });
+		}
+		return [];
 	}
 
 	if (methodInfo.type === 'object') {
-		if (arg.type !== 'ObjectExpression') {
-			return [];
-		}
-		const functions = [];
-		for (const prop of arg.properties) {
-			if (!prop.value) {
-				continue;
-			}
-			if (FUNCTION_TYPES.has(prop.value.type)) {
-				functions.push(prop.value);
-			}
-			// Handle async.auto [dependencies..., fn] pattern
-			if (prop.value.type === 'ArrayExpression' && prop.value.elements.length > 0) {
-				const lastElement = prop.value.elements[prop.value.elements.length - 1];
-				if (lastElement && FUNCTION_TYPES.has(lastElement.type)) {
-					functions.push(lastElement);
-				}
-			}
-		}
-		return functions;
+		return arg.type === 'ObjectExpression' ? getFunctionsFromObject(arg, { allowDependencyArray: true }) : [];
 	}
 
 	return [];
 }
 
 function checkCallbackUsage(context, taskFn, methodName) {
+	// Async and generator iteratees signal completion by returning a promise (or
+	// iterator), not via a callback, so their trailing param is data, not a callback.
+	if (taskFn.async || taskFn.generator) {
+		return;
+	}
+
 	const { params } = taskFn;
 	if (params.length === 0) {
 		return;
