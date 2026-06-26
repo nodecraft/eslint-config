@@ -31,6 +31,7 @@
 		"./vue-a11y": "./configs/vue-a11y.js",
 		"./configs/*": "./configs/*",
 		"./plugins/async-callback": "./plugins/async-callback.js",
+		"./plugins/spawnpoint-codes": "./plugins/spawnpoint-codes.js",
 		"./plugins/*": "./plugins/*"
 	},
 	"scripts": {
@@ -67,11 +68,15 @@
 		"eslint-plugin-unicorn": "^64.0.0",
 		"eslint-plugin-vue": "^10.9.1",
 		"eslint-plugin-vuejs-accessibility": "^2.5.0",
+		"spawnpoint": "^2.0.0",
 		"typescript": "^5.9.3 || ^6.0.0",
 		"typescript-eslint": "^8.58.0",
 		"vue-eslint-parser": "^10.4.0"
 	},
 	"peerDependenciesMeta": {
+		"spawnpoint": {
+			"optional": true
+		},
 		"eslint-plugin-vue": {
 			"optional": true
 		},

@@ -1,0 +1,5 @@
+{
+	"user.not_found": "The requested user was not found.",
+	"user.email_inuse": "That email address is already in use.",
+	"user.username_inuse": "That username is already in use."
+}
