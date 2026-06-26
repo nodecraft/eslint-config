@@ -75,3 +75,25 @@ If your application uses TypeScript, instead of extending `configs.base`, extend
 
 - `typescript`
 - `typescript-eslint`
+
+## Plugins
+
+### `async-callback`
+
+We ship a standalone ESLint plugin that ensures callbacks are always invoked in [`async`](https://www.npmjs.com/package/async) library task functions (e.g. `series`, `parallel`, `each`, `mapValues`, `auto`). It is included automatically in `configs.node`, but you can also import the plugin directly without our config:
+
+```js
+// eslint.config.js
+import asyncCallback from '@nodecraft/eslint-config/plugins/async-callback';
+
+export default [
+	{
+		plugins: {
+			'async-callback': asyncCallback,
+		},
+		rules: {
+			'async-callback/no-missing-callback': 'error',
+		},
+	},
+];
+```
