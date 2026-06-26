@@ -18,6 +18,9 @@ export default {
 		// disallow ternary operators when simpler alternatives exist
 		'no-unneeded-ternary': ['error'],
 
+		// disallow void operators
+		'no-void': ['error'],
+
 		// enforce variables to be declared separately
 		'one-var': ['error', {
 			var: 'never',
