@@ -97,3 +97,41 @@ export default [
 	},
 ];
 ```
+
+### `spawnpoint-codes`
+
+We ship a standalone ESLint plugin that validates [`spawnpoint`](https://github.com/nodecraft/spawnpoint) codes. It flags string-literal codes passed to `app.code()`, `app.errorCode()`, `app.failCode()` (and the `spawnpoint-express` `res.success()` / `res.fail()` helpers) that aren't defined anywhere — catching typos that would otherwise fail silently at runtime.
+
+Valid codes are discovered automatically from:
+
+- your app's `config/codes/**/*.json`
+- the installed `spawnpoint` package's built-in codes
+- any installed `spawnpoint-*` plugin's shipped codes (e.g. `spawnpoint-express`)
+
+The rule treats spawnpoint as the source of truth rather than re-implementing its loader. If no codes are discovered (e.g. a non-spawnpoint project), the rule does nothing. It is not enabled by any of our configs — import the plugin directly to opt in:
+
+```js
+// eslint.config.js
+import spawnpointCodes from '@nodecraft/eslint-config/plugins/spawnpoint-codes';
+
+export default [
+	{
+		plugins: {
+			'spawnpoint': spawnpointCodes,
+		},
+		rules: {
+			'spawnpoint/no-unknown-code': 'error',
+		},
+	},
+];
+```
+
+#### Options
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `receivers` | `['app', 'res']` | Identifier names whose method calls are checked. |
+| `methods` | `['code', 'errorCode', 'failCode', 'success', 'fail']` | Method names that take a code as their first argument. |
+| `codePaths` | `['config/codes/**/*.json']` | Globs (relative to the project root) for your application codes. |
+| `packages` | `[]` | Extra packages to resolve codes from, on top of `spawnpoint` and auto-discovered `spawnpoint-*` plugins. |
+| `additionalCodes` | `[]` | Extra code strings to treat as valid. |

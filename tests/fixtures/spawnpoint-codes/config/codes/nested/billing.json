@@ -1,0 +1,4 @@
+{
+	"billing.webhook.fail": "Failed to process the billing webhook.",
+	"billing.invoice.created": "Invoice successfully created."
+}
