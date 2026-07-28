@@ -29,6 +29,25 @@ export default {
 		// TODO in future
 		//'vue/v-on-handler-style': ['error', ['method', 'inline-function']],
 
+		// Discourage multi-statement template expressions, which hide logic in the template and are untestable
+		// Each selector targets a distinct AST shape: statement lists, comma sequences, and inline functions
+		'vue/no-restricted-syntax': [
+			'warn',
+			{
+				selector: 'VOnExpression[body.length>1]',
+				message: 'Avoid multiple statements in a v-on handler. Extract them into a single method.',
+			},
+			{
+				selector: 'VOnExpression > ExpressionStatement > SequenceExpression',
+				message: 'Avoid comma-separated expressions in a v-on handler. Extract them into a single method.',
+			},
+			{
+				// VExpressionContainer keeps this scoped to the template, covering v-bind and interpolation too
+				selector: 'VExpressionContainer ArrowFunctionExpression > BlockStatement[body.length>1]',
+				message: 'Avoid multiple statements in an inline template function. Extract them into a single method.',
+			},
+		],
+
 		// Enforce v-slot directive style
 		'vue/v-slot-style': ['error', {
 			atComponent: 'longform',
