@@ -4,7 +4,7 @@
 
 We export our standard ESLint configuration for use in all Nodecraft projects.
 
-For ESLint v10, use version >47.0.0 of this package. For ESLint v8, use version 47.0.0.
+For ESLint v10, use version >47.0.0 of this package. For ESLint v8, use version 47.0.0. `eslint-plugin-unicorn` v72 requires at least ESLint v10.4.
 
 Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-unicorn`, `@stylistic/eslint-plugin` and `eslint-plugin-import-x`.
 

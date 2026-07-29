@@ -1,6 +1,6 @@
 {
 	"name": "@nodecraft/eslint-config",
-	"version": "49.4.0",
+	"version": "50.0.0",
 	"description": "Nodecraft base JS ESLint config",
 	"keywords": [
 		"eslint",
@@ -49,9 +49,9 @@
 		"@stylistic/eslint-plugin": "^5.10.0",
 		"eslint": "^10.7.0",
 		"eslint-plugin-import-newlines": "^2.0.0",
-		"eslint-plugin-unicorn": "^64.0.0",
 		"eslint-plugin-import-x": "^4.17.1",
 		"eslint-plugin-n": "^18.2.2",
+		"eslint-plugin-unicorn": "^72.0.0",
 		"eslint-plugin-vue": "^10.10.0",
 		"eslint-plugin-vuejs-accessibility": "^2.5.0",
 		"typescript": "^6.0.3",
@@ -61,11 +61,11 @@
 	},
 	"peerDependencies": {
 		"@stylistic/eslint-plugin": "^5.10.0",
-		"eslint": "^10.3.0",
+		"eslint": "^10.4.0",
 		"eslint-plugin-import-newlines": "^2.0.0",
 		"eslint-plugin-import-x": "^4.16.0",
 		"eslint-plugin-n": "^18.0.1",
-		"eslint-plugin-unicorn": "^64.0.0",
+		"eslint-plugin-unicorn": "^72.0.0",
 		"eslint-plugin-vue": "^10.9.1",
 		"eslint-plugin-vuejs-accessibility": "^2.5.0",
 		"spawnpoint": "^2.0.0",
