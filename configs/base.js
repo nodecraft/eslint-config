@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import importNewlines from 'eslint-plugin-import-newlines';
 import importPlugin from 'eslint-plugin-import-x';
+import regexp from 'eslint-plugin-regexp';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 
@@ -11,6 +12,7 @@ import es6Rules from '../rules/es6.js';
 import oldAndDeprecatedRules from '../rules/old-and-deprecated.js';
 import pluginImportNewlinesRules from '../rules/plugin-import-newlines.js';
 import pluginImportRules from '../rules/plugin-import.js';
+import pluginRegexpRules from '../rules/plugin-regexp.js';
 import pluginStylisticRules from '../rules/plugin-stylistic.js';
 import pluginUnicornRules from '../rules/plugin-unicorn.js';
 import suggestionsRules from '../rules/suggestions.js';
@@ -40,12 +42,14 @@ export default [
 		plugins: {
 			'@stylistic': stylistic,
 			'unicorn': unicorn,
+			'regexp': regexp,
 			'import-x': importPlugin,
 			'import-newlines': importNewlines,
 		},
 	},
 	pluginImportNewlinesRules,
 	pluginImportRules,
+	pluginRegexpRules,
 	pluginStylisticRules,
 	pluginUnicornRules,
 ];

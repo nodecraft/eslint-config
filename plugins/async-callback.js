@@ -99,7 +99,7 @@ function getFunctionsFromObject(objectNode, { allowDependencyArray }) {
 		}
 		// Handle async.auto [dependencies..., fn] pattern, where the task function is the last element.
 		if (allowDependencyArray && prop.value.type === 'ArrayExpression' && prop.value.elements.length > 0) {
-			const lastElement = prop.value.elements[prop.value.elements.length - 1];
+			const lastElement = prop.value.elements.at(-1);
 			if (lastElement && FUNCTION_TYPES.has(lastElement.type)) {
 				functions.push(lastElement);
 			}
@@ -152,7 +152,7 @@ function checkCallbackUsage(context, taskFn, methodName) {
 		return;
 	}
 
-	const lastParam = params[params.length - 1];
+	const lastParam = params.at(-1);
 	// Skip rest params, destructuring, etc.
 	if (lastParam.type !== 'Identifier') {
 		return;

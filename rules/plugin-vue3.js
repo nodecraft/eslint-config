@@ -111,5 +111,34 @@ export default {
 		'vue/component-api-style': [
 			'warn', ['script-setup', 'composition'],
 		],
+
+		// disallow unwrapping a `ref` where the binding then stops tracking updates
+		'vue/no-ref-object-reactivity-loss': 'error',
+
+		// disallow destructuring `props`, which snapshots the value and drops reactivity
+		'vue/no-setup-props-reactivity-loss': 'error',
+
+		// disallow `v-bind` with a constant value, which is just a static attribute
+		'vue/no-useless-v-bind': 'error',
+
+		// disallow mustache interpolation that only wraps a string literal
+		'vue/no-useless-mustaches': 'error',
+
+		// disallow template refs that are declared but never referenced
+		'vue/no-unused-refs': 'error',
+
+		// disallow empty `<template>`, `<script>` and `<style>` blocks
+		'vue/no-empty-component-block': 'error',
+
+		// require `inheritAttrs: false` when `$attrs` is bound explicitly, to avoid duplicate attributes
+		'vue/no-duplicate-attr-inheritance': 'error',
+
+		// prefer `useTemplateRef()` over a matching `ref()` binding
+		// Warn-only: not auto-fixable, and every existing string-ref call site needs converting
+		'vue/prefer-use-template-ref': 'warn',
+
+		// require a type parameter on a `ref()` initialised without a value, which is otherwise `any`
+		// Warn-only: not auto-fixable, and each site needs a hand-written type
+		'vue/require-typed-ref': 'warn',
 	},
 };
