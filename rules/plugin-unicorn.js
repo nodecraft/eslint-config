@@ -671,7 +671,8 @@ export default {
 		'unicorn/prefer-boolean-return': 'error',
 
 		// Prefer class field declarations over `this` assignments in constructors
-		'unicorn/prefer-class-fields': 'error',
+		// Its fixer appends the field at the end of the class body, leaving an unfixable `consistent-class-member-order` error
+		'unicorn/prefer-class-fields': 'off',
 
 		// Prefer using `Element#classList.toggle()` to toggle class names
 		'unicorn/prefer-classlist-toggle': 'error',
