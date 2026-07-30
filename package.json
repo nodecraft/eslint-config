@@ -1,6 +1,6 @@
 {
 	"name": "@nodecraft/eslint-config",
-	"version": "50.0.0",
+	"version": "50.1.0",
 	"description": "Nodecraft base JS ESLint config",
 	"keywords": [
 		"eslint",
@@ -32,6 +32,7 @@
 		"./configs/*": "./configs/*",
 		"./plugins/async-callback": "./plugins/async-callback.js",
 		"./plugins/spawnpoint-codes": "./plugins/spawnpoint-codes.js",
+		"./plugins/vue": "./plugins/vue.js",
 		"./plugins/*": "./plugins/*"
 	},
 	"scripts": {
