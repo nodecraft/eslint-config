@@ -135,3 +135,46 @@ export default [
 | `codePaths` | `['config/codes/**/*.json']` | Globs (relative to the project root) for your application codes. |
 | `packages` | `[]` | Extra packages to resolve codes from, on top of `spawnpoint` and auto-discovered `spawnpoint-*` plugins. |
 | `additionalCodes` | `[]` | Extra code strings to treat as valid. |
+
+### `nodecraft-vue`
+
+Our own Vue rules, for things `eslint-plugin-vue` doesn't cover. Included automatically in `configs.vue3`, but you can also import the plugin directly:
+
+```js
+// eslint.config.js
+import nodecraftVue from '@nodecraft/eslint-config/plugins/vue';
+
+export default [
+	{
+		plugins: {
+			'nodecraft-vue': nodecraftVue,
+		},
+		rules: {
+			'nodecraft-vue/no-constant-computed': 'warn',
+		},
+	},
+];
+```
+
+#### `no-constant-computed`
+
+Flags `computed()` getters that read nothing outside their own body, so the value can never change:
+
+```js
+const installLabel = computed(() => 'Change Version'); // reported
+const inputClasses = computed(() => ['block w-full rounded-md']); // reported
+```
+
+Both should be plain values. The rule reports rather than fixes, because unwrapping a `computed` changes its type and every `.value` read along with it.
+
+Only a local `const` is reported, since that is the one case where every reader lives in the same file and the swap is safe to make. A constant getter is left alone wherever its ref shape is load-bearing:
+
+```js
+const status = store?.status?.(scope.value) ?? computed(() => 'idle'); // stands in for a ref
+provide(TableContext, computed(() => 'idle')); // consumers read `.value`
+export const label = computed(() => 'Static'); // other modules read `.value`
+```
+
+A getter that reads any outer identifier is left alone too, even a constant one — so `computed(() => LABELS.title)` and `computed(() => Math.PI)` pass. Proving those never change means following the identifier, which the rule deliberately doesn't do.
+
+Also ignored: getters using `this`, the writable `computed({ get, set })` form, and any `computed` that isn't Vue's — the callee has to resolve to an import from `vue` (or `@vue/*`), or to nothing at all, which is what auto-import setups look like.
