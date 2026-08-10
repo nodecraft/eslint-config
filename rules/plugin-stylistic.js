@@ -40,6 +40,12 @@ export default {
 		// enforce consistent spacing inside computed property brackets
 		'@stylistic/computed-property-spacing': ['error', 'never'],
 
+		// enforce line breaks after opening and before closing braces, keeping empty blocks collapsed
+		'@stylistic/curly-newline': ['error', {
+			minElements: 1,
+			consistent: true,
+		}],
+
 		// eequire or disallow newline at the end of files
 		'@stylistic/eol-last': ['error', 'always'],
 
