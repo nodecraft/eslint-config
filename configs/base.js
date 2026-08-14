@@ -6,6 +6,7 @@ import regexp from 'eslint-plugin-regexp';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 
+import antislopPlugin from '../plugins/antislop.js';
 import bestPracticesRules from '../rules/best-practices.js';
 import errorsRules from '../rules/errors.js';
 import es6Rules from '../rules/es6.js';
@@ -37,7 +38,10 @@ export default [
 			},
 		},
 		rules: {
-			strict: ['error', 'global'],
+			'strict': ['error', 'global'],
+			'antislop/no-chained-type-assertions': 'error',
+			'antislop/no-multiline-conditional-spread': 'error',
+			'antislop/no-object-parameters': 'error',
 		},
 		plugins: {
 			'@stylistic': stylistic,
@@ -45,6 +49,18 @@ export default [
 			'regexp': regexp,
 			'import-x': importPlugin,
 			'import-newlines': importNewlines,
+			'antislop': antislopPlugin,
+		},
+	},
+	{
+		// Partial test doubles often need a deliberate widening step to stand in for a real value.
+		files: [
+			'**/*.{test,spec}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
+			'**/{test,tests}/**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
+		],
+		rules: {
+			'antislop/no-chained-type-assertions': 'off',
+			'antislop/no-object-parameters': 'off',
 		},
 	},
 	pluginImportNewlinesRules,

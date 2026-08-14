@@ -1,6 +1,6 @@
 {
 	"name": "@nodecraft/eslint-config",
-	"version": "50.2.0",
+	"version": "51.0.0",
 	"description": "Nodecraft base JS ESLint config",
 	"keywords": [
 		"eslint",
@@ -30,6 +30,7 @@
 		"./vue3": "./configs/vue3.js",
 		"./vue-a11y": "./configs/vue-a11y.js",
 		"./configs/*": "./configs/*",
+		"./plugins/antislop": "./plugins/antislop.js",
 		"./plugins/async-callback": "./plugins/async-callback.js",
 		"./plugins/spawnpoint-codes": "./plugins/spawnpoint-codes.js",
 		"./plugins/vue": "./plugins/vue.js",
@@ -53,11 +54,11 @@
 		"eslint-plugin-import-x": "^4.17.1",
 		"eslint-plugin-n": "^18.2.2",
 		"eslint-plugin-regexp": "^3.1.1",
-		"eslint-plugin-unicorn": "^72.0.0",
+		"eslint-plugin-unicorn": "^73.0.0",
 		"eslint-plugin-vue": "^10.10.0",
 		"eslint-plugin-vuejs-accessibility": "^2.5.0",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.65.0",
+		"typescript-eslint": "^8.66.0",
 		"vitest": "^4.1.10",
 		"vue-eslint-parser": "^10.4.1"
 	},
@@ -68,7 +69,7 @@
 		"eslint-plugin-import-x": "^4.16.0",
 		"eslint-plugin-n": "^18.0.1",
 		"eslint-plugin-regexp": "^3.1.1",
-		"eslint-plugin-unicorn": "^72.0.0",
+		"eslint-plugin-unicorn": "^73.0.0",
 		"eslint-plugin-vue": "^10.9.1",
 		"eslint-plugin-vuejs-accessibility": "^2.5.0",
 		"spawnpoint": "^2.0.0",
@@ -100,7 +101,8 @@
 		"index.js",
 		"configs",
 		"plugins",
-		"rules"
+		"rules",
+		"THIRD_PARTY_NOTICES.md"
 	],
 	"engines": {
 		"node": ">= 24"
