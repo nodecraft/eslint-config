@@ -178,3 +178,115 @@ export const label = computed(() => 'Static'); // other modules read `.value`
 A getter that reads any outer identifier is left alone too, even a constant one — so `computed(() => LABELS.title)` and `computed(() => Math.PI)` pass. Proving those never change means following the identifier, which the rule deliberately doesn't do.
 
 Also ignored: getters using `this`, the writable `computed({ get, set })` form, and any `computed` that isn't Vue's — the callee has to resolve to an import from `vue` (or `@vue/*`), or to nothing at all, which is what auto-import setups look like.
+
+### antislop
+
+Our base config includes a plugin for the patterns that read as filler: shapes that technically work but cost the next reader more than they should. Each rule lives in its own file under `plugins/antislop/`.
+
+The rules are enabled from `configs.base`, so they apply to TypeScript projects too. The two type rules key off TypeScript-only syntax and stay silent under a plain JavaScript parser.
+
+| Rule | Reports |
+| --- | --- |
+| `antislop/no-multiline-conditional-spread` | A conditional spread that wraps, or holds more than a line's worth of content, inside an array or object literal. |
+| `antislop/no-chained-type-assertions` | Assertion chains such as `value as unknown as User`. |
+| `antislop/no-object-parameters` | A function parameter typed as the broad `object`. |
+
+All three are errors. A warning in a codebase this size is a line nobody reads, and each of these patterns is one that should have to justify itself. Where the pattern is genuinely the right answer — a third-party type gap the compiler can't be talked out of, say — an `eslint-disable-next-line` with a reason says so permanently, which is more use to the next reader than a warning that scrolls past.
+
+Both type rules are off in conventional test and spec paths, where partial test doubles routinely need a deliberate widening step to stand in for a real value.
+
+#### `no-multiline-conditional-spread`
+
+A conditional spread has to earn its place in a literal. Kept to one line it reads as one more entry, and the literal still describes its own contents:
+
+```js
+const args = [command, ...(verbose ? ['--verbose'] : [])];
+const flags = [
+	process.execPath,
+	cli,
+	...(version ? ['--version', version] : ['--assets', assetsDir]),
+	...(cacheDir ? ['--cache-dir', cacheDir] : []),
+];
+```
+
+Once it wraps, the ternary stops being an entry and becomes structure. The reader now has to unpack a conditional to learn what the collection holds, and the branch is usually a block that wanted a name of its own:
+
+```js
+const columns = [
+	nameColumn,
+	sizeColumn,
+	...(canEdit // warns: wraps across 8 lines
+		? [{
+			id: 'actions',
+			label: 'Actions',
+			align: 'right' as const,
+			width: 'auto' as const,
+			sortable: false,
+		}]
+		: []),
+];
+```
+
+There are two fixes, and which one applies depends on why it wrapped. A branch that wrapped only because it is long collapses back to a single line. A branch that holds a block gets named, and the literal gets built up with statements:
+
+```js
+const actionsColumn: TableColumn = {
+	id: 'actions',
+	label: 'Actions',
+	align: 'right',
+	width: 'auto',
+	sortable: false,
+};
+
+const columns = [nameColumn, sizeColumn];
+if (canEdit) {
+	columns.push(actionsColumn);
+}
+```
+
+Naming the branch usually pays for itself twice: the annotation on `actionsColumn` does the work both `as const` assertions were there for.
+
+Only spreads sitting directly in an array or object literal are considered, so a wrapped ternary is left alone anywhere else — including `const columns = canEdit ? [...base, actionsColumn] : base;`, which never spreads a conditional into a literal at all.
+
+#### The one-line escape hatch
+
+A line count on its own is dodgeable: join the lines back up and the warning goes away, however much the branch holds. So the rule also puts a `maxLength` budget on the branch, measured after collapsing it to a single line. Reformatting can't shrink that number, so there is nothing to game:
+
+```js
+// Warns: 105 characters, however it is laid out
+const columns = [nameColumn, ...(canEdit ? [{ id: 'actions', label: 'Actions', align: 'right', sortable: false, width: 'auto' }] : [])];
+```
+
+The default of 100 leaves the real short form comfortably clear — the longest legitimate one-line conditional spread we measured across our own frontends was 82 characters. Both budgets are adjustable:
+
+```js
+rules: {
+	'antislop/no-multiline-conditional-spread': ['warn', { maxLines: 3, maxLength: 120 }],
+},
+```
+
+#### `no-chained-type-assertions`
+
+A chain like `value as unknown as User` launders an unrelated type into the one the call site wanted, and the compiler stops being able to help. Validate an untrusted value at its boundary, or keep its precise type through the code that consumes it.
+
+#### `no-object-parameters`
+
+`object` says only that the value isn't a primitive, so the signature tells a caller nothing about what it should pass. Describe the properties the function actually reads.
+
+The plugin can also be imported directly, without our config:
+
+```js
+// eslint.config.js
+import antislop from '@nodecraft/eslint-config/plugins/antislop';
+
+export default [
+	{
+		plugins: {
+			antislop,
+		},
+		rules: {
+			'antislop/no-multiline-conditional-spread': 'warn',
+		},
+	},
+];
+```
