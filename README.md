@@ -8,6 +8,8 @@ For ESLint v10, use version >47.0.0 of this package. For ESLint v8, use version 
 
 Our default export contains all of our ESLint rules, including ECMAScript 6+. It requires `eslint`, `eslint-plugin-unicorn`, `eslint-plugin-regexp`, `@stylistic/eslint-plugin` and `eslint-plugin-import-x`.
 
+The base config sets `import-x/resolver-next` to import-x's built-in node resolver, which keeps `import-x/order` fast. `resolver-next` takes precedence over the legacy `import-x/resolver` setting, so to use a different resolver (such as `eslint-import-resolver-typescript`), set `import-x/resolver-next` in your own config.
+
 1. Install package:
 
 ```sh
