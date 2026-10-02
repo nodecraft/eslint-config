@@ -13,6 +13,10 @@ export default {
 		// Re-cases tokens inside every comment, which is churn with no correctness value
 		'unicorn/comment-content': 'off',
 
+		// Enforce a consistent return style for multiline arrow function bodies
+		// Conflicts with arrow-body-style, which we already enforce
+		'unicorn/consistent-arrow-return-style': 'off',
+
 		// Enforce consistent assertion style with `node:assert`
 		'unicorn/consistent-assert': 'error',
 
@@ -106,6 +110,10 @@ export default {
 		// Prevent usage of variables from outside the scope of isolated functions
 		'unicorn/isolated-functions': 'error',
 
+		// Enforce a consistent style for optional loop sources
+		// Codifies our existing `?? []` fallbacks, which avoid an extra level of nesting
+		'unicorn/iteration-fallback-style': ['error', 'fallback'],
+
 		// Require or disallow logical assignment operator shorthand
 		'unicorn/logical-assignment-operators': 'error',
 
@@ -171,6 +179,9 @@ export default {
 		// Conflicts with standard JSDoc formatting
 		'unicorn/no-asterisk-prefix-in-documentation-comments': 'off',
 
+		// Disallow asynchronous callbacks in synchronous iterator helpers
+		'unicorn/no-async-iterator-callback': 'error',
+
 		// Disallow async functions as `Promise#finally()` callbacks
 		'unicorn/no-async-promise-finally': 'error',
 
@@ -179,6 +190,10 @@ export default {
 
 		// Disallow using `await` in `Promise` method parameters
 		'unicorn/no-await-in-promise-methods': 'error',
+
+		// Disallow barrel files
+		// Component libraries publish their API through index barrels
+		'unicorn/no-barrel-files': 'off',
 
 		// Disallow unnecessary `Blob` to `File` conversion
 		'unicorn/no-blob-to-file': 'error',
@@ -219,12 +234,24 @@ export default {
 		// Reported without a fix or suggestion, so every hit is a manual reorder for position alone
 		'unicorn/no-declarations-before-early-exit': 'warn',
 
+		// Disallow deprecated CSS features
+		// CSS-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-deprecated-css-features': 'off',
+
 		// Do not use document.cookie directly
 		// TODO: enforce once Cookie Store API becomes more ubiquitous
 		'unicorn/no-document-cookie': 'off',
 
 		// Disallow two comparisons of the same operands that can be combined into one
 		'unicorn/no-double-comparison': 'error',
+
+		// Disallow duplicate CSS selectors
+		// CSS-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-duplicate-css-selectors': 'off',
+
+		// Disallow duplicate font family names
+		// CSS-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-duplicate-font-family-names': 'off',
 
 		// Disallow duplicate adjacent branches in if chains
 		'unicorn/no-duplicate-if-branches': 'error',
@@ -287,6 +314,10 @@ export default {
 		// Not in unicorn's recommended config
 		'unicorn/no-invalid-file-input-accept': 'off',
 
+		// Disallow unknown media features and invalid values for known media features
+		// CSS-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-invalid-media-features': 'off',
+
 		// Prevent calling EventTarget#removeEventListener() with the result of an expression
 		'unicorn/no-invalid-remove-event-listener': 'error',
 
@@ -347,6 +378,10 @@ export default {
 		// Disallow nested ternary expressions
 		'unicorn/no-nested-ternary': 'error',
 
+		// Disallow nesting under selector lists with mixed specificity
+		// CSS-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-nesting-with-mixed-specificity': 'off',
+
 		// Disallow new Array()
 		'unicorn/no-new-array': 'error',
 
@@ -377,6 +412,10 @@ export default {
 
 		// Disallow comparisons made redundant by an equality check in the same logical AND
 		'unicorn/no-redundant-comparison': 'error',
+
+		// Disallow nested style rules that do not modify the parent selector
+		// CSS-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-redundant-nested-style-rules': 'off',
 
 		// Disallow using the return value of `Array#push()` and `Array#unshift()`
 		'unicorn/no-return-array-push': 'error',
@@ -425,6 +464,14 @@ export default {
 
 		// Require class members to be declared
 		'unicorn/no-undeclared-class-members': 'error',
+
+		// Disallow unknown and noncanonical CSS annotations
+		// CSS-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-unknown-css-annotations': 'off',
+
+		// Disallow unknown pseudo-class and pseudo-element selectors
+		// CSS-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-unknown-pseudo-selectors': 'off',
 
 		// Disallow using `1` as the `depth` argument of `Array#flat()`
 		'unicorn/no-unnecessary-array-flat-depth': 'error',
@@ -493,13 +540,23 @@ export default {
 		// Disallow unsafe values as property keys
 		'unicorn/no-unsafe-property-key': 'error',
 
+		// Disallow interpolation into SQL strings passed to Node's `node:sqlite` APIs
+		'unicorn/no-unsafe-sqlite-interpolation': 'error',
+
 		// Disallow non-literal replacement values in `String#replace()` and `String#replaceAll()`
 		// $& and $1 in a variable replacement are usually, but not always, a bug
 		'unicorn/no-unsafe-string-replacement': 'warn',
 
-		// Disallow ignoring the return value of selected array methods
-		// Matches on method name, so non-array join() and filter() APIs report falsely
-		'unicorn/no-unused-array-method-return': 'warn',
+		// Disallow unscoped CSS nesting selectors
+		// CSS-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-unscoped-css-nesting-selector': 'off',
+
+		// Disallow ignoring the return value of selected built-in methods
+		// Matches on method name, so non-array APIs like a socket join() or async.some() report falsely
+		'unicorn/no-unused-builtin-method-return': 'warn',
+
+		// Disallow discarding lazy iterator helpers
+		'unicorn/no-unused-iterator-helper': 'error',
 
 		// Disallow unused object properties
 		'unicorn/no-unused-properties': 'off',
@@ -557,6 +614,9 @@ export default {
 		// The loop rewrite is not always the clearer one
 		'unicorn/no-useless-recursion': 'warn',
 
+		// Disallow unnecessary `Set` construction around `Set` methods
+		'unicorn/no-useless-set-construction': 'error',
+
 		// Disallow useless spread
 		'unicorn/no-useless-spread': 'error',
 
@@ -570,6 +630,9 @@ export default {
 		'unicorn/no-useless-undefined': ['error', {
 			checkArguments: false,
 		}],
+
+		// Disallow returning or exporting resources declared with `using`, including through capturing functions
+		'unicorn/no-using-resource-escape': 'error',
 
 		// Disallow the bitwise XOR operator where exponentiation was likely intended
 		'unicorn/no-xor-as-exponentiation': 'error',
@@ -679,6 +742,10 @@ export default {
 
 		// Prefer String#codePointAt(…) over String#charCodeAt(…) and String.fromCodePoint(…) over String.fromCharCode(…)
 		'unicorn/prefer-code-point': 'error',
+
+		// Prefer combining consecutive guards with identical exit statements
+		// Separate guards keep each exit reason readable, where merging them builds long `||` chains
+		'unicorn/prefer-combined-guards': 'off',
 
 		// Prefer early continues over whole-loop conditional wrapping
 		'unicorn/prefer-continue': 'error',
@@ -790,6 +857,13 @@ export default {
 		// Prefer moving `.toArray()` to the end of iterator helper chains
 		'unicorn/prefer-iterator-to-array-at-end': 'error',
 
+		// Prefer `Iterator.zip()` over parallel-array indexing
+		// Iterator.zip() has not shipped in our runtime targets
+		'unicorn/prefer-iterator-zip': 'off',
+
+		// Prefer JSON imports over reading and parsing JSON files
+		'unicorn/prefer-json-import': 'error',
+
 		// Prefer KeyboardEvent#key over KeyboardEvent#keyCode
 		'unicorn/prefer-keyboard-event-key': 'error',
 
@@ -813,6 +887,10 @@ export default {
 
 		// Enforce the use of Math.trunc instead of bitwise operators
 		'unicorn/prefer-math-trunc': 'error',
+
+		// Prefer modern media feature range syntax
+		// CSS-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/prefer-media-feature-range-syntax': 'off',
 
 		// Prefer moving ternaries into the minimal varying part of an expression
 		'unicorn/prefer-minimal-ternary': 'error',
@@ -989,6 +1067,9 @@ export default {
 		// Temporal is not in our Node or browser targets
 		'unicorn/prefer-temporal': 'off',
 
+		// Prefer direct Temporal conversion methods
+		'unicorn/prefer-temporal-conversion': 'error',
+
 		// Prefer ternary expressions over simple if-else statements
 		'unicorn/prefer-ternary': 'off',
 
@@ -1012,6 +1093,10 @@ export default {
 		// Prefer `Uint8Array#toBase64()` and `Uint8Array.fromBase64()` over `atob()`, `btoa()`, and `Buffer` base64 conversions
 		// Buffer already handles base64 on the Node side
 		'unicorn/prefer-uint8array-base64': 'off',
+
+		// Prefer `Uint8Array#toHex()` and `Uint8Array.fromHex()` over manual and Buffer hex conversions
+		// Missing from Node 24, and Buffer already handles hex on the Node side
+		'unicorn/prefer-uint8array-hex': 'off',
 
 		// Prefer the unary minus operator over multiplying or dividing by `-1`
 		'unicorn/prefer-unary-minus': 'error',
@@ -1064,6 +1149,10 @@ export default {
 
 		// Require boolean-returning Proxy traps to return booleans
 		'unicorn/require-proxy-trap-boolean-return': 'error',
+
+		// Enforce a consistent style for single-line block comments
+		// Matches how we already write one-line doc comments
+		'unicorn/single-line-block-comment-style': ['error', 'single-line'],
 
 		// Enforce better string content
 		'unicorn/string-content': 'off',

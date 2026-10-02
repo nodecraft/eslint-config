@@ -98,11 +98,12 @@ function getFunctionsFromObject(objectNode, { allowDependencyArray }) {
 			functions.push(prop.value);
 		}
 		// Handle async.auto [dependencies..., fn] pattern, where the task function is the last element.
-		if (allowDependencyArray && prop.value.type === 'ArrayExpression' && prop.value.elements.length > 0) {
-			const lastElement = prop.value.elements.at(-1);
-			if (lastElement && FUNCTION_TYPES.has(lastElement.type)) {
-				functions.push(lastElement);
-			}
+		if (!allowDependencyArray || prop.value.type !== 'ArrayExpression') {
+			continue;
+		}
+		const lastElement = prop.value.elements.at(-1);
+		if (lastElement && FUNCTION_TYPES.has(lastElement.type)) {
+			functions.push(lastElement);
 		}
 	}
 	return functions;
