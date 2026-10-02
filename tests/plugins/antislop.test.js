@@ -152,6 +152,97 @@ describe('no-object-parameters', () => {
 			],
 		});
 	});
+
+	it('sees through same-file type aliases', () => {
+		typescriptRuleTester.run('no-object-parameters', plugin.rules['no-object-parameters'], {
+			valid: [
+				'type Options = { id: string }; function save(value: Options) {}',
+				'type Maybe<T> = T | null; function save(value: Maybe<string>) {}',
+				// A function's own type parameter isn't an alias, even when constrained to object.
+				'function save<T extends object>(value: T) {}',
+				// Inner declarations shadow the outer alias.
+				'type Options = object; function save() { type Options = { id: string }; return (value: Options) => value; }',
+				'type Loop = Loop | null; function save(value: Loop) {}',
+				'import type { Options } from \'./options\'; function save(value: Options) {}',
+			],
+			invalid: [
+				{
+					code: 'type Options = object; function save(value: Options) {}',
+					errors: [{ messageId: 'objectParameter', data: { parameter: 'value' } }],
+				},
+				{
+					code: 'type Payload = object | null; type Input = Payload; const save = (value: Input) => value;',
+					errors: [{ messageId: 'objectParameter', data: { parameter: 'value' } }],
+				},
+				{
+					code: 'type Maybe<T> = T | undefined; function save(value: Maybe<object>) {}',
+					errors: [{ messageId: 'objectParameter', data: { parameter: 'value' } }],
+				},
+				{
+					code: 'type Maybe<T = object> = T | null; function save(value: Maybe) {}',
+					errors: [{ messageId: 'objectParameter', data: { parameter: 'value' } }],
+				},
+				{
+					code: 'type Box<T> = Wrap<T>; type Wrap<U> = U | null; function save(value: Box<object>) {}',
+					errors: [{ messageId: 'objectParameter', data: { parameter: 'value' } }],
+				},
+			],
+		});
+	});
+});
+
+describe('no-reduce-accumulator-copy', () => {
+	const error = { messageId: 'accumulatorCopy' };
+
+	it('accepts mutated accumulators and rejects per-iteration copies', () => {
+		ruleTester.run('no-reduce-accumulator-copy', plugin.rules['no-reduce-accumulator-copy'], {
+			valid: [
+				'items.reduce((acc, item) => { acc.push(item); return acc; }, []);',
+				'items.reduce((acc, item) => Object.assign(acc, item), {});',
+				// Copying the incoming item is bounded; only the growing accumulator is a problem.
+				'items.reduce((acc, item) => { acc[item.id] = { ...item }; return acc; }, {});',
+				'items.reduce((acc, item) => { acc.push(Object.assign({}, item)); return acc; }, []);',
+				'items.reduce((acc, item) => { acc.push(item.slice()); return acc; }, []);',
+				'items.reduce((acc, item) => acc.concat(item), \'\');',
+				'items.reduce((acc, item) => acc.concat(item), customCollection);',
+				'items.reduce((acc, item) => Math.max(acc, ...item.values), 0);',
+				'items.map(acc => Object.assign({}, acc));',
+				'items.map(acc => [...acc]);',
+				'function copy(acc) { return Object.assign({}, acc); }',
+				'items.reduce((acc, item) => { const snapshot = () => ({ ...acc }); return acc; }, {});',
+				'items.reduce((acc, item) => { { const acc = {}; Object.assign({}, acc); } return acc; }, {});',
+				'const Object = custom; items.reduce((acc, item) => Object.assign({}, acc), {});',
+				'const Array = custom; items.reduce((acc, item) => Array.from(acc), []);',
+				'items.reduce((acc, item) => { let alias = acc; alias = item; return Object.assign({}, alias); }, {});',
+			],
+			invalid: [
+				{ code: 'items.reduce((acc, item) => [...acc, item], []);', errors: [error] },
+				{ code: 'items.reduce((acc, item) => ({ ...acc, [item.id]: item }), {});', errors: [error] },
+				{ code: 'items.reduce((acc, item) => Object.assign({}, acc, { [item.id]: item }), {});', errors: [error] },
+				{ code: 'items.reduceRight((acc, item) => Object.assign({}, acc, item), {});', errors: [error] },
+				{ code: 'items.reduce(function(acc, item) { return Object.assign({}, item, acc); }, {});', errors: [error] },
+				{ code: 'items[\'reduce\']((acc, item) => Object[\'assign\']({}, acc, item), {});', errors: [error] },
+				{ code: 'items.reduce((acc = {}, item) => ({ ...acc, item }), {});', errors: [error] },
+				{ code: 'items.reduce((acc, item) => { const alias = acc; return [...alias, item]; }, []);', errors: [error] },
+				{ code: 'items.reduce((acc, item) => acc.concat([item]), []);', errors: [error] },
+				{ code: 'const initial = []; items.reduce((acc, item) => acc.concat(item), initial);', errors: [error] },
+				{ code: 'items.reduce((acc, item) => { const next = acc.slice(); next.push(item); return next; }, []);', errors: [error] },
+				{ code: 'items.reduce((acc, item) => { const next = Array.from(acc); next.push(item); return next; }, []);', errors: [error] },
+				{ code: 'items.reduce((acc, item) => acc.toSpliced(acc.length, 0, item), []);', errors: [error] },
+				{ code: 'items.reduce((acc, item) => acc.with(0, item), []);', errors: [error] },
+			],
+		});
+	});
+
+	it('unwraps TypeScript assertions on the accumulator and initial value', () => {
+		typescriptRuleTester.run('no-reduce-accumulator-copy', plugin.rules['no-reduce-accumulator-copy'], {
+			valid: [],
+			invalid: [
+				{ code: 'items.reduce((acc, item) => Object.assign({}, acc as State, item), {});', errors: [error] },
+				{ code: 'items.reduce((acc, item) => acc.concat([item]), [] as Item[]);', errors: [error] },
+			],
+		});
+	});
 });
 
 describe('plugin shape', () => {
@@ -164,6 +255,7 @@ describe('plugin shape', () => {
 		expect(config.rules['antislop/no-multiline-conditional-spread']).toBe('error');
 		expect(config.rules['antislop/no-chained-type-assertions']).toBe('error');
 		expect(config.rules['antislop/no-object-parameters']).toBe('error');
+		expect(config.rules['antislop/no-reduce-accumulator-copy']).toBe('error');
 
 		const testConfig = baseConfig.find(entry => entry.rules?.['antislop/no-chained-type-assertions'] === 'off');
 		expect(testConfig.files).toContain('**/*.{test,spec}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}');

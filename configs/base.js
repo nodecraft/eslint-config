@@ -42,6 +42,7 @@ export default [
 			'antislop/no-chained-type-assertions': 'error',
 			'antislop/no-multiline-conditional-spread': 'error',
 			'antislop/no-object-parameters': 'error',
+			'antislop/no-reduce-accumulator-copy': 'error',
 		},
 		plugins: {
 			'@stylistic': stylistic,

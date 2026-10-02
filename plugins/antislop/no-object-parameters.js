@@ -1,3 +1,5 @@
+import { findVariable } from './scope.js';
+
 function annotationFor(parameter) {
 	let current = parameter;
 	while (['TSParameterProperty', 'RestElement', 'AssignmentPattern'].includes(current.type)) {
@@ -15,20 +17,60 @@ function annotationFor(parameter) {
 	return current.typeAnnotation;
 }
 
-function containsObjectType(type) {
-	const pending = [type];
-	while (pending.length > 0) {
-		const current = pending.pop();
-		if (current.type === 'TSObjectKeyword') {
-			return true;
-		}
-		if (current.type === 'TSParenthesizedType') {
-			pending.push(current.typeAnnotation);
-		} else if (current.type === 'TSUnionType') {
-			pending.push(...current.types);
+function typeDeclaration(context, reference) {
+	if (reference.typeName.type !== 'Identifier') {
+		return null;
+	}
+	const variable = findVariable(context, reference.typeName);
+	if (variable?.defs.length !== 1) {
+		return null;
+	}
+	return variable.defs[0].node;
+}
+
+// Binds an alias's type parameters to the arguments at this use, so `Maybe<object>` resolves through `T | null`.
+function bindTypeArguments(alias, reference, substitutions) {
+	const bound = new Map(substitutions);
+	const parameters = alias.typeParameters?.params ?? [];
+	const typeArguments = reference.typeArguments?.params ?? [];
+	for (const [index, parameter] of parameters.entries()) {
+		const explicit = typeArguments[index];
+		if (explicit) {
+			bound.set(parameter, { type: explicit, substitutions });
+		} else if (parameter.default) {
+			bound.set(parameter, { type: parameter.default, substitutions: bound });
+		} else {
+			return null;
 		}
 	}
-	return false;
+	return bound;
+}
+
+function containsObjectType(context, node, substitutions = new Map(), resolving = new Set()) {
+	let type = node;
+	while (type.type === 'TSParenthesizedType') {
+		type = type.typeAnnotation;
+	}
+	if (type.type === 'TSObjectKeyword') {
+		return true;
+	}
+	if (type.type === 'TSUnionType') {
+		return type.types.some(member => containsObjectType(context, member, substitutions, resolving));
+	}
+	if (type.type !== 'TSTypeReference') {
+		return false;
+	}
+
+	const declaration = typeDeclaration(context, type);
+	if (declaration?.type === 'TSTypeParameter') {
+		const substitution = substitutions.get(declaration);
+		return Boolean(substitution) && containsObjectType(context, substitution.type, substitution.substitutions, resolving);
+	}
+	if (declaration?.type !== 'TSTypeAliasDeclaration' || resolving.has(declaration)) {
+		return false;
+	}
+	const bound = bindTypeArguments(declaration, type, substitutions);
+	return Boolean(bound) && containsObjectType(context, declaration.typeAnnotation, bound, new Set([...resolving, declaration]));
 }
 
 export default {
@@ -44,7 +86,7 @@ export default {
 		const check = function(node) {
 			for (const parameter of node.params) {
 				const annotation = annotationFor(parameter);
-				if (!annotation || !containsObjectType(annotation.typeAnnotation)) {
+				if (!annotation || !containsObjectType(context, annotation.typeAnnotation)) {
 					continue;
 				}
 				context.report({
