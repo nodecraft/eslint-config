@@ -33,6 +33,7 @@
 		"./plugins/antislop": "./plugins/antislop.js",
 		"./plugins/async-callback": "./plugins/async-callback.js",
 		"./plugins/spawnpoint-codes": "./plugins/spawnpoint-codes.js",
+		"./plugins/subpath-imports": "./plugins/subpath-imports.js",
 		"./plugins/vue": "./plugins/vue.js",
 		"./plugins/*": "./plugins/*"
 	},

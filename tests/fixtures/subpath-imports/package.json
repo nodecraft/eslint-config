@@ -1,0 +1,12 @@
+{
+	"name": "subpath-imports-fixture",
+	"private": true,
+	"imports": {
+		"#/*": {
+			"import": "./src/*"
+		},
+		"#/internal/*": null,
+		"#config": "./src/config/index.js",
+		"#vendor/*": "./vendor/*"
+	}
+}
