@@ -10,6 +10,8 @@ Our default export contains all of our ESLint rules, including ECMAScript 6+. It
 
 The base config sets `import-x/resolver-next` to import-x's built-in node resolver, which keeps `import-x/order` fast. `resolver-next` takes precedence over the legacy `import-x/resolver` setting, so to use a different resolver (such as `eslint-import-resolver-typescript`), set `import-x/resolver-next` in your own config.
 
+`import-x/order` sorts internal imports into their own group between packages and relative imports. Subpath imports (`#/...`) always count as internal through `import-x/internal-regex`, even when only a bundler can resolve them.
+
 1. Install package:
 
 ```sh
@@ -137,6 +139,51 @@ export default [
 | `codePaths` | `['config/codes/**/*.json']` | Globs (relative to the project root) for your application codes. |
 | `packages` | `[]` | Extra packages to resolve codes from, on top of `spawnpoint` and auto-discovered `spawnpoint-*` plugins. |
 | `additionalCodes` | `[]` | Extra code strings to treat as valid. |
+
+### `subpath-imports`
+
+We ship a standalone ESLint plugin that rewrites relative imports climbing several directories into [subpath imports](https://nodejs.org/api/packages.html#subpath-imports) from your `package.json`. With `"imports": { "#/*": "./assets/*" }`, this:
+
+```js
+import { formatBytes } from '../../../libs/helpers';
+```
+
+is reported and autofixed to:
+
+```js
+import { formatBytes } from '#/libs/helpers';
+```
+
+Mappings are read from the `imports` field of the nearest `package.json`, so a project without one is left alone. A rewrite is only offered when the new specifier resolves to the same file under Node's resolution rules, so a more specific key or a `null` exclusion is never sidestepped. Static imports, re-exports, and dynamic `import()` calls with a string literal are checked. Loader syntax (`!`) is skipped and query strings (`?raw`) are kept.
+
+It is not enabled by any of our configs. Whether a subpath import resolves for a given file depends on how that file runs (a bundler alias, TypeScript `paths`, or Node itself), which only the project knows. Scope it to the files that can use the mapping:
+
+```js
+// eslint.config.js
+import subpathImports from '@nodecraft/eslint-config/plugins/subpath-imports';
+
+export default [
+	{
+		files: ['assets/**', 'tests/**'],
+		plugins: {
+			'subpath-imports': subpathImports,
+		},
+		rules: {
+			'subpath-imports/no-deep-relative': 'error',
+		},
+	},
+];
+```
+
+Enabling it on an existing codebase rewrites every deep import on the first `eslint --fix`, and `import-x/order` moves them into the internal group in the same run. The rule costs about 0.4% of total rule time on a frontend with roughly 1,000 files.
+
+#### Options
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `maxDepth` | `1` | How many directories a relative import may climb before it is reported. `0` reports any `../`. |
+| `imports` | `package.json` `imports` | A mapping in the same shape as the `imports` field, used instead of the one in `package.json`. Targets are relative to the nearest `package.json`, so this is where aliases only a bundler or `tsconfig.json` knows about (like `@/*`) go. |
+| `conditions` | `['import', 'default']` | Conditions used to pick a target from conditional mappings, in Node's first-match order. |
 
 ### `nodecraft-vue`
 

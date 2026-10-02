@@ -26,23 +26,50 @@ describe('import-x resolver', () => {
 		`)).toEqual([]);
 	});
 
-	// A self-reference only counts as internal (sorted after relative imports) when the resolver actually finds it.
+	// A self-reference only gets its own internal group, apart from `globals`, when the resolver actually finds it.
 	it('classifies a resolvable self-reference as internal', () => {
 		expect(lint(`
-			import rules from './rules.js';
+			import globals from 'globals';
 
 			import nodecraft from '@nodecraft/eslint-config/configs/base.js';
 
-			export default [rules, nodecraft];
+			import rules from './rules.js';
+
+			export default [globals, nodecraft, rules];
 		`)).toEqual([]);
 
 		const [message] = lint(`
-			import nodecraft from '@nodecraft/eslint-config/configs/base.js';
-
 			import rules from './rules.js';
+
+			import nodecraft from '@nodecraft/eslint-config/configs/base.js';
 
 			export default [rules, nodecraft];
 		`);
 		expect(message?.ruleId).toBe('import-x/order');
+	});
+
+	// The mapping often only resolves through a bundler, so `#` has to classify these without the resolver.
+	it('groups unresolvable subpath imports between external and relative imports', () => {
+		expect(lint(`
+			import globals from 'globals';
+
+			import { helpers } from '#/libs/helpers';
+			import { config } from '#config';
+
+			import rules from './rules.js';
+
+			export default [globals, helpers, config, rules];
+		`)).toEqual([]);
+
+		const messages = lint(`
+			import globals from 'globals';
+
+			import rules from './rules.js';
+
+			import { helpers } from '#/libs/helpers';
+
+			export default [globals, helpers, rules];
+		`);
+		expect(messages.map(message => message.ruleId)).toContain('import-x/order');
 	});
 });
