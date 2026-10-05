@@ -238,9 +238,10 @@ The rules are enabled from `configs.base`, so they apply to TypeScript projects 
 | --- | --- |
 | `antislop/no-multiline-conditional-spread` | A conditional spread that wraps, or holds more than a line's worth of content, inside an array or object literal. |
 | `antislop/no-chained-type-assertions` | Assertion chains such as `value as unknown as User`. |
-| `antislop/no-object-parameters` | A function parameter typed as the broad `object`. |
+| `antislop/no-object-parameters` | A function parameter typed as the broad `object`, directly or through a same-file type alias. |
+| `antislop/no-reduce-accumulator-copy` | A reducer that copies its accumulator on every iteration, such as `[...acc, item]`. |
 
-All three are errors. A warning in a codebase this size is a line nobody reads, and each of these patterns is one that should have to justify itself. Where the pattern is genuinely the right answer — a third-party type gap the compiler can't be talked out of, say — an `eslint-disable-next-line` with a reason says so permanently, which is more use to the next reader than a warning that scrolls past.
+All four are errors. A warning in a codebase this size is a line nobody reads, and each of these patterns is one that should have to justify itself. Where the pattern is genuinely the right answer — a third-party type gap the compiler can't be talked out of, say — an `eslint-disable-next-line` with a reason says so permanently, which is more use to the next reader than a warning that scrolls past.
 
 Both type rules are off in conventional test and spec paths, where partial test doubles routinely need a deliberate widening step to stand in for a real value.
 
@@ -321,6 +322,30 @@ A chain like `value as unknown as User` launders an unrelated type into the one 
 #### `no-object-parameters`
 
 `object` says only that the value isn't a primitive, so the signature tells a caller nothing about what it should pass. Describe the properties the function actually reads.
+
+Hiding it behind a name doesn't help, so the rule follows type aliases declared in the same file, including generic ones: `type Options = object` and `Maybe<object>` (with `type Maybe<T> = T | null`) are both reported. Imported types aren't followed.
+
+#### `no-reduce-accumulator-copy`
+
+Copying the accumulator inside a reducer copies everything gathered so far, once per item, so the reduce goes quadratic as the input grows:
+
+```js
+items.reduce((acc, item) => [...acc, item], []);
+items.reduce((acc, item) => ({ ...acc, [item.id]: item }), {});
+items.reduce((acc, item) => Object.assign({}, acc, item), {});
+items.reduce((acc, item) => acc.concat([item]), []);
+```
+
+Mutate the accumulator the reducer already owns and return it, or use a loop:
+
+```js
+items.reduce((acc, item) => {
+	acc[item.id] = item;
+	return acc;
+}, {});
+```
+
+Copying the current item (`{ ...item }`) is fine, since it doesn't grow. Array copy methods such as `concat` and `slice` are only reported when the initial value is an array literal, so string building with `concat` passes. The rule only looks at a callback passed straight to `reduce` or `reduceRight`, and doesn't follow named callbacks or helper functions. Unlike the type rules, it stays on in test files.
 
 The plugin can also be imported directly, without our config:
 

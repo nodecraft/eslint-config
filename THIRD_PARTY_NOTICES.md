@@ -2,8 +2,9 @@
 
 ## anti-slop
 
-The `no-chained-type-assertions` and `no-object-parameters` rules in
-`plugins/antislop/` were adapted from https://github.com/dmmulroy/anti-slop.
+The `no-chained-type-assertions`, `no-object-parameters`, and
+`no-reduce-accumulator-copy` rules in `plugins/antislop/` were adapted from
+https://github.com/dmmulroy/anti-slop.
 Every other rule in that plugin is our own.
 
 MIT License
