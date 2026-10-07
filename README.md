@@ -200,6 +200,7 @@ export default [
 		},
 		rules: {
 			'nodecraft-vue/no-constant-computed': 'warn',
+			'nodecraft-vue/no-deprecated-props': 'warn',
 		},
 	},
 ];
@@ -227,6 +228,33 @@ export const label = computed(() => 'Static'); // other modules read `.value`
 A getter that reads any outer identifier is left alone too, even a constant one — so `computed(() => LABELS.title)` and `computed(() => Math.PI)` pass. Proving those never change means following the identifier, which the rule deliberately doesn't do.
 
 Also ignored: getters using `this`, the writable `computed({ get, set })` form, and any `computed` that isn't Vue's — the callee has to resolve to an import from `vue` (or `@vue/*`), or to nothing at all, which is what auto-import setups look like.
+
+#### `no-deprecated-props`
+
+Flags template props that the imported component marks `@deprecated`, reading the tag from the component's own declarations. Nothing about any component library lives in the config:
+
+```ts
+// acme-ui, AcmeButton.vue
+defineProps({
+	variant: { type: String, default: 'primary' },
+	/** @deprecated Use `variant` instead. */
+	theme: { type: String, default: undefined },
+});
+```
+
+```vue
+<script setup>
+import { AcmeButton } from 'acme-ui';
+</script>
+<template>
+	<!-- reported: `theme` is deprecated on `<AcmeButton>`. Use `variant` instead. -->
+	<AcmeButton theme="danger"></AcmeButton>
+</template>
+```
+
+The import is resolved with TypeScript's module resolution, plus `#` subpath imports, and followed through re-exports to the component. For a built package that is its `.vue.d.ts`, where every `@deprecated` member is read. For a local `.vue` file only the `defineProps` (or `props:`) declaration is read. Static attributes, `v-bind:` and `:` are all checked, as are kebab-case tags and props.
+
+Not covered: components registered globally or through a `components:` option, and props spread with `v-bind="object"`. The rule needs `typescript` installed and stays silent without it. Lookups are cached for 30 seconds, so edits in a long editor session are picked up without a restart.
 
 ### antislop
 

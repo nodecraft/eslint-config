@@ -23,7 +23,7 @@ function readPackage(dir) {
 }
 
 // The nearest package.json scopes `imports`, so a nested package without one maps nothing.
-function findPackage(dir) {
+export function findPackage(dir) {
 	const cached = packageCache.get(dir);
 	if (cached && cached.expires > Date.now()) {
 		return cached.value;
@@ -114,6 +114,24 @@ function resolveSpecifier(specifier, mappings) {
 		return null;
 	}
 	return best.mapping.target.split('*').join(best.match);
+}
+
+/**
+ * Maps a `#` specifier to an absolute path through the nearest package.json `imports`, or null when nothing matches.
+ * @param {string} specifier
+ * @param {string} fromFile
+ * @returns {string | null}
+ */
+export function mapSubpathImport(specifier, fromFile) {
+	const found = findPackage(path.dirname(fromFile));
+	if (!found?.imports) {
+		return null;
+	}
+	const target = resolveSpecifier(specifier, buildMappings(found.imports, DEFAULT_CONDITIONS));
+	if (!target?.startsWith('./')) {
+		return null;
+	}
+	return path.join(found.root, target);
 }
 
 // Exported for tests.
