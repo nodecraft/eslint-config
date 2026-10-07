@@ -30,6 +30,7 @@ function loadTypescript() {
 
 let resolveOptions;
 let resolutionCache;
+let resolutionCacheExpires = 0;
 function resolveWithTypescript(request, importer) {
 	if (!resolveOptions) {
 		resolveOptions = {
@@ -38,6 +39,11 @@ function resolveWithTypescript(request, importer) {
 			allowArbitraryExtensions: true,
 		};
 		resolutionCache = ts.createModuleResolutionCache(process.cwd(), name => name, resolveOptions);
+	}
+	// TypeScript's cache never expires, so a module created mid-session would stay unresolved without this.
+	if (resolutionCacheExpires <= Date.now()) {
+		resolutionCache.clear();
+		resolutionCacheExpires = Date.now() + CACHE_TTL_MS;
 	}
 	return ts.resolveModuleName(request, importer, resolveOptions, ts.sys, resolutionCache).resolvedModule;
 }
@@ -185,35 +191,93 @@ function findComponentModule(file, exportName, seen = new Set()) {
 	return null;
 }
 
-function collectDeprecated(root, props) {
-	const visit = (node) => {
-		if (ts.isPropertySignature(node) || ts.isPropertyAssignment(node)) {
-			const tag = ts.getJSDocDeprecatedTag(node);
-			if (tag && node.name && (ts.isIdentifier(node.name) || ts.isStringLiteral(node.name))) {
-				props.set(node.name.text, ts.getTextOfJSDocComment(tag.comment) ?? '');
-			}
+const camelize = value => value.replaceAll(/-(\w)/g, (_match, letter) => letter.toUpperCase());
+const capitalize = value => value.charAt(0).toUpperCase() + value.slice(1);
+
+function localTypes(sourceFile) {
+	const types = new Map();
+	for (const statement of sourceFile.statements) {
+		if (ts.isInterfaceDeclaration(statement) || ts.isTypeAliasDeclaration(statement)) {
+			types.set(statement.name.text, statement);
 		}
-		ts.forEachChild(node, visit);
-	};
-	visit(root);
+	}
+	return types;
 }
 
-// In source, only the props declaration counts, so a deprecated field elsewhere in the script isn't mistaken for a prop.
-function collectSourceProps(sourceFile, props) {
+function referencedName(node) {
+	if (ts.isTypeReferenceNode(node) && ts.isIdentifier(node.typeName)) {
+		return node.typeName.text;
+	}
+	if (ts.isExpressionWithTypeArguments(node) && ts.isIdentifier(node.expression)) {
+		return node.expression.text;
+	}
+	return null;
+}
+
+// Reads only the direct members of a props declaration, so a deprecated field nested inside a prop's type isn't mistaken for a prop.
+function collectDeprecated(node, types, props, seen = new Set()) {
+	if (ts.isParenthesizedTypeNode(node) || ts.isTypeAliasDeclaration(node)) {
+		collectDeprecated(node.type, types, props, seen);
+		return;
+	}
+	if (ts.isIntersectionTypeNode(node)) {
+		for (const type of node.types) {
+			collectDeprecated(type, types, props, seen);
+		}
+		return;
+	}
+	if (ts.isObjectLiteralExpression(node) || ts.isTypeLiteralNode(node) || ts.isInterfaceDeclaration(node)) {
+		for (const member of node.members ?? node.properties) {
+			const tag = ts.getJSDocDeprecatedTag(member);
+			if (tag && member.name && (ts.isIdentifier(member.name) || ts.isStringLiteral(member.name))) {
+				props.set(camelize(member.name.text), ts.getTextOfJSDocComment(tag.comment) ?? '');
+			}
+		}
+		for (const clause of node.heritageClauses ?? []) {
+			for (const type of clause.types) {
+				collectDeprecated(type, types, props, seen);
+			}
+		}
+		return;
+	}
+	const local = types.get(referencedName(node));
+	if (local) {
+		if (!seen.has(local)) {
+			seen.add(local);
+			collectDeprecated(local, types, props, seen);
+		}
+		return;
+	}
+	// Wrappers like `ExtractPropTypes<...>` and `Readonly<...>` carry the props as their first type argument.
+	const [first] = node.typeArguments ?? [];
+	if (first) {
+		collectDeprecated(first, types, props, seen);
+	}
+}
+
+const isDefineComponent = node => (ts.isImportTypeNode(node) && node.qualifier?.getText() === 'DefineComponent')
+	|| (ts.isTypeReferenceNode(node) && /(?:^|\.)DefineComponent$/.test(node.typeName.getText()));
+
+function findPropsDeclarations(sourceFile) {
+	const found = [];
 	const visit = (node) => {
 		if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === 'defineProps') {
-			for (const child of [...node.arguments, ...(node.typeArguments ?? [])]) {
-				collectDeprecated(child, props);
-			}
+			found.push(...node.arguments, ...(node.typeArguments ?? []));
 			return;
 		}
 		if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.text === 'props') {
-			collectDeprecated(node.initializer, props);
+			found.push(node.initializer);
+			return;
+		}
+		// A built `.vue.d.ts` declares its props as the first type argument of `DefineComponent`.
+		if (isDefineComponent(node) && node.typeArguments?.length) {
+			found.push(node.typeArguments[0]);
 			return;
 		}
 		ts.forEachChild(node, visit);
 	};
 	visit(sourceFile);
+	return found;
 }
 
 function deprecatedPropsOf(componentFile) {
@@ -222,12 +286,10 @@ function deprecatedPropsOf(componentFile) {
 		if (!sourceFile) {
 			return NO_PROPS;
 		}
+		const types = localTypes(sourceFile);
 		const props = new Map();
-		// A built `.vue.d.ts` holds only the component's types, so every deprecated member in it describes the component.
-		if (componentFile.endsWith('.vue')) {
-			collectSourceProps(sourceFile, props);
-		} else {
-			collectDeprecated(sourceFile, props);
+		for (const declaration of findPropsDeclarations(sourceFile)) {
+			collectDeprecated(declaration, types, props);
 		}
 		return props.size > 0 ? props : NO_PROPS;
 	});
@@ -241,9 +303,6 @@ function getDeprecatedProps(binding, importer) {
 	const componentFile = memo(componentCache, `${moduleFile}\0${binding.imported}`, () => findComponentModule(moduleFile, binding.imported));
 	return componentFile ? deprecatedPropsOf(componentFile) : NO_PROPS;
 }
-
-const camelize = value => value.replaceAll(/-(\w)/g, (_match, letter) => letter.toUpperCase());
-const capitalize = value => value.charAt(0).toUpperCase() + value.slice(1);
 
 // Matches tags the way the SFC compiler matches them to `<script setup>` bindings; only hyphenated tags get the
 // camel/Pascal lookup, so a native `<button>` never resolves to an imported `Button`.
@@ -260,8 +319,16 @@ function attributeName(attribute) {
 	if (!attribute.directive) {
 		return attribute.key.rawName;
 	}
-	if (attribute.key.name.name === 'bind' && attribute.key.argument?.type === 'VIdentifier') {
+	const directive = attribute.key.name.name;
+	if (directive !== 'bind' && directive !== 'model') {
+		return null;
+	}
+	if (attribute.key.argument?.type === 'VIdentifier') {
 		return attribute.key.argument.rawName;
+	}
+	// A bare `v-model` on a component binds `modelValue`.
+	if (directive === 'model' && !attribute.key.argument) {
+		return 'modelValue';
 	}
 	return null;
 }

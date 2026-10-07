@@ -252,9 +252,9 @@ import { AcmeButton } from 'acme-ui';
 </template>
 ```
 
-The import is resolved with TypeScript's module resolution, plus `#` subpath imports, and followed through re-exports to the component. For a built package that is its `.vue.d.ts`, where every `@deprecated` member is read. For a local `.vue` file only the `defineProps` (or `props:`) declaration is read. Static attributes, `v-bind:` and `:` are all checked, as are kebab-case tags and props.
+The import is resolved with TypeScript's module resolution, plus `#` subpath imports, and followed through re-exports to the component. For a built package that is its `.vue.d.ts`, where the props type passed to `DefineComponent` is read. For a local `.vue` file it is the `defineProps` (or `props:`) declaration, including `defineProps<Props>()` with an interface or type alias declared in the same file. Only the declaration's direct members count, so a deprecated field nested inside a prop's type is ignored. Static attributes, `v-bind:`, `:` and `v-model` (as `modelValue`) or `v-model:` are all checked, as are kebab-case tags and props.
 
-Not covered: components registered globally or through a `components:` option, and props spread with `v-bind="object"`. The rule needs `typescript` installed and stays silent without it. Lookups are cached for 30 seconds, so edits in a long editor session are picked up without a restart.
+Not covered: components registered globally or through a `components:` option, props typed with an imported interface, and props spread with `v-bind="object"`. The rule needs `typescript` installed and stays silent without it. Lookups are cached for 30 seconds, so edits in a long editor session are picked up without a restart.
 
 ### antislop
 
