@@ -104,7 +104,7 @@ export default [
 
 ### `spawnpoint-codes`
 
-We ship a standalone ESLint plugin that validates [`spawnpoint`](https://github.com/nodecraft/spawnpoint) codes. It flags string-literal codes passed to `app.code()`, `app.errorCode()`, `app.failCode()` (and the `spawnpoint-express` `res.success()` / `res.fail()` helpers) that aren't defined anywhere — catching typos that would otherwise fail silently at runtime.
+We ship a standalone ESLint plugin that validates [`spawnpoint`](https://github.com/nodecraft/spawnpoint) codes. It flags string-literal codes passed to `app.code()`, `app.errorCode()`, `app.failCode()` (and the `spawnpoint-express` `res.success()` / `res.fail()` helpers) that aren't defined anywhere, catching typos that would otherwise fail silently at runtime.
 
 Valid codes are discovered automatically from:
 
@@ -112,7 +112,7 @@ Valid codes are discovered automatically from:
 - the installed `spawnpoint` package's built-in codes
 - any installed `spawnpoint-*` plugin's shipped codes (e.g. `spawnpoint-express`)
 
-The rule treats spawnpoint as the source of truth rather than re-implementing its loader. If no codes are discovered (e.g. a non-spawnpoint project), the rule does nothing. It is not enabled by any of our configs — import the plugin directly to opt in:
+The rule treats spawnpoint as the source of truth rather than re-implementing its loader. If no codes are discovered (e.g. a non-spawnpoint project), the rule does nothing. It is not enabled by any of our configs, so import the plugin directly to opt in:
 
 ```js
 // eslint.config.js
@@ -225,9 +225,9 @@ provide(TableContext, computed(() => 'idle')); // consumers read `.value`
 export const label = computed(() => 'Static'); // other modules read `.value`
 ```
 
-A getter that reads any outer identifier is left alone too, even a constant one — so `computed(() => LABELS.title)` and `computed(() => Math.PI)` pass. Proving those never change means following the identifier, which the rule deliberately doesn't do.
+A getter that reads any outer identifier is left alone too, even a constant one, so `computed(() => LABELS.title)` and `computed(() => Math.PI)` pass. Proving those never change means following the identifier, which the rule deliberately doesn't do.
 
-Also ignored: getters using `this`, the writable `computed({ get, set })` form, and any `computed` that isn't Vue's — the callee has to resolve to an import from `vue` (or `@vue/*`), or to nothing at all, which is what auto-import setups look like.
+Also ignored: getters using `this`, the writable `computed({ get, set })` form, and any `computed` that isn't Vue's. The callee has to resolve to an import from `vue` (or `@vue/*`), or to nothing at all, which is what auto-import setups look like.
 
 #### `no-deprecated-props`
 
@@ -268,10 +268,11 @@ The rules are enabled from `configs.base`, so they apply to TypeScript projects 
 | `antislop/no-chained-type-assertions` | Assertion chains such as `value as unknown as User`. |
 | `antislop/no-object-parameters` | A function parameter typed as the broad `object`, directly or through a same-file type alias. |
 | `antislop/no-reduce-accumulator-copy` | A reducer that copies its accumulator on every iteration, such as `[...acc, item]`. |
+| `antislop/no-em-dash-copy` | An em dash in a string, or in Vue template text and attributes. Suggests a hyphen. |
 
-All four are errors. A warning in a codebase this size is a line nobody reads, and each of these patterns is one that should have to justify itself. Where the pattern is genuinely the right answer — a third-party type gap the compiler can't be talked out of, say — an `eslint-disable-next-line` with a reason says so permanently, which is more use to the next reader than a warning that scrolls past.
+All five are errors. A warning in a codebase this size is a line nobody reads, and each of these patterns is one that should have to justify itself. Where the pattern is genuinely the right answer (a third-party type gap the compiler can't be talked out of, say), an `eslint-disable-next-line` with a reason says so permanently, which is more use to the next reader than a warning that scrolls past.
 
-Both type rules are off in conventional test and spec paths, where partial test doubles routinely need a deliberate widening step to stand in for a real value.
+Both type rules are off in conventional test and spec paths, where partial test doubles routinely need a deliberate widening step to stand in for a real value. So is `no-em-dash-copy`, since test names and fixtures aren't copy anyone reads.
 
 #### `no-multiline-conditional-spread`
 
@@ -324,7 +325,7 @@ if (canEdit) {
 
 Naming the branch usually pays for itself twice: the annotation on `actionsColumn` does the work both `as const` assertions were there for.
 
-Only spreads sitting directly in an array or object literal are considered, so a wrapped ternary is left alone anywhere else — including `const columns = canEdit ? [...base, actionsColumn] : base;`, which never spreads a conditional into a literal at all.
+Only spreads sitting directly in an array or object literal are considered, so a wrapped ternary is left alone anywhere else, including `const columns = canEdit ? [...base, actionsColumn] : base;`, which never spreads a conditional into a literal at all.
 
 #### The one-line escape hatch
 
@@ -335,7 +336,7 @@ A line count on its own is dodgeable: join the lines back up and the warning goe
 const columns = [nameColumn, ...(canEdit ? [{ id: 'actions', label: 'Actions', align: 'right', sortable: false, width: 'auto' }] : [])];
 ```
 
-The default of 100 leaves the real short form comfortably clear — the longest legitimate one-line conditional spread we measured across our own frontends was 82 characters. Both budgets are adjustable:
+The default of 100 leaves the real short form comfortably clear: the longest legitimate one-line conditional spread we measured across our own frontends was 82 characters. Both budgets are adjustable:
 
 ```js
 rules: {
@@ -374,6 +375,24 @@ items.reduce((acc, item) => {
 ```
 
 Copying the current item (`{ ...item }`) is fine, since it doesn't grow. Array copy methods such as `concat` and `slice` are only reported when the initial value is an array literal, so string building with `concat` passes. The rule only looks at a callback passed straight to `reduce` or `reduceRight`, and doesn't follow named callbacks or helper functions. Unlike the type rules, it stays on in test files.
+
+#### `no-em-dash-copy`
+
+Em dashes are the quickest tell that copy was generated rather than written. The rule reports them in string literals, template literals, and JSX text, and in a Vue component it also reads the template: text, static attributes, and the strings inside bindings and mustaches. Comments are left alone, and so are tagged templates such as `` css`…` `` or `` String.raw`…` ``, since the tag decides what the string means.
+
+```vue
+<template>
+	<p>Upload complete — processing files...</p> <!-- reported -->
+	<AcmeAlert label="Changes saved &mdash; restart to apply"></AcmeAlert> <!-- reported -->
+	<span>{{ server.ip ?? '—' }}</span> <!-- fine -->
+</template>
+```
+
+Each dash is reported on its own, with an editor suggestion that swaps it for a hyphen and keeps the spacing it found, so `complete — processing` becomes `complete - processing` and `9—5` becomes `9-5`. An unspaced dash between two words gets spaces, because `saved-restart` would read as a compound. It's a suggestion rather than a `--fix`, because not every string is copy: rewriting the dash in `split(' — ')`, a `RegExp` source, or an object key would change what the code does. A comma, colon, or full stop often reads better than a hyphen anyway.
+
+A string or element that is nothing but a single em dash passes, since that is a placeholder for an empty value rather than prose. A dash beside an interpolation, as in `{{ open }} — {{ close }}` or `` `${open}—${close}` ``, is joining two values and is reported. Every source spelling is caught: the character itself, `\u2014`, `\u{2014}`, `&mdash;`, and its numeric entities.
+
+Vue templates are only read when `vue-eslint-parser` is the active parser, as it is under `configs.vue3`. The rule doesn't depend on Vue, so it works the same in a plain JavaScript or TypeScript project.
 
 The plugin can also be imported directly, without our config:
 

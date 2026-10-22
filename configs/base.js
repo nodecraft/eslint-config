@@ -40,6 +40,7 @@ export default [
 		rules: {
 			'strict': ['error', 'global'],
 			'antislop/no-chained-type-assertions': 'error',
+			'antislop/no-em-dash-copy': 'error',
 			'antislop/no-multiline-conditional-spread': 'error',
 			'antislop/no-object-parameters': 'error',
 			'antislop/no-reduce-accumulator-copy': 'error',
@@ -54,13 +55,15 @@ export default [
 		},
 	},
 	{
-		// Partial test doubles often need a deliberate widening step to stand in for a real value.
+		// Partial test doubles often need a deliberate widening step to stand in for a real value, and
+		// test names and fixtures aren't copy anyone reads.
 		files: [
 			'**/*.{test,spec}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
 			'**/{test,tests}/**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
 		],
 		rules: {
 			'antislop/no-chained-type-assertions': 'off',
+			'antislop/no-em-dash-copy': 'off',
 			'antislop/no-object-parameters': 'off',
 		},
 	},

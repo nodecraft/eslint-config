@@ -9,6 +9,10 @@ export default {
 		// Enforce consistent class references in static methods
 		'unicorn/class-reference-in-static-methods': 'error',
 
+		// Enforce consistent spacing before and after commas in JSON and SOML
+		// JSON/SOML-only rule, and our configs keep unicorn off JSON files
+		'unicorn/comma-spacing': 'off',
+
 		// Enforce better comment content
 		// Re-cases tokens inside every comment, which is churn with no correctness value
 		'unicorn/comment-content': 'off',
@@ -107,12 +111,20 @@ export default {
 		// TODO expand
 		'unicorn/import-style': 'error',
 
+		// Enforce consistent indentation in JSON and CSS
+		// JSON/CSS-only rule, and our configs keep unicorn off JSON files
+		'unicorn/indent': 'off',
+
 		// Prevent usage of variables from outside the scope of isolated functions
 		'unicorn/isolated-functions': 'error',
 
 		// Enforce a consistent style for optional loop sources
 		// Codifies our existing `?? []` fallbacks, which avoid an extra level of nesting
 		'unicorn/iteration-fallback-style': ['error', 'fallback'],
+
+		// Enforce a case style for data keys
+		// Data-file-only rule (JSON, YAML, TOML), and our configs keep unicorn off those files
+		'unicorn/key-name-casing': 'off',
 
 		// Require or disallow logical assignment operator shorthand
 		'unicorn/logical-assignment-operators': 'error',
@@ -218,6 +230,9 @@ export default {
 		// Also flags plain truthiness checks on a computed key
 		'unicorn/no-computed-property-existence-check': 'off',
 
+		// Disallow conflicting CSS query and HTML form constraints
+		'unicorn/no-conflicting-constraints': 'error',
+
 		// Disallow confusing uses of `Array#{splice,toSpliced}()`
 		'unicorn/no-confusing-array-splice': 'error',
 
@@ -234,24 +249,12 @@ export default {
 		// Reported without a fix or suggestion, so every hit is a manual reorder for position alone
 		'unicorn/no-declarations-before-early-exit': 'warn',
 
-		// Disallow deprecated CSS features
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/no-deprecated-css-features': 'off',
-
 		// Do not use document.cookie directly
 		// TODO: enforce once Cookie Store API becomes more ubiquitous
 		'unicorn/no-document-cookie': 'off',
 
 		// Disallow two comparisons of the same operands that can be combined into one
 		'unicorn/no-double-comparison': 'error',
-
-		// Disallow duplicate CSS selectors
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/no-duplicate-css-selectors': 'off',
-
-		// Disallow duplicate font family names
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/no-duplicate-font-family-names': 'off',
 
 		// Disallow duplicate adjacent branches in if chains
 		'unicorn/no-duplicate-if-branches': 'error',
@@ -267,6 +270,10 @@ export default {
 
 		// Disallow empty files
 		'unicorn/no-empty-file': 'off',
+
+		// Disallow empty link text in Markdown
+		// Markdown-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-empty-link-text': 'off',
 
 		// Disallow assigning to built-in error properties
 		'unicorn/no-error-property-assignment': 'error',
@@ -291,6 +298,9 @@ export default {
 		// Disallow impossible comparisons against `.length` or `.size`
 		'unicorn/no-impossible-length-comparison': 'error',
 
+		// Disallow class accessors that hide an inherited getter or setter
+		'unicorn/no-incomplete-accessor-override': 'error',
+
 		// Disallow incorrect `querySelector()` and `querySelectorAll()` usage
 		'unicorn/no-incorrect-query-selector': 'error',
 
@@ -298,14 +308,23 @@ export default {
 		// Vue slot props inside a template literal look like the typo it hunts for
 		'unicorn/no-incorrect-template-string-interpolation': 'warn',
 
+		// Disallow ineffective CSP directives in `<meta>` elements
+		'unicorn/no-ineffective-csp-directives': 'error',
+
 		// Disallow instanceof for builtins like Array, Error, etc.
 		'unicorn/no-instanceof-builtins': 'error',
 
 		// Disallow calling functions and constructors with an invalid number of arguments
 		'unicorn/no-invalid-argument-count': 'error',
 
+		// Disallow invalid values for HTML boolean attributes
+		'unicorn/no-invalid-boolean-attribute-value': 'error',
+
 		// Disallow comparing a single character from a string to a multi-character string
 		'unicorn/no-invalid-character-comparison': 'error',
+
+		// Disallow invalid DOM tokens
+		'unicorn/no-invalid-dom-token': 'error',
 
 		// Disallow invalid options in `fetch()` and `new Request()`
 		'unicorn/no-invalid-fetch-options': 'error',
@@ -314,15 +333,36 @@ export default {
 		// Not in unicorn's recommended config
 		'unicorn/no-invalid-file-input-accept': 'off',
 
-		// Disallow unknown media features and invalid values for known media features
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/no-invalid-media-features': 'off',
+		// Disallow invalid subresource integrity metadata
+		'unicorn/no-invalid-integrity': 'error',
+
+		// Disallow invalid or ignored Intl options
+		'unicorn/no-invalid-intl-options': 'error',
+
+		// Disallow invalid property descriptors
+		'unicorn/no-invalid-property-descriptor': 'error',
 
 		// Prevent calling EventTarget#removeEventListener() with the result of an expression
 		'unicorn/no-invalid-remove-event-listener': 'error',
 
+		// Disallow invalid options in `new Response()`, `Response.json()`, and `Response.redirect()`
+		'unicorn/no-invalid-response-options': 'error',
+
+		// Disallow invalid arguments to `CSSStyleDeclaration#setProperty()`
+		'unicorn/no-invalid-style-set-property': 'error',
+
+		// Disallow statically known invalid Temporal arithmetic
+		'unicorn/no-invalid-temporal-arithmetic': 'error',
+
+		// Disallow invalid protocol strings in comparisons with `URL#protocol`
+		'unicorn/no-invalid-url-protocol-comparison': 'error',
+
 		// Disallow invalid implementations of well-known symbol methods
 		'unicorn/no-invalid-well-known-symbol-methods': 'error',
+
+		// Disallow `javascript:` URLs in Markdown
+		// Markdown-only rule, so it cannot be enabled from a JavaScript config
+		'unicorn/no-javascript-url': 'off',
 
 		// Disallow identifiers starting with new or class
 		'unicorn/no-keyword-prefix': 'off',
@@ -333,11 +373,18 @@ export default {
 		// Disallow event-control method calls after the synchronous event dispatch has finished
 		'unicorn/no-late-event-control': 'error',
 
+		// Disallow empty lines at the beginning of a file
+		'unicorn/no-leading-empty-lines': 'error',
+
 		// Disallow if statements as the only statement in if blocks without else
 		'unicorn/no-lonely-if': 'error',
 
 		// Disallow mutating a loop iterable during iteration
 		'unicorn/no-loop-iterable-mutation': 'error',
+
+		// Disallow numeric literals that lose precision when represented as IEEE 754 binary64 values
+		// Data-file and CSS-only rule; core `no-loss-of-precision` already covers JavaScript
+		'unicorn/no-loss-of-precision': 'off',
 
 		// Disallow a magic number as the `depth` argument in `Array#flat(…).`
 		'unicorn/no-magic-array-flat-depth': 'error',
@@ -378,10 +425,6 @@ export default {
 		// Disallow nested ternary expressions
 		'unicorn/no-nested-ternary': 'error',
 
-		// Disallow nesting under selector lists with mixed specificity
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/no-nesting-with-mixed-specificity': 'off',
-
 		// Disallow new Array()
 		'unicorn/no-new-array': 'error',
 
@@ -406,6 +449,9 @@ export default {
 		// Disallow optional chaining on undeclared variables
 		'unicorn/no-optional-chaining-on-undeclared-variable': 'error',
 
+		// Disallow ineffective `preventDefault()` calls in passive event listeners
+		'unicorn/no-prevent-default-in-passive-listener': 'error',
+
 		// Disallow process.exit()
 		// handled by eslint-plugin-node
 		'unicorn/no-process-exit': 'off',
@@ -413,9 +459,9 @@ export default {
 		// Disallow comparisons made redundant by an equality check in the same logical AND
 		'unicorn/no-redundant-comparison': 'error',
 
-		// Disallow nested style rules that do not modify the parent selector
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/no-redundant-nested-style-rules': 'off',
+		// Disallow repeating the same wrapper at every call to a function
+		// A conversion every caller repeats belongs in the function, but moving it is a design call
+		'unicorn/no-repeated-call-wrappers': 'warn',
 
 		// Disallow using the return value of `Array#push()` and `Array#unshift()`
 		'unicorn/no-return-array-push': 'error',
@@ -465,14 +511,6 @@ export default {
 		// Require class members to be declared
 		'unicorn/no-undeclared-class-members': 'error',
 
-		// Disallow unknown and noncanonical CSS annotations
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/no-unknown-css-annotations': 'off',
-
-		// Disallow unknown pseudo-class and pseudo-element selectors
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/no-unknown-pseudo-selectors': 'off',
-
 		// Disallow using `1` as the `depth` argument of `Array#flat()`
 		'unicorn/no-unnecessary-array-flat-depth': 'error',
 
@@ -488,6 +526,10 @@ export default {
 		// Disallow unnecessary comparisons against boolean literals
 		'unicorn/no-unnecessary-boolean-comparison': 'error',
 
+		// Disallow arguments that match their parameter defaults
+		// Explicit arguments often mirror their siblings (`{ signed: false }` beside `{ signed: true }`), which reads better
+		'unicorn/no-unnecessary-default-arguments': 'off',
+
 		// Disallow unnecessary options in `fetch()` and `new Request()`
 		'unicorn/no-unnecessary-fetch-options': 'error',
 
@@ -497,6 +539,10 @@ export default {
 
 		// Disallow unnecessary nested ternary expressions
 		'unicorn/no-unnecessary-nested-ternary': 'error',
+
+		// Disallow parameters that receive the same value at every call
+		// Flags flexibility nothing uses, but its fix rewrites signatures and many hits are test helpers
+		'unicorn/no-unnecessary-parameters': 'warn',
 
 		// Enforce the use of built-in methods instead of unnecessary polyfills
 		'unicorn/no-unnecessary-polyfills': 'error',
@@ -534,6 +580,9 @@ export default {
 		// Not in unicorn's recommended config
 		'unicorn/no-unsafe-dom-html': 'off',
 
+		// Disallow known values that JSON serialization cannot represent faithfully
+		'unicorn/no-unsafe-json-serialization': 'error',
+
 		// Disallow reading `.value` from `Promise.allSettled()` results without a fulfilled status guard
 		'unicorn/no-unsafe-promise-all-settled-values': 'error',
 
@@ -547,10 +596,6 @@ export default {
 		// $& and $1 in a variable replacement are usually, but not always, a bug
 		'unicorn/no-unsafe-string-replacement': 'warn',
 
-		// Disallow unscoped CSS nesting selectors
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/no-unscoped-css-nesting-selector': 'off',
-
 		// Disallow ignoring the return value of selected built-in methods
 		// Matches on method name, so non-array APIs like a socket join() or async.some() report falsely
 		'unicorn/no-unused-builtin-method-return': 'warn',
@@ -560,6 +605,9 @@ export default {
 
 		// Disallow unused object properties
 		'unicorn/no-unused-properties': 'off',
+
+		// Disallow passing full URLs to `URLSearchParams`
+		'unicorn/no-url-in-search-params': 'error',
 
 		// Disallow unnecessary `Boolean()` casts in array predicate callbacks
 		'unicorn/no-useless-boolean-cast': 'error',
@@ -754,7 +802,10 @@ export default {
 		'unicorn/prefer-date-now': 'error',
 
 		// Prefer default parameters over reassignment
-		'unicorn/prefer-default-parameters': 'error',
+		// A default only replaces `undefined`, so turning `value ?? null` or `value || ''` into one changes behaviour
+		'unicorn/prefer-default-parameters': ['error', {
+			checkFallbackExpressions: false,
+		}],
 
 		// Prefer direct iteration over default iterator method calls
 		'unicorn/prefer-direct-iteration': 'error',
@@ -790,12 +841,11 @@ export default {
 		// Missing from Firefox ESR 140, and no-instanceof-builtins keeps useErrorIsError off for the same reason
 		'unicorn/prefer-error-is-error': 'off',
 
+		// Prefer escape sequences for irregular whitespace characters
+		'unicorn/prefer-escaped-irregular-whitespace': 'error',
+
 		// Prefer EventTarget over EventEmitter
 		'unicorn/prefer-event-target': 'warn',
-
-		// Prefer explicit viewport units
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/prefer-explicit-viewport-units': 'off',
 
 		// Prefer export…from when re-exporting
 		'unicorn/prefer-export-from': ['error', {
@@ -867,6 +917,9 @@ export default {
 		// Prefer KeyboardEvent#key over KeyboardEvent#keyCode
 		'unicorn/prefer-keyboard-event-key': 'error',
 
+		// Prefer literal printable ASCII characters over escape sequences
+		'unicorn/prefer-literal-ascii': 'error',
+
 		// Prefer `location.assign()` over assigning to `location.href`
 		'unicorn/prefer-location-assign': 'error',
 
@@ -887,10 +940,6 @@ export default {
 
 		// Enforce the use of Math.trunc instead of bitwise operators
 		'unicorn/prefer-math-trunc': 'error',
-
-		// Prefer modern media feature range syntax
-		// CSS-only rule, so it cannot be enabled from a JavaScript config
-		'unicorn/prefer-media-feature-range-syntax': 'off',
 
 		// Prefer moving ternaries into the minimal varying part of an expression
 		'unicorn/prefer-minimal-ternary': 'error',
@@ -955,6 +1004,9 @@ export default {
 		// Renaming _foo to #foo breaks anything reaching in from outside
 		'unicorn/prefer-private-class-fields': 'warn',
 
+		// Prefer `Promise.resolve()` and `Promise.reject()` over trivial `new Promise()` calls
+		'unicorn/prefer-promise-static-methods': 'error',
+
 		// Prefer `Promise.try()` over promise-wrapping boilerplate
 		'unicorn/prefer-promise-try': 'error',
 
@@ -1000,6 +1052,9 @@ export default {
 		// Prefer arrow function properties over methods with a single return
 		// We use object methods freely
 		'unicorn/prefer-short-arrow-method': 'off',
+
+		// Prefer shorter alternatives to Unicode escape sequences
+		'unicorn/prefer-short-escape-sequences': 'error',
 
 		// Prefer simple conditions first in logical expressions
 		// Reordering operands changes short-circuit behavior
@@ -1149,6 +1204,9 @@ export default {
 
 		// Require boolean-returning Proxy traps to return booleans
 		'unicorn/require-proxy-trap-boolean-return': 'error',
+
+		// Require streaming decoding of fetch-body chunks with `TextDecoder`
+		'unicorn/require-text-decoder-streaming': 'error',
 
 		// Enforce a consistent style for single-line block comments
 		// Matches how we already write one-line doc comments

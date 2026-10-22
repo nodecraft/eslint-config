@@ -1,8 +1,10 @@
 import { ESLint, RuleTester } from 'eslint';
 import tseslint from 'typescript-eslint';
 import { describe, expect, it } from 'vitest';
+import vueEslintParser from 'vue-eslint-parser';
 
 import baseConfig from '../../configs/base.js';
+import vue3Config from '../../configs/vue3.js';
 import plugin from '../../plugins/antislop.js';
 
 const ruleTester = new RuleTester({
@@ -245,6 +247,150 @@ describe('no-reduce-accumulator-copy', () => {
 	});
 });
 
+describe('no-em-dash-copy', () => {
+	const rule = plugin.rules['no-em-dash-copy'];
+	const vueRuleTester = new RuleTester({
+		languageOptions: {
+			parser: vueEslintParser,
+			ecmaVersion: 'latest',
+			sourceType: 'module',
+		},
+	});
+	const jsxRuleTester = new RuleTester({
+		languageOptions: {
+			ecmaVersion: 'latest',
+			sourceType: 'module',
+			parserOptions: { ecmaFeatures: { jsx: true } },
+		},
+	});
+
+	// One report per dash, each suggesting its own hyphen. Leaving `output` unset asserts there is no autofix.
+	const invalid = (code, ...outputs) => {
+		return {
+			code,
+			errors: outputs.map((output) => {
+				return { messageId: 'emDash', suggestions: [{ messageId: 'useHyphen', output }] };
+			}),
+		};
+	};
+
+	it('suggests hyphens for em dashes in strings', () => {
+		ruleTester.run('no-em-dash-copy', rule, {
+			valid: [
+				'const label = "Saved, restart to apply";',
+				'const range = "9–5";',
+				// A lone dash is an empty-value placeholder, not prose.
+				'const ip = address ?? "—";',
+				'const ip = address ?? `—`;',
+				'const pattern = /—/u;',
+				'const style = css`content: "a — b";`;',
+				'const label = String.raw`Saved — restart`;',
+				'// Comments aren\'t copy — they can keep the dash.\nconst label = "Saved";',
+				// An escaped backslash means the source holds a literal `—`, not a dash.
+				String.raw`const label = "\\u2014 is the em dash";`,
+			],
+			invalid: [
+				invalid('const label = "Saved — restart to apply";', 'const label = "Saved - restart to apply";'),
+				// Unspaced between words, a bare hyphen would read as a compound word.
+				invalid('const label = "Saved—restart to apply";', 'const label = "Saved - restart to apply";'),
+				invalid('const hours = "Open 9—5";', 'const hours = "Open 9-5";'),
+				invalid(
+					'const label = "Drop the folder — the one holding config.json — instead";',
+					'const label = "Drop the folder - the one holding config.json — instead";',
+					'const label = "Drop the folder — the one holding config.json - instead";',
+				),
+				invalid(String.raw`const label = "\u2014 Nodecraft";`, 'const label = "- Nodecraft";'),
+				invalid(String.raw`const label = "a \u{02014} b";`, 'const label = "a - b";'),
+				// The `\` is an escaped backslash, so the escape after it is still a dash.
+				invalid(String.raw`const label = "C:\\\u2014";`, String.raw`const label = "C:\\-";`),
+				// The `n` in `\n` isn't a word, so the dash doesn't gain spaces.
+				invalid(String.raw`const label = "Saved\n\u2014restart";`, String.raw`const label = "Saved\n-restart";`),
+				// eslint-disable-next-line no-template-curly-in-string -- the placeholder belongs to the linted snippet
+				invalid('const label = `${name} — ${size}`;', 'const label = `${name} - ${size}`;'),
+				// Beside an expression, a lone dash is joining two values rather than standing in for one.
+				// eslint-disable-next-line no-template-curly-in-string -- the placeholder belongs to the linted snippet
+				invalid('const hours = `${open}—${close}`;', 'const hours = `${open}-${close}`;'),
+				invalid('const label = name + " — " + size;', 'const label = name + " - " + size;'),
+				// JS doesn't decode entities, so `&mdash;` here is literal text.
+				invalid('const label = "Saved — use &mdash; in HTML";', 'const label = "Saved - use &mdash; in HTML";'),
+			],
+		});
+	});
+
+	it('checks JSX text', () => {
+		jsxRuleTester.run('no-em-dash-copy', rule, {
+			valid: ['const cell = <td>\n\t—\n</td>;'],
+			invalid: [
+				invalid('const hours = <p>{open} — {close}</p>;', 'const hours = <p>{open} - {close}</p>;'),
+				invalid('const hint = <p title="Saved &mdash; restart" />;', 'const hint = <p title="Saved - restart" />;'),
+				// JSX text doesn't decode escapes, so `\u2014` here is literal text.
+				invalid(String.raw`const hint = <p>Saved — type \u2014</p>;`, String.raw`const hint = <p>Saved - type \u2014</p>;`),
+			],
+		});
+	});
+
+	it('checks Vue template text, attributes, and expressions', () => {
+		vueRuleTester.run('no-em-dash-copy', rule, {
+			valid: [
+				'<template><span>{{ ip ?? "—" }}</span><span>\n\t—\n</span><span title="—"></span></template>',
+				'<template><!-- comments aren\'t copy — keep the dash --><p>Saved</p></template>',
+			],
+			invalid: [
+				invalid(
+					'<template><p>Upload complete — processing files...</p></template>',
+					'<template><p>Upload complete - processing files...</p></template>',
+				),
+				invalid(
+					'<template><p>Unsafe pattern &mdash; matching may be slow.</p></template>',
+					'<template><p>Unsafe pattern - matching may be slow.</p></template>',
+				),
+				// HTML still decodes a numeric entity without its semicolon.
+				invalid('<template><p>Saved &#8212 restart</p></template>', '<template><p>Saved - restart</p></template>'),
+				// Template text doesn't decode escapes, so `\u2014` here is literal text.
+				invalid(
+					String.raw`<template><p>Saved — type \u2014</p></template>`,
+					String.raw`<template><p>Saved - type \u2014</p></template>`,
+				),
+				// Vue decodes entities before parsing an expression, so this string renders a dash.
+				invalid(
+					'<template><p>{{ "Saved &mdash; restart" }}</p></template>',
+					'<template><p>{{ "Saved - restart" }}</p></template>',
+				),
+				invalid(
+					'<template><p>{{ open }} — {{ close }}</p></template>',
+					'<template><p>{{ open }} - {{ close }}</p></template>',
+				),
+				invalid(
+					'<template><p>{{ open }}—{{ close }}</p></template>',
+					'<template><p>{{ open }}-{{ close }}</p></template>',
+				),
+				invalid(
+					'<template><AcmeButton title="Can\'t log in — use your password"></AcmeButton></template>',
+					'<template><AcmeButton title="Can\'t log in - use your password"></AcmeButton></template>',
+				),
+				invalid(
+					'<template><AcmeButton :title="edited ? \'Edited — not saved\' : \'Saved\'"></AcmeButton></template>',
+					'<template><AcmeButton :title="edited ? \'Edited - not saved\' : \'Saved\'"></AcmeButton></template>',
+				),
+				invalid(
+					'<template><p>Saved</p></template>\n<script setup>\nconst label = "Saved — restart";\n</script>',
+					'<template><p>Saved</p></template>\n<script setup>\nconst label = "Saved - restart";\n</script>',
+				),
+			],
+		});
+	});
+
+	it('reaches Vue templates through the shipped configs', async () => {
+		const eslint = new ESLint({ overrideConfig: [...baseConfig, ...vue3Config], overrideConfigFile: true });
+		const [result] = await eslint.lintText(
+			'<template>\n\t<p>Saved — restart to apply</p>\n</template>\n',
+			{ filePath: 'component.vue' },
+		);
+		expect(result.messages.filter(message => message.fatal)).toHaveLength(0);
+		expect(result.messages.map(message => message.ruleId)).toContain('antislop/no-em-dash-copy');
+	});
+});
+
 describe('plugin shape', () => {
 	it('exposes metadata and is enabled in the base config', () => {
 		expect(plugin.meta.name).toBe('eslint-plugin-nodecraft-antislop');
@@ -254,12 +400,14 @@ describe('plugin shape', () => {
 		expect(config.plugins.antislop).toBe(plugin);
 		expect(config.rules['antislop/no-multiline-conditional-spread']).toBe('error');
 		expect(config.rules['antislop/no-chained-type-assertions']).toBe('error');
+		expect(config.rules['antislop/no-em-dash-copy']).toBe('error');
 		expect(config.rules['antislop/no-object-parameters']).toBe('error');
 		expect(config.rules['antislop/no-reduce-accumulator-copy']).toBe('error');
 
 		const testConfig = baseConfig.find(entry => entry.rules?.['antislop/no-chained-type-assertions'] === 'off');
 		expect(testConfig.files).toContain('**/*.{test,spec}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}');
 		expect(testConfig.rules['antislop/no-object-parameters']).toBe('off');
+		expect(testConfig.rules['antislop/no-em-dash-copy']).toBe('off');
 	});
 
 	it('limits both type rules to non-test files', async () => {
