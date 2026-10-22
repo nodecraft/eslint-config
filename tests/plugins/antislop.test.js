@@ -283,6 +283,8 @@ describe('no-em-dash-copy', () => {
 				'const ip = address ?? "—";',
 				'const ip = address ?? `—`;',
 				'const pattern = /—/u;',
+				'const style = css`content: "a — b";`;',
+				'const label = String.raw`Saved — restart`;',
 				'// Comments aren\'t copy — they can keep the dash.\nconst label = "Saved";',
 				// An escaped backslash means the source holds a literal `—`, not a dash.
 				String.raw`const label = "\\u2014 is the em dash";`,
@@ -309,6 +311,8 @@ describe('no-em-dash-copy', () => {
 				// eslint-disable-next-line no-template-curly-in-string -- the placeholder belongs to the linted snippet
 				invalid('const hours = `${open}—${close}`;', 'const hours = `${open}-${close}`;'),
 				invalid('const label = name + " — " + size;', 'const label = name + " - " + size;'),
+				// JS doesn't decode entities, so `&mdash;` here is literal text.
+				invalid('const label = "Saved — use &mdash; in HTML";', 'const label = "Saved - use &mdash; in HTML";'),
 			],
 		});
 	});
@@ -318,6 +322,9 @@ describe('no-em-dash-copy', () => {
 			valid: ['const cell = <td>\n\t—\n</td>;'],
 			invalid: [
 				invalid('const hours = <p>{open} — {close}</p>;', 'const hours = <p>{open} - {close}</p>;'),
+				invalid('const hint = <p title="Saved &mdash; restart" />;', 'const hint = <p title="Saved - restart" />;'),
+				// JSX text doesn't decode escapes, so `\u2014` here is literal text.
+				invalid(String.raw`const hint = <p>Saved — type \u2014</p>;`, String.raw`const hint = <p>Saved - type \u2014</p>;`),
 			],
 		});
 	});
@@ -339,6 +346,16 @@ describe('no-em-dash-copy', () => {
 				),
 				// HTML still decodes a numeric entity without its semicolon.
 				invalid('<template><p>Saved &#8212 restart</p></template>', '<template><p>Saved - restart</p></template>'),
+				// Template text doesn't decode escapes, so `\u2014` here is literal text.
+				invalid(
+					String.raw`<template><p>Saved — type \u2014</p></template>`,
+					String.raw`<template><p>Saved - type \u2014</p></template>`,
+				),
+				// Vue decodes entities before parsing an expression, so this string renders a dash.
+				invalid(
+					'<template><p>{{ "Saved &mdash; restart" }}</p></template>',
+					'<template><p>{{ "Saved - restart" }}</p></template>',
+				),
 				invalid(
 					'<template><p>{{ open }} — {{ close }}</p></template>',
 					'<template><p>{{ open }} - {{ close }}</p></template>',

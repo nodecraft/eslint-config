@@ -1,8 +1,15 @@
 const EM_DASH = '—';
 
-// Every way an em dash can be spelled in source. An escape only counts after an even run of
-// backslashes, since `\\u2014` is a literal backslash followed by `u2014`.
-const RAW_EM_DASH = /—|&mdash;|&#0*8212(?!\d);?|&#[Xx]0*2014(?![\dA-Fa-f]);?|(?<=(?<!\\)(?:\\\\)*)\\u(?:2014|\{0*2014\})/gu;
+const ENTITY = String.raw`&mdash;|&#0*8212(?!\d);?|&#[Xx]0*2014(?![\dA-Fa-f]);?`;
+// An escape only counts after an even run of backslashes, since
+// `\\u2014` is a literal backslash followed by `u2014`.
+const ESCAPE = String.raw`(?<=(?<!\\)(?:\\\\)*)\\u(?:2014|\{0*2014\})`;
+
+// Each node only matches the spellings its syntax decodes: JS ignores entities and markup ignores
+// escapes. Vue decodes entities before parsing template expressions, so those take both.
+const SCRIPT_SPELLINGS = new RegExp(`${EM_DASH}|${ESCAPE}`, 'gu');
+const MARKUP_SPELLINGS = new RegExp(`${EM_DASH}|${ENTITY}`, 'gu');
+const TEMPLATE_EXPRESSION_SPELLINGS = new RegExp(`${EM_DASH}|${ENTITY}|${ESCAPE}`, 'gu');
 const LETTER = /\p{L}/u;
 
 // The `n` in `\n` is an escape, not part of a word.
@@ -51,12 +58,12 @@ export default {
 
 		// A dash standing alone is a placeholder for an empty value (`value ?? '—'`), not prose. A
 		// spaced one (`' — '`) is a separator joining two values, so it still counts.
-		const check = function(node, text, isPlaceholder) {
+		const check = function(node, text, isPlaceholder, spellings) {
 			if (typeof text !== 'string' || !text.includes(EM_DASH) || isPlaceholder) {
 				return;
 			}
 			const raw = sourceCode.getText(node);
-			const matches = raw.matchAll(RAW_EM_DASH).toArray();
+			const matches = raw.matchAll(spellings).toArray();
 			if (matches.length === 0) {
 				// A spelling the pattern doesn't know is still reported, just without a suggestion.
 				context.report({ node, messageId: 'emDash' });
@@ -76,13 +83,27 @@ export default {
 			}
 		};
 
+		const checkLiteral = (node, spellings) => check(node, node.value, node.value === EM_DASH, spellings);
+		const checkTemplateElement = (node, spellings) => {
+			// The tag decides what a tagged template means (`css`, `sql`, `String.raw`), so it isn't copy.
+			if (node.parent.parent.type === 'TaggedTemplateExpression') {
+				return;
+			}
+			const text = node.value.cooked;
+			check(node, text, text === EM_DASH && node.parent.quasis.length === 1, spellings);
+		};
+
 		const visitor = {
-			Literal: node => check(node, node.value, node.value === EM_DASH),
-			TemplateElement: (node) => {
-				const text = node.value.cooked;
-				check(node, text, text === EM_DASH && node.parent.quasis.length === 1);
+			Literal: (node) => {
+				// A JSX attribute string is markup, unlike a string inside a JSX expression.
+				if (node.parent.type === 'JSXAttribute') {
+					checkLiteral(node, MARKUP_SPELLINGS);
+				} else {
+					checkLiteral(node, SCRIPT_SPELLINGS);
+				}
 			},
-			JSXText: node => check(node, node.value, isLoneText(node)),
+			TemplateElement: node => checkTemplateElement(node, SCRIPT_SPELLINGS),
+			JSXText: node => check(node, node.value, isLoneText(node), MARKUP_SPELLINGS),
 		};
 
 		const parserServices = sourceCode.parserServices;
@@ -91,10 +112,10 @@ export default {
 		}
 		// Template copy is the main target in a Vue app: text, static attributes, and expressions.
 		return parserServices.defineTemplateBodyVisitor({
-			VText: node => check(node, node.value, isLoneText(node)),
-			VLiteral: node => check(node, node.value, node.value === EM_DASH),
-			Literal: visitor.Literal,
-			TemplateElement: visitor.TemplateElement,
+			VText: node => check(node, node.value, isLoneText(node), MARKUP_SPELLINGS),
+			VLiteral: node => checkLiteral(node, MARKUP_SPELLINGS),
+			Literal: node => checkLiteral(node, TEMPLATE_EXPRESSION_SPELLINGS),
+			TemplateElement: node => checkTemplateElement(node, TEMPLATE_EXPRESSION_SPELLINGS),
 		}, visitor);
 	},
 };

@@ -378,7 +378,7 @@ Copying the current item (`{ ...item }`) is fine, since it doesn't grow. Array c
 
 #### `no-em-dash-copy`
 
-Em dashes are the quickest tell that copy was generated rather than written. The rule reports them in string literals, template literals, and JSX text, and in a Vue component it also reads the template: text, static attributes, and the strings inside bindings and mustaches. Comments are left alone.
+Em dashes are the quickest tell that copy was generated rather than written. The rule reports them in string literals, template literals, and JSX text, and in a Vue component it also reads the template: text, static attributes, and the strings inside bindings and mustaches. Comments are left alone, and so are tagged templates such as `` css`…` `` or `` String.raw`…` ``, since the tag decides what the string means.
 
 ```vue
 <template>
