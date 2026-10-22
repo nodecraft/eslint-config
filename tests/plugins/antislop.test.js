@@ -249,7 +249,6 @@ describe('no-reduce-accumulator-copy', () => {
 
 describe('no-em-dash-copy', () => {
 	const rule = plugin.rules['no-em-dash-copy'];
-	const error = { messageId: 'emDash' };
 	const vueRuleTester = new RuleTester({
 		languageOptions: {
 			parser: vueEslintParser,
@@ -257,8 +256,25 @@ describe('no-em-dash-copy', () => {
 			sourceType: 'module',
 		},
 	});
+	const jsxRuleTester = new RuleTester({
+		languageOptions: {
+			ecmaVersion: 'latest',
+			sourceType: 'module',
+			parserOptions: { ecmaFeatures: { jsx: true } },
+		},
+	});
 
-	it('fixes em dashes in strings to hyphens', () => {
+	// One report per dash, each suggesting its own hyphen. Leaving `output` unset asserts there is no autofix.
+	const invalid = (code, ...outputs) => {
+		return {
+			code,
+			errors: outputs.map((output) => {
+				return { messageId: 'emDash', suggestions: [{ messageId: 'useHyphen', output }] };
+			}),
+		};
+	};
+
+	it('suggests hyphens for em dashes in strings', () => {
 		ruleTester.run('no-em-dash-copy', rule, {
 			valid: [
 				'const label = "Saved, restart to apply";',
@@ -272,44 +288,36 @@ describe('no-em-dash-copy', () => {
 				String.raw`const label = "\\u2014 is the em dash";`,
 			],
 			invalid: [
-				{
-					code: 'const label = "Saved — restart to apply";',
-					output: 'const label = "Saved - restart to apply";',
-					errors: [error],
-				},
-				{
-					// Unspaced between words, a bare hyphen would read as a compound word.
-					code: 'const label = "Saved—restart to apply";',
-					output: 'const label = "Saved - restart to apply";',
-					errors: [error],
-				},
-				{
-					code: 'const hours = "Open 9—5";',
-					output: 'const hours = "Open 9-5";',
-					errors: [error],
-				},
-				{
-					code: 'const label = "Drop the folder — the one holding config.json — instead";',
-					output: 'const label = "Drop the folder - the one holding config.json - instead";',
-					errors: [error],
-				},
-				{
-					code: String.raw`const label = "\u2014 Nodecraft";`,
-					output: 'const label = "- Nodecraft";',
-					errors: [error],
-				},
-				{
-					// eslint-disable-next-line no-template-curly-in-string -- the placeholder belongs to the linted snippet
-					code: 'const label = `${name} — ${size}`;',
-					// eslint-disable-next-line no-template-curly-in-string -- the placeholder belongs to the linted snippet
-					output: 'const label = `${name} - ${size}`;',
-					errors: [error],
-				},
-				{
-					code: 'const label = name + " — " + size;',
-					output: 'const label = name + " - " + size;',
-					errors: [error],
-				},
+				invalid('const label = "Saved — restart to apply";', 'const label = "Saved - restart to apply";'),
+				// Unspaced between words, a bare hyphen would read as a compound word.
+				invalid('const label = "Saved—restart to apply";', 'const label = "Saved - restart to apply";'),
+				invalid('const hours = "Open 9—5";', 'const hours = "Open 9-5";'),
+				invalid(
+					'const label = "Drop the folder — the one holding config.json — instead";',
+					'const label = "Drop the folder - the one holding config.json — instead";',
+					'const label = "Drop the folder — the one holding config.json - instead";',
+				),
+				invalid(String.raw`const label = "\u2014 Nodecraft";`, 'const label = "- Nodecraft";'),
+				invalid(String.raw`const label = "a \u{02014} b";`, 'const label = "a - b";'),
+				// The `\` is an escaped backslash, so the escape after it is still a dash.
+				invalid(String.raw`const label = "C:\\\u2014";`, String.raw`const label = "C:\\-";`),
+				// The `n` in `\n` isn't a word, so the dash doesn't gain spaces.
+				invalid(String.raw`const label = "Saved\n\u2014restart";`, String.raw`const label = "Saved\n-restart";`),
+				// eslint-disable-next-line no-template-curly-in-string -- the placeholder belongs to the linted snippet
+				invalid('const label = `${name} — ${size}`;', 'const label = `${name} - ${size}`;'),
+				// Beside an expression, a lone dash is joining two values rather than standing in for one.
+				// eslint-disable-next-line no-template-curly-in-string -- the placeholder belongs to the linted snippet
+				invalid('const hours = `${open}—${close}`;', 'const hours = `${open}-${close}`;'),
+				invalid('const label = name + " — " + size;', 'const label = name + " - " + size;'),
+			],
+		});
+	});
+
+	it('checks JSX text', () => {
+		jsxRuleTester.run('no-em-dash-copy', rule, {
+			valid: ['const cell = <td>\n\t—\n</td>;'],
+			invalid: [
+				invalid('const hours = <p>{open} — {close}</p>;', 'const hours = <p>{open} - {close}</p>;'),
 			],
 		});
 	});
@@ -321,31 +329,36 @@ describe('no-em-dash-copy', () => {
 				'<template><!-- comments aren\'t copy — keep the dash --><p>Saved</p></template>',
 			],
 			invalid: [
-				{
-					code: '<template><p>Upload complete — processing files...</p></template>',
-					output: '<template><p>Upload complete - processing files...</p></template>',
-					errors: [error],
-				},
-				{
-					code: '<template><p>Unsafe pattern &mdash; matching may be slow.</p></template>',
-					output: '<template><p>Unsafe pattern - matching may be slow.</p></template>',
-					errors: [error],
-				},
-				{
-					code: '<template><AcmeButton title="Can\'t log in — use your password"></AcmeButton></template>',
-					output: '<template><AcmeButton title="Can\'t log in - use your password"></AcmeButton></template>',
-					errors: [error],
-				},
-				{
-					code: '<template><AcmeButton :title="edited ? \'Edited — not saved\' : \'Saved\'"></AcmeButton></template>',
-					output: '<template><AcmeButton :title="edited ? \'Edited - not saved\' : \'Saved\'"></AcmeButton></template>',
-					errors: [error],
-				},
-				{
-					code: '<template><p>Saved</p></template>\n<script setup>\nconst label = "Saved — restart";\n</script>',
-					output: '<template><p>Saved</p></template>\n<script setup>\nconst label = "Saved - restart";\n</script>',
-					errors: [error],
-				},
+				invalid(
+					'<template><p>Upload complete — processing files...</p></template>',
+					'<template><p>Upload complete - processing files...</p></template>',
+				),
+				invalid(
+					'<template><p>Unsafe pattern &mdash; matching may be slow.</p></template>',
+					'<template><p>Unsafe pattern - matching may be slow.</p></template>',
+				),
+				// HTML still decodes a numeric entity without its semicolon.
+				invalid('<template><p>Saved &#8212 restart</p></template>', '<template><p>Saved - restart</p></template>'),
+				invalid(
+					'<template><p>{{ open }} — {{ close }}</p></template>',
+					'<template><p>{{ open }} - {{ close }}</p></template>',
+				),
+				invalid(
+					'<template><p>{{ open }}—{{ close }}</p></template>',
+					'<template><p>{{ open }}-{{ close }}</p></template>',
+				),
+				invalid(
+					'<template><AcmeButton title="Can\'t log in — use your password"></AcmeButton></template>',
+					'<template><AcmeButton title="Can\'t log in - use your password"></AcmeButton></template>',
+				),
+				invalid(
+					'<template><AcmeButton :title="edited ? \'Edited — not saved\' : \'Saved\'"></AcmeButton></template>',
+					'<template><AcmeButton :title="edited ? \'Edited - not saved\' : \'Saved\'"></AcmeButton></template>',
+				),
+				invalid(
+					'<template><p>Saved</p></template>\n<script setup>\nconst label = "Saved — restart";\n</script>',
+					'<template><p>Saved</p></template>\n<script setup>\nconst label = "Saved - restart";\n</script>',
+				),
 			],
 		});
 	});

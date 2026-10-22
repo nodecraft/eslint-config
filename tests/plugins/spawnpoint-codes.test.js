@@ -16,7 +16,7 @@ const ruleTester = new RuleTester({
 
 // Inject codes via `additionalCodes` so matching tests never touch the filesystem.
 const KNOWN = ['user.not_found', 'user.email_inuse', 'express.status_200', 'billing.webhook.fail'];
-const withCodes = codes => [{ additionalCodes: codes, codePaths: [], packages: [] }];
+const knownOptions = [{ additionalCodes: KNOWN, codePaths: [], packages: [] }];
 
 // ── Known vs unknown codes ──────────────────────────────────────────────────
 
@@ -24,21 +24,21 @@ describe('no-unknown-code', () => {
 	it('accepts known codes and flags unknown ones', () => {
 		ruleTester.run('no-unknown-code', rule, {
 			valid: [
-				{ code: 'app.failCode(\'user.not_found\');', options: withCodes(KNOWN) },
-				{ code: 'app.errorCode(\'user.email_inuse\');', options: withCodes(KNOWN) },
-				{ code: 'app.code(\'billing.webhook.fail\');', options: withCodes(KNOWN) },
-				{ code: 'res.success(\'express.status_200\');', options: withCodes(KNOWN) },
-				{ code: 'res.fail(\'user.not_found\');', options: withCodes(KNOWN) },
+				{ code: 'app.failCode(\'user.not_found\');', options: knownOptions },
+				{ code: 'app.errorCode(\'user.email_inuse\');', options: knownOptions },
+				{ code: 'app.code(\'billing.webhook.fail\');', options: knownOptions },
+				{ code: 'res.success(\'express.status_200\');', options: knownOptions },
+				{ code: 'res.fail(\'user.not_found\');', options: knownOptions },
 			],
 			invalid: [
 				{
 					code: 'app.failCode(\'user.not_fond\');',
-					options: withCodes(KNOWN),
+					options: knownOptions,
 					errors: [{ messageId: 'unknownCode', data: { code: 'user.not_fond' } }],
 				},
 				{
 					code: 'res.success(\'express.status_999\');',
-					options: withCodes(KNOWN),
+					options: knownOptions,
 					errors: [{ messageId: 'unknownCode', data: { code: 'express.status_999' } }],
 				},
 			],
@@ -51,14 +51,14 @@ describe('no-unknown-code', () => {
 		ruleTester.run('no-unknown-code', rule, {
 			valid: [
 				// Error object forwarded to res.fail — not a code
-				{ code: 'res.fail(err);', options: withCodes(KNOWN) },
+				{ code: 'res.fail(err);', options: knownOptions },
 				// Variable holding a code
-				{ code: 'app.failCode(someCode);', options: withCodes(KNOWN) },
+				{ code: 'app.failCode(someCode);', options: knownOptions },
 				// Member expression (e.g. error.code)
-				{ code: 'app.code(error.code);', options: withCodes(KNOWN) },
+				{ code: 'app.code(error.code);', options: knownOptions },
 				// Template literal with an expression (the ${...} is part of the code under test)
 				// eslint-disable-next-line no-template-curly-in-string -- literal source string, not a JS template
-				{ code: 'app.code(`user.${name}`);', options: withCodes(KNOWN) },
+				{ code: 'app.code(`user.${name}`);', options: knownOptions },
 			],
 			invalid: [],
 		});
@@ -70,14 +70,14 @@ describe('no-unknown-code', () => {
 		ruleTester.run('no-unknown-code', rule, {
 			valid: [
 				// `error` is a logger, not a code method
-				{ code: 'app.error(\'some free-form message that is not a code\');', options: withCodes(KNOWN) },
-				{ code: 'app.warn(\'another message\');', options: withCodes(KNOWN) },
+				{ code: 'app.error(\'some free-form message that is not a code\');', options: knownOptions },
+				{ code: 'app.warn(\'another message\');', options: knownOptions },
 				// console is not a tracked receiver
-				{ code: 'console.error(\'boom\');', options: withCodes(KNOWN) },
+				{ code: 'console.error(\'boom\');', options: knownOptions },
 				// Unknown receiver name
-				{ code: 'thing.failCode(\'whatever.code\');', options: withCodes(KNOWN) },
+				{ code: 'thing.failCode(\'whatever.code\');', options: knownOptions },
 				// Computed member access is not matched
-				{ code: 'app[\'failCode\'](\'whatever.code\');', options: withCodes(KNOWN) },
+				{ code: 'app[\'failCode\'](\'whatever.code\');', options: knownOptions },
 			],
 			invalid: [],
 		});
