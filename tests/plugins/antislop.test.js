@@ -1,8 +1,10 @@
 import { ESLint, RuleTester } from 'eslint';
 import tseslint from 'typescript-eslint';
 import { describe, expect, it } from 'vitest';
+import vueEslintParser from 'vue-eslint-parser';
 
 import baseConfig from '../../configs/base.js';
+import vue3Config from '../../configs/vue3.js';
 import plugin from '../../plugins/antislop.js';
 
 const ruleTester = new RuleTester({
@@ -245,6 +247,120 @@ describe('no-reduce-accumulator-copy', () => {
 	});
 });
 
+describe('no-em-dash-copy', () => {
+	const rule = plugin.rules['no-em-dash-copy'];
+	const error = { messageId: 'emDash' };
+	const vueRuleTester = new RuleTester({
+		languageOptions: {
+			parser: vueEslintParser,
+			ecmaVersion: 'latest',
+			sourceType: 'module',
+		},
+	});
+
+	it('fixes em dashes in strings to hyphens', () => {
+		ruleTester.run('no-em-dash-copy', rule, {
+			valid: [
+				'const label = "Saved, restart to apply";',
+				'const range = "9–5";',
+				// A lone dash is an empty-value placeholder, not prose.
+				'const ip = address ?? "—";',
+				'const ip = address ?? `—`;',
+				'const pattern = /—/u;',
+				'// Comments aren\'t copy — they can keep the dash.\nconst label = "Saved";',
+				// An escaped backslash means the source holds a literal `—`, not a dash.
+				String.raw`const label = "\\u2014 is the em dash";`,
+			],
+			invalid: [
+				{
+					code: 'const label = "Saved — restart to apply";',
+					output: 'const label = "Saved - restart to apply";',
+					errors: [error],
+				},
+				{
+					// Unspaced between words, a bare hyphen would read as a compound word.
+					code: 'const label = "Saved—restart to apply";',
+					output: 'const label = "Saved - restart to apply";',
+					errors: [error],
+				},
+				{
+					code: 'const hours = "Open 9—5";',
+					output: 'const hours = "Open 9-5";',
+					errors: [error],
+				},
+				{
+					code: 'const label = "Drop the folder — the one holding config.json — instead";',
+					output: 'const label = "Drop the folder - the one holding config.json - instead";',
+					errors: [error],
+				},
+				{
+					code: String.raw`const label = "\u2014 Nodecraft";`,
+					output: 'const label = "- Nodecraft";',
+					errors: [error],
+				},
+				{
+					// eslint-disable-next-line no-template-curly-in-string -- the placeholder belongs to the linted snippet
+					code: 'const label = `${name} — ${size}`;',
+					// eslint-disable-next-line no-template-curly-in-string -- the placeholder belongs to the linted snippet
+					output: 'const label = `${name} - ${size}`;',
+					errors: [error],
+				},
+				{
+					code: 'const label = name + " — " + size;',
+					output: 'const label = name + " - " + size;',
+					errors: [error],
+				},
+			],
+		});
+	});
+
+	it('checks Vue template text, attributes, and expressions', () => {
+		vueRuleTester.run('no-em-dash-copy', rule, {
+			valid: [
+				'<template><span>{{ ip ?? "—" }}</span><span>\n\t—\n</span><span title="—"></span></template>',
+				'<template><!-- comments aren\'t copy — keep the dash --><p>Saved</p></template>',
+			],
+			invalid: [
+				{
+					code: '<template><p>Upload complete — processing files...</p></template>',
+					output: '<template><p>Upload complete - processing files...</p></template>',
+					errors: [error],
+				},
+				{
+					code: '<template><p>Unsafe pattern &mdash; matching may be slow.</p></template>',
+					output: '<template><p>Unsafe pattern - matching may be slow.</p></template>',
+					errors: [error],
+				},
+				{
+					code: '<template><AcmeButton title="Can\'t log in — use your password"></AcmeButton></template>',
+					output: '<template><AcmeButton title="Can\'t log in - use your password"></AcmeButton></template>',
+					errors: [error],
+				},
+				{
+					code: '<template><AcmeButton :title="edited ? \'Edited — not saved\' : \'Saved\'"></AcmeButton></template>',
+					output: '<template><AcmeButton :title="edited ? \'Edited - not saved\' : \'Saved\'"></AcmeButton></template>',
+					errors: [error],
+				},
+				{
+					code: '<template><p>Saved</p></template>\n<script setup>\nconst label = "Saved — restart";\n</script>',
+					output: '<template><p>Saved</p></template>\n<script setup>\nconst label = "Saved - restart";\n</script>',
+					errors: [error],
+				},
+			],
+		});
+	});
+
+	it('reaches Vue templates through the shipped configs', async () => {
+		const eslint = new ESLint({ overrideConfig: [...baseConfig, ...vue3Config], overrideConfigFile: true });
+		const [result] = await eslint.lintText(
+			'<template>\n\t<p>Saved — restart to apply</p>\n</template>\n',
+			{ filePath: 'component.vue' },
+		);
+		expect(result.messages.filter(message => message.fatal)).toHaveLength(0);
+		expect(result.messages.map(message => message.ruleId)).toContain('antislop/no-em-dash-copy');
+	});
+});
+
 describe('plugin shape', () => {
 	it('exposes metadata and is enabled in the base config', () => {
 		expect(plugin.meta.name).toBe('eslint-plugin-nodecraft-antislop');
@@ -254,12 +370,14 @@ describe('plugin shape', () => {
 		expect(config.plugins.antislop).toBe(plugin);
 		expect(config.rules['antislop/no-multiline-conditional-spread']).toBe('error');
 		expect(config.rules['antislop/no-chained-type-assertions']).toBe('error');
+		expect(config.rules['antislop/no-em-dash-copy']).toBe('error');
 		expect(config.rules['antislop/no-object-parameters']).toBe('error');
 		expect(config.rules['antislop/no-reduce-accumulator-copy']).toBe('error');
 
 		const testConfig = baseConfig.find(entry => entry.rules?.['antislop/no-chained-type-assertions'] === 'off');
 		expect(testConfig.files).toContain('**/*.{test,spec}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}');
 		expect(testConfig.rules['antislop/no-object-parameters']).toBe('off');
+		expect(testConfig.rules['antislop/no-em-dash-copy']).toBe('off');
 	});
 
 	it('limits both type rules to non-test files', async () => {

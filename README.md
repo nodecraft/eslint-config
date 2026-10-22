@@ -268,10 +268,11 @@ The rules are enabled from `configs.base`, so they apply to TypeScript projects 
 | `antislop/no-chained-type-assertions` | Assertion chains such as `value as unknown as User`. |
 | `antislop/no-object-parameters` | A function parameter typed as the broad `object`, directly or through a same-file type alias. |
 | `antislop/no-reduce-accumulator-copy` | A reducer that copies its accumulator on every iteration, such as `[...acc, item]`. |
+| `antislop/no-em-dash-copy` | An em dash in a string, or in Vue template text and attributes. Autofixes to a hyphen. |
 
-All four are errors. A warning in a codebase this size is a line nobody reads, and each of these patterns is one that should have to justify itself. Where the pattern is genuinely the right answer — a third-party type gap the compiler can't be talked out of, say — an `eslint-disable-next-line` with a reason says so permanently, which is more use to the next reader than a warning that scrolls past.
+All five are errors. A warning in a codebase this size is a line nobody reads, and each of these patterns is one that should have to justify itself. Where the pattern is genuinely the right answer — a third-party type gap the compiler can't be talked out of, say — an `eslint-disable-next-line` with a reason says so permanently, which is more use to the next reader than a warning that scrolls past.
 
-Both type rules are off in conventional test and spec paths, where partial test doubles routinely need a deliberate widening step to stand in for a real value.
+Both type rules are off in conventional test and spec paths, where partial test doubles routinely need a deliberate widening step to stand in for a real value. So is `no-em-dash-copy`, since test names and fixtures aren't copy anyone reads.
 
 #### `no-multiline-conditional-spread`
 
@@ -374,6 +375,24 @@ items.reduce((acc, item) => {
 ```
 
 Copying the current item (`{ ...item }`) is fine, since it doesn't grow. Array copy methods such as `concat` and `slice` are only reported when the initial value is an array literal, so string building with `concat` passes. The rule only looks at a callback passed straight to `reduce` or `reduceRight`, and doesn't follow named callbacks or helper functions. Unlike the type rules, it stays on in test files.
+
+#### `no-em-dash-copy`
+
+Em dashes are the quickest tell that copy was generated rather than written. The rule reports them in string literals, template literals, and JSX text, and in a Vue component it also reads the template: text, static attributes, and the strings inside bindings and mustaches. Comments are left alone.
+
+```vue
+<template>
+	<p>Upload complete — processing files...</p> <!-- reported -->
+	<AcmeAlert label="Changes saved &mdash; restart to apply"></AcmeAlert> <!-- reported -->
+	<span>{{ server.ip ?? '—' }}</span> <!-- fine -->
+</template>
+```
+
+`--fix` swaps each dash for a hyphen and keeps the spacing it found, so `complete — processing` becomes `complete - processing` and `9—5` becomes `9-5`. An unspaced dash between two words gets spaces, because `saved-restart` would read as a compound. The fix is the safe mechanical swap; a comma, colon, or full stop often reads better, and is worth a second look when you have one.
+
+A string that is nothing but a single em dash passes, since that is a placeholder for an empty value rather than prose. Every source spelling is caught and fixed: the character itself, `—`, `&mdash;`, and its numeric entities.
+
+Vue templates are only read when `vue-eslint-parser` is the active parser, as it is under `configs.vue3`. The rule doesn't depend on Vue, so it works the same in a plain JavaScript or TypeScript project.
 
 The plugin can also be imported directly, without our config:
 
