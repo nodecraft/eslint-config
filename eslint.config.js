@@ -1,6 +1,9 @@
-import base from './configs/base.js';
+import { defineConfig } from 'eslint/config';
 
-export default [
+import base from './configs/base.js';
+import typescript from './configs/typescript.js';
+
+export default defineConfig([
 	...base,
 	{
 		languageOptions: {
@@ -10,4 +13,8 @@ export default [
 			strict: 'off',
 		},
 	},
-];
+	{
+		files: ['**/*.ts'],
+		extends: [typescript],
+	},
+]);

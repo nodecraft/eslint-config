@@ -41,7 +41,8 @@
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"test": "vitest run",
-		"test:watch": "vitest"
+		"test:watch": "vitest",
+		"test:types": "tsc -p tests/types"
 	},
 	"dependencies": {
 		"@eslint/js": "^10.0.1",
@@ -100,6 +101,7 @@
 	},
 	"files": [
 		"index.js",
+		"index.d.ts",
 		"configs",
 		"plugins",
 		"rules",
