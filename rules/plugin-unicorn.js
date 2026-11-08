@@ -62,7 +62,7 @@ export default {
 		'unicorn/consistent-function-style': 'off',
 
 		// Enforce consistent JSON file reads before `JSON.parse()`
-		'unicorn/consistent-json-file-read': 'warn',
+		'unicorn/consistent-json-file-read': 'error',
 
 		// Enforce consistent optional chaining for same-base member access
 		'unicorn/consistent-optional-chaining': 'error',
@@ -240,7 +240,7 @@ export default {
 		'unicorn/no-confusing-array-with': 'error',
 
 		// Do not use leading/trailing space between console.log parameters
-		'unicorn/no-console-spaces': 'off',
+		'unicorn/no-console-spaces': 'error',
 
 		// Disallow arithmetic and bitwise operations that always evaluate to `0`
 		'unicorn/no-constant-zero-expression': 'error',
@@ -250,8 +250,7 @@ export default {
 		'unicorn/no-declarations-before-early-exit': 'warn',
 
 		// Do not use document.cookie directly
-		// TODO: enforce once Cookie Store API becomes more ubiquitous
-		'unicorn/no-document-cookie': 'off',
+		'unicorn/no-document-cookie': 'error',
 
 		// Disallow two comparisons of the same operands that can be combined into one
 		'unicorn/no-double-comparison': 'error',
@@ -269,7 +268,7 @@ export default {
 		'unicorn/no-duplicate-set-values': 'error',
 
 		// Disallow empty files
-		'unicorn/no-empty-file': 'off',
+		'unicorn/no-empty-file': 'error',
 
 		// Disallow empty link text in Markdown
 		// Markdown-only rule, so it cannot be enabled from a JavaScript config
@@ -330,8 +329,7 @@ export default {
 		'unicorn/no-invalid-fetch-options': 'error',
 
 		// Disallow invalid `accept` values on file inputs
-		// Not in unicorn's recommended config
-		'unicorn/no-invalid-file-input-accept': 'off',
+		'unicorn/no-invalid-file-input-accept': 'error',
 
 		// Disallow invalid subresource integrity metadata
 		'unicorn/no-invalid-integrity': 'error',
@@ -496,8 +494,7 @@ export default {
 		'unicorn/no-top-level-assignment-in-function': 'off',
 
 		// Disallow top-level side effects in exported modules
-		// Entrypoints exist to have side effects
-		'unicorn/no-top-level-side-effects': 'off',
+		'unicorn/no-top-level-side-effects': 'error',
 
 		// Disallow `all` as a transition property
 		'unicorn/no-transition-all': 'error',
@@ -521,7 +518,7 @@ export default {
 		'unicorn/no-unnecessary-array-splice-count': 'error',
 
 		// Disallow awaiting non-promise values
-		'unicorn/no-unnecessary-await': 'warn',
+		'unicorn/no-unnecessary-await': 'error',
 
 		// Disallow unnecessary comparisons against boolean literals
 		'unicorn/no-unnecessary-boolean-comparison': 'error',
@@ -577,8 +574,8 @@ export default {
 		'unicorn/no-unsafe-buffer-conversion': 'error',
 
 		// Disallow unsafe DOM HTML APIs
-		// Not in unicorn's recommended config
-		'unicorn/no-unsafe-dom-html': 'off',
+		// Some HTML writes take trusted or pre-sanitized markup, so each hit needs a human call
+		'unicorn/no-unsafe-dom-html': 'warn',
 
 		// Disallow known values that JSON serialization cannot represent faithfully
 		'unicorn/no-unsafe-json-serialization': 'error',
@@ -838,7 +835,7 @@ export default {
 		'unicorn/prefer-else-if': 'error',
 
 		// Prefer `Error.isError()` when checking for errors
-		// Missing from Firefox ESR 140, and no-instanceof-builtins keeps useErrorIsError off for the same reason
+		// Missing from stable Safari, and no-instanceof-builtins keeps useErrorIsError off for the same reason
 		'unicorn/prefer-error-is-error': 'off',
 
 		// Prefer escape sequences for irregular whitespace characters
@@ -882,8 +879,7 @@ export default {
 		'unicorn/prefer-identifier-import-export-specifiers': 'error',
 
 		// Prefer `import.meta.{dirname,filename}` over legacy techniques for getting file paths
-		// Not in unicorn's recommended config
-		'unicorn/prefer-import-meta-properties': 'off',
+		'unicorn/prefer-import-meta-properties': 'error',
 
 		// Prefer .includes() over .indexOf() when checking for existence or non-existence
 		'unicorn/prefer-includes': 'error',
@@ -1027,8 +1023,7 @@ export default {
 		'unicorn/prefer-reflect-apply': 'error',
 
 		// Prefer `RegExp.escape()` for escaping strings to use in regular expressions
-		// Not in unicorn's recommended config
-		'unicorn/prefer-regexp-escape': 'off',
+		'unicorn/prefer-regexp-escape': 'error',
 
 		// Prefer RegExp#test() over String#match() and RegExp#exec()
 		'unicorn/prefer-regexp-test': 'error',
