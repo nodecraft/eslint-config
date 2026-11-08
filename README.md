@@ -80,6 +80,8 @@ If your application uses TypeScript, instead of extending `configs.base`, extend
 - `typescript`
 - `typescript-eslint`
 
+The package ships type declarations for every config and plugin, so an `eslint.config.ts` can import them without its own `declare module` shim.
+
 ## Plugins
 
 ### `async-callback`
