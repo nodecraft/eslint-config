@@ -413,3 +413,58 @@ export default [
 	},
 ];
 ```
+
+### antislop-tests
+
+A sibling plugin for tests that go green without proving anything: a mocked network, a sleep, a retry, or a poll on a spy. The rules are adapted from [landmines](https://github.com/interfere-inc/landmines), and each message says what to do instead. They are kept apart from `antislop` so the namespace in an error says it's about tests.
+
+| Rule | Reports |
+| --- | --- |
+| `antislop-tests/strict-msw` | Starting an MSW server or worker without failing on requests no handler covers. |
+| `antislop-tests/no-retry` | A `retry` option on a test, a suite, `vi.setConfig`, or a Vitest config's `test` block. |
+| `antislop-tests/no-fixed-sleep` | Awaiting a timed `setTimeout` promise, or a same-file helper that wraps one, in a test or hook. |
+| `antislop-tests/no-unsignaled-poll` | `vi.waitFor` or `expect.poll` that only re-reads a spy or a request recorder. |
+| `antislop-tests/no-fetch-stub` | Replacing `fetch` in a test instead of serving the response from MSW. |
+
+All five are errors in `configs.base`. `no-fetch-stub` only runs in conventional test paths, since app code can wrap or polyfill `fetch` for good reason. The other four key off Vitest and MSW calls, so they run everywhere and still reach setup files and `vitest.config.*`.
+
+`strict-msw` reports `setupServer().listen()` and `setupWorker().start()` unless the options set `onUnhandledFrame` (or `onUnhandledRequest`, before MSW 3) to `'error'` or a function. Without it, a request no handler covers reaches the network or quietly fails, and the test passes against a response nobody wrote. Options passed through a variable or a spread aren't reported, since the rule can't see them.
+
+`no-retry` reports `retry` in test and suite options, `vi.setConfig`, and any `test: {}` block in a Vitest config, including each entry under `projects`. `retry: 0` passes. A test that passes on rerun is a flake, and a retry hides it from the run that would have shown it.
+
+`no-fixed-sleep` reports an awaited `new Promise(resolve => setTimeout(resolve, ms))`, a `setTimeout(ms)` from `node:timers/promises`, `scheduler.wait`, and calls to a same-file helper whose body is one of those, when the await sits directly in a test or hook. A sleep guesses how long real work takes and fails under CPU load. Await the operation, or a promise its handler resolves, or use fake timers. A zero or missing delay passes, since yielding one macrotask is ordering rather than a guess, and so does a file that calls `vi.useFakeTimers()`.
+
+`no-unsignaled-poll` reports `vi.waitFor` and `expect.poll` when the callback only re-reads spy state (`toHaveBeenCalled*`, `.mock.calls`) or a recorder's `.length` or `.size`, as in `expect.poll(() => uploads.calls).toHaveLength(1)`. Have the handler that records the call resolve a `Promise.withResolvers()` deferred, and await that:
+
+```js
+const uploaded = Promise.withResolvers();
+server.use(http.post('*/upload', () => {
+	uploaded.resolve();
+	return HttpResponse.json({});
+}));
+
+await submit();
+await uploaded.promise;
+```
+
+Polls on rendered output, such as `vi.waitFor(() => expect(screen.getByText('Saved')).toBeTruthy())`, aren't reported.
+
+`no-fetch-stub` reports `vi.stubGlobal('fetch', ...)`, assigning `globalThis.fetch` (or `window`, `global`, `self`), and a `vi.spyOn(globalThis, 'fetch')` given a replacement with `mockResolvedValue` and friends. A spy that only observes passes, and so does putting back a `const original = globalThis.fetch`. A replaced `fetch` skips request building and response parsing, so the client under test never runs for real. MSW handlers don't have that gap.
+
+Like `antislop`, it can be imported on its own:
+
+```js
+// eslint.config.js
+import antislopTests from '@nodecraft/eslint-config/plugins/antislop-tests';
+
+export default [
+	{
+		plugins: {
+			'antislop-tests': antislopTests,
+		},
+		rules: {
+			'antislop-tests/strict-msw': 'error',
+		},
+	},
+];
+```

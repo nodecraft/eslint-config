@@ -31,6 +31,7 @@
 		"./vue-a11y": "./configs/vue-a11y.js",
 		"./configs/*": "./configs/*",
 		"./plugins/antislop": "./plugins/antislop.js",
+		"./plugins/antislop-tests": "./plugins/antislop-tests.js",
 		"./plugins/async-callback": "./plugins/async-callback.js",
 		"./plugins/spawnpoint-codes": "./plugins/spawnpoint-codes.js",
 		"./plugins/subpath-imports": "./plugins/subpath-imports.js",

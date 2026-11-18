@@ -4,6 +4,7 @@ import base from '@nodecraft/eslint-config/base';
 import json from '@nodecraft/eslint-config/json';
 import node from '@nodecraft/eslint-config/node';
 import antislop from '@nodecraft/eslint-config/plugins/antislop';
+import antislopTests from '@nodecraft/eslint-config/plugins/antislop-tests';
 import asyncCallback from '@nodecraft/eslint-config/plugins/async-callback';
 import optionalChain from '@nodecraft/eslint-config/plugins/optional-chain.js';
 import spawnpointCodes from '@nodecraft/eslint-config/plugins/spawnpoint-codes';
@@ -34,6 +35,7 @@ export default [
 	{
 		plugins: {
 			antislop,
+			'antislop-tests': antislopTests,
 			'async-callback': asyncCallback,
 			'optional-chain': optionalChain,
 			'spawnpoint-codes': spawnpointCodes,
