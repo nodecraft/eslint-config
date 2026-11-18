@@ -6,6 +6,7 @@ import regexp from 'eslint-plugin-regexp';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 
+import antislopTestsPlugin from '../plugins/antislop-tests.js';
 import antislopPlugin from '../plugins/antislop.js';
 import bestPracticesRules from '../rules/best-practices.js';
 import errorsRules from '../rules/errors.js';
@@ -18,6 +19,15 @@ import pluginStylisticRules from '../rules/plugin-stylistic.js';
 import pluginUnicornRules from '../rules/plugin-unicorn.js';
 import suggestionsRules from '../rules/suggestions.js';
 import variablesRules from '../rules/variables.js';
+
+const TEST_FILES = [
+	'**/*.{test,spec}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
+	'**/{test,tests}/**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
+];
+const SETUP_FILES = [
+	'**/*.setup.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
+	'**/setup{Tests,-tests}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
+];
 
 export default [
 	js.configs.recommended,
@@ -44,6 +54,10 @@ export default [
 			'antislop/no-multiline-conditional-spread': 'error',
 			'antislop/no-object-parameters': 'error',
 			'antislop/no-reduce-accumulator-copy': 'error',
+			// These key off Vitest calls, so they can run everywhere and still reach setup files and Vitest configs.
+			'antislop-tests/no-fixed-sleep': 'error',
+			'antislop-tests/no-retry': 'error',
+			'antislop-tests/no-unsignaled-poll': 'error',
 		},
 		plugins: {
 			'@stylistic': stylistic,
@@ -52,19 +66,25 @@ export default [
 			'import-x': importPlugin,
 			'import-newlines': importNewlines,
 			'antislop': antislopPlugin,
+			'antislop-tests': antislopTestsPlugin,
 		},
 	},
 	{
 		// Partial test doubles often need a deliberate widening step to stand in for a real value, and
 		// test names and fixtures aren't copy anyone reads.
-		files: [
-			'**/*.{test,spec}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
-			'**/{test,tests}/**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
-		],
+		files: TEST_FILES,
 		rules: {
 			'antislop/no-chained-type-assertions': 'off',
 			'antislop/no-em-dash-copy': 'off',
 			'antislop/no-object-parameters': 'off',
+		},
+	},
+	{
+		// App code can wrap fetch or run dev mocks that bypass unhandled requests, so these only read as test shortcuts in tests.
+		files: [...TEST_FILES, ...SETUP_FILES],
+		rules: {
+			'antislop-tests/no-fetch-stub': 'error',
+			'antislop-tests/strict-msw': 'error',
 		},
 	},
 	pluginImportNewlinesRules,
