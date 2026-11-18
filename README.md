@@ -1,5 +1,5 @@
 # @nodecraft/eslint-config
-[![Actions Status](https://github.com/nodecraft/eslint-config/workflows/Test/badge.svg)](https://github.com/nodecraft/eslint-config/actions)
+[![CI](https://github.com/nodecraft/eslint-config/actions/workflows/ci.yml/badge.svg)](https://github.com/nodecraft/eslint-config/actions/workflows/ci.yml)
 ## Usage
 
 We export our standard ESLint configuration for use in all Nodecraft projects.
