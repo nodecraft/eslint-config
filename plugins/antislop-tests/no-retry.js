@@ -9,6 +9,15 @@ const TEST_FUNCTIONS = new Set(['test', 'it', 'describe', 'suite']);
 // These build new test functions or tables rather than declaring a test, so their options aren't per-test.
 const BUILDER_METHODS = new Set(['each', 'for', 'extend', 'scoped', 'override']);
 
+const CONFIG_FACTORIES = new Set(['defineConfig', 'defineProject', 'defineWorkspace', 'mergeConfig']);
+
+// App code can have its own `test: { retry }` settings, so only a `test` block inside an exported config counts.
+function isConfigExport(node) {
+	return node.type === 'ExportDefaultDeclaration'
+		|| (node.type === 'CallExpression' && node.callee.type === 'Identifier' && CONFIG_FACTORIES.has(node.callee.name))
+		|| (node.type === 'AssignmentExpression' && isMember(node.left, 'module', 'exports'));
+}
+
 function isTestCall(node) {
 	return TEST_FUNCTIONS.has(calleeRoot(node.callee)) && !BUILDER_METHODS.has(memberName(node.callee));
 }
@@ -49,7 +58,7 @@ export default {
 			},
 			// Vitest config files, including each entry under `projects`.
 			Property(node) {
-				if (propertyKey(node) === 'test') {
+				if (propertyKey(node) === 'test' && context.sourceCode.getAncestors(node).some(ancestor => isConfigExport(ancestor))) {
 					reportRetries(node.value);
 				}
 			},

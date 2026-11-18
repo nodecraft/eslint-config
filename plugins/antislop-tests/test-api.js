@@ -35,6 +35,13 @@ export function calleeRoot(node) {
 	return current.type === 'Identifier' ? current.name : null;
 }
 
+// Every value a binding is given, from its initializer and any later assignments.
+export function assignedValues(variable) {
+	return variable.references
+		.filter(reference => reference.writeExpr)
+		.map(reference => reference.writeExpr);
+}
+
 export function propertyKey(property) {
 	if (property.type !== 'Property' || property.computed) {
 		return null;

@@ -24,6 +24,10 @@ const TEST_FILES = [
 	'**/*.{test,spec}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
 	'**/{test,tests}/**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
 ];
+const SETUP_FILES = [
+	'**/*.setup.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
+	'**/setup{Tests,-tests}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
+];
 
 export default [
 	js.configs.recommended,
@@ -50,11 +54,10 @@ export default [
 			'antislop/no-multiline-conditional-spread': 'error',
 			'antislop/no-object-parameters': 'error',
 			'antislop/no-reduce-accumulator-copy': 'error',
-			// These key off Vitest and MSW calls, so they can run everywhere and still reach setup files and Vitest configs.
+			// These key off Vitest calls, so they can run everywhere and still reach setup files and Vitest configs.
 			'antislop-tests/no-fixed-sleep': 'error',
 			'antislop-tests/no-retry': 'error',
 			'antislop-tests/no-unsignaled-poll': 'error',
-			'antislop-tests/strict-msw': 'error',
 		},
 		plugins: {
 			'@stylistic': stylistic,
@@ -77,10 +80,11 @@ export default [
 		},
 	},
 	{
-		// App code can legitimately wrap or polyfill fetch, so replacing it only reads as a stub in tests.
-		files: TEST_FILES,
+		// App code can wrap fetch or run dev mocks that bypass unhandled requests, so these only read as test shortcuts in tests.
+		files: [...TEST_FILES, ...SETUP_FILES],
 		rules: {
 			'antislop-tests/no-fetch-stub': 'error',
+			'antislop-tests/strict-msw': 'error',
 		},
 	},
 	pluginImportNewlinesRules,

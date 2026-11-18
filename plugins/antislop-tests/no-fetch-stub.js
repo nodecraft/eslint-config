@@ -1,4 +1,4 @@
-import { isMember, memberName } from './test-api.js';
+import { assignedValues, isMember, memberName } from './test-api.js';
 import { findVariable } from '../antislop/scope.js';
 
 const GLOBAL_OBJECTS = new Set(['globalThis', 'window', 'global', 'self']);
@@ -32,16 +32,26 @@ function isFetchSpy(node) {
 		&& property.value === 'fetch';
 }
 
-function constInit(context, identifier) {
+function valuesOf(context, identifier) {
 	const variable = findVariable(context, identifier);
-	if (variable?.defs.length !== 1) {
-		return null;
+	return variable ? assignedValues(variable) : [];
+}
+
+// Putting back a saved `original = globalThis.fetch` is cleanup, not a second stub, as long as nothing else is ever stored there.
+function isSavedOriginal(context, node) {
+	if (node.type !== 'Identifier') {
+		return false;
 	}
-	const [definition] = variable.defs;
-	if (definition.type !== 'Variable' || definition.parent.kind !== 'const') {
-		return null;
+	const values = valuesOf(context, node);
+	return values.length > 0 && values.every(value => isGlobalFetch(value));
+}
+
+// A spy is often declared with `let` and assigned in a hook, so any assignment of a fetch spy counts.
+function isFetchSpyReference(context, node) {
+	if (node.type !== 'Identifier') {
+		return isFetchSpy(node);
 	}
-	return definition.node.init;
+	return valuesOf(context, node).some(value => isFetchSpy(value));
 }
 
 export default {
@@ -59,11 +69,9 @@ export default {
 				if (!isGlobalFetch(node.left)) {
 					return;
 				}
-				// Putting back a saved `const original = globalThis.fetch` is cleanup, not a second stub.
-				if (node.right.type === 'Identifier' && isGlobalFetch(constInit(context, node.right))) {
-					return;
+				if (!isSavedOriginal(context, node.right)) {
+					context.report({ node, messageId: 'stub' });
 				}
-				context.report({ node, messageId: 'stub' });
 			},
 			CallExpression(node) {
 				if (isMember(node.callee, 'vi', 'stubGlobal')) {
@@ -76,11 +84,7 @@ export default {
 				if (!REPLACEMENTS.has(memberName(node.callee))) {
 					return;
 				}
-				let spy = node.callee.object;
-				if (spy.type === 'Identifier') {
-					spy = constInit(context, spy);
-				}
-				if (isFetchSpy(spy)) {
+				if (isFetchSpyReference(context, node.callee.object)) {
 					context.report({ node, messageId: 'stub' });
 				}
 			},
