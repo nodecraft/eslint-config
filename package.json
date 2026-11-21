@@ -34,6 +34,7 @@
 		"./plugins/antislop-tests": "./plugins/antislop-tests.js",
 		"./plugins/async-callback": "./plugins/async-callback.js",
 		"./plugins/spawnpoint-codes": "./plugins/spawnpoint-codes.js",
+		"./plugins/stylistic": "./plugins/stylistic.js",
 		"./plugins/subpath-imports": "./plugins/subpath-imports.js",
 		"./plugins/vue": "./plugins/vue.js",
 		"./plugins/*": "./plugins/*"
@@ -48,32 +49,32 @@
 	"dependencies": {
 		"@eslint/js": "^10.0.1",
 		"@eslint/json": "^2.1.1",
-		"globals": "^17.13.0"
+		"globals": "^17.14.0"
 	},
 	"devDependencies": {
-		"@stylistic/eslint-plugin": "^5.10.0",
-		"eslint": "^10.12.0",
+		"@stylistic/eslint-plugin": "^6.0.1",
+		"eslint": "^10.15.0",
 		"eslint-plugin-import-newlines": "^2.0.0",
-		"eslint-plugin-import-x": "^4.17.1",
-		"eslint-plugin-n": "^18.4.1",
-		"eslint-plugin-regexp": "^3.3.1",
-		"eslint-plugin-unicorn": "^79.0.0",
-		"eslint-plugin-vue": "^10.11.1",
-		"eslint-plugin-vuejs-accessibility": "^2.6.2",
-		"semantic-release": "^25.0.9",
+		"eslint-plugin-import-x": "^4.18.1",
+		"eslint-plugin-n": "^18.5.0",
+		"eslint-plugin-regexp": "^3.3.3",
+		"eslint-plugin-unicorn": "^80.0.0",
+		"eslint-plugin-vue": "^10.12.1",
+		"eslint-plugin-vuejs-accessibility": "^2.6.3",
+		"semantic-release": "^26.0.1",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.71.2",
-		"vitest": "^5.0.5",
-		"vue-eslint-parser": "^10.4.1"
+		"typescript-eslint": "^8.72.2",
+		"vitest": "^5.1.0",
+		"vue-eslint-parser": "^10.4.2"
 	},
 	"peerDependencies": {
-		"@stylistic/eslint-plugin": "^5.10.0",
+		"@stylistic/eslint-plugin": "^6.0.1",
 		"eslint": "^10.4.0",
 		"eslint-plugin-import-newlines": "^2.0.0",
-		"eslint-plugin-import-x": "^4.16.0",
+		"eslint-plugin-import-x": "^4.18.0",
 		"eslint-plugin-n": "^18.0.1",
 		"eslint-plugin-regexp": "^3.1.1",
-		"eslint-plugin-unicorn": "^79.0.0",
+		"eslint-plugin-unicorn": "^80.0.0",
 		"eslint-plugin-vue": "^10.9.1",
 		"eslint-plugin-vuejs-accessibility": "^2.5.0",
 		"spawnpoint": "^2.0.0",
@@ -109,6 +110,11 @@
 		"rules",
 		"THIRD_PARTY_NOTICES.md"
 	],
+	"overrides": {
+		"eslint-plugin-vue": {
+			"@stylistic/eslint-plugin": "$@stylistic/eslint-plugin"
+		}
+	},
 	"engines": {
 		"node": ">= 24"
 	},

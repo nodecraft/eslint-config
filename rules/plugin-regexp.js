@@ -204,7 +204,7 @@ export default {
 		'regexp/prefer-range': 'error',
 
 		// enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided
-		// Contradicts `unicorn/prefer-regexp-test`, which we enable
+		// Duplicates `unicorn/prefer-regexp-exec`, which skips boolean contexts so it doesn't contradict `unicorn/prefer-regexp-test`
 		'regexp/prefer-regexp-exec': 'off',
 
 		// enforce that `RegExp#test` is used instead of `String#match` and `RegExp#exec`

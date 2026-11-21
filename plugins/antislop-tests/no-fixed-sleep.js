@@ -1,5 +1,5 @@
-import { calleeRoot, isMember, memberName } from './test-api.js';
 import { findVariable } from '../antislop/scope.js';
+import { calleeRoot, isMember, memberName } from './test-api.js';
 
 const TEST_CALLEES = new Set(['test', 'it', 'beforeEach', 'afterEach', 'beforeAll', 'afterAll']);
 // These run their callback before the awaited result settles, so a sleep inside still holds up the test.

@@ -993,6 +993,10 @@ export default {
 		// Prefer omitting the catch binding parameter
 		'unicorn/prefer-optional-catch-binding': 'error',
 
+		// Prefer an options object over optional positional parameters
+		// Report-only with heuristic misses on functions taking several defaulted objects, and the fix is an API change
+		'unicorn/prefer-options-parameter': 'off',
+
 		// Prefer `Path2D` for repeatedly drawn canvas paths
 		'unicorn/prefer-path2d': 'error',
 
@@ -1024,6 +1028,9 @@ export default {
 
 		// Prefer `RegExp.escape()` for escaping strings to use in regular expressions
 		'unicorn/prefer-regexp-escape': 'error',
+
+		// Prefer `RegExp#exec()` over `String#match()` for non-global regular expressions
+		'unicorn/prefer-regexp-exec': 'error',
 
 		// Prefer RegExp#test() over String#match() and RegExp#exec()
 		'unicorn/prefer-regexp-test': 'error',
@@ -1199,6 +1206,9 @@ export default {
 
 		// Require boolean-returning Proxy traps to return booleans
 		'unicorn/require-proxy-trap-boolean-return': 'error',
+
+		// Require parentheses around complex spread arguments
+		'unicorn/require-spread-parentheses': 'error',
 
 		// Require streaming decoding of fetch-body chunks with `TextDecoder`
 		'unicorn/require-text-decoder-streaming': 'error',
