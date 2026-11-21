@@ -109,7 +109,8 @@ export default {
 
 		// vue/component-api-style
 		'vue/component-api-style': [
-			'warn', ['script-setup', 'composition'],
+			'warn',
+			['script-setup', 'composition'],
 		],
 
 		// disallow unwrapping a `ref` where the binding then stops tracking updates
@@ -129,6 +130,9 @@ export default {
 
 		// disallow empty `<template>`, `<script>` and `<style>` blocks
 		'vue/no-empty-component-block': 'error',
+
+		// disallow `default` in `defineModel()`, which desyncs parent and child when the parent passes undefined
+		'vue/no-define-model-default': 'error',
 
 		// require `inheritAttrs: false` when `$attrs` is bound explicitly, to avoid duplicate attributes
 		'vue/no-duplicate-attr-inheritance': 'error',

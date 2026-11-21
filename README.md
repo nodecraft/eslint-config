@@ -73,6 +73,16 @@ Be sure to also install the following optional peer dependencies:
 - `eslint-plugin-vue-a11y`
 - `vue-eslint-parser`
 
+`eslint-plugin-vue` 10.12.1 and earlier only declare peer support for `@stylistic/eslint-plugin` up to v5, so `npm install` fails with `ERESOLVE` until a release with v6 support ships. Add an override to your `package.json` in the meantime:
+
+```json
+"overrides": {
+	"eslint-plugin-vue": {
+		"@stylistic/eslint-plugin": "$@stylistic/eslint-plugin"
+	}
+}
+```
+
 ### TypeScript
 
 If your application uses TypeScript, instead of extending `configs.base`, extend `configs.typescript`. Also ensure you install the following optional peer depenendies:
@@ -186,6 +196,32 @@ Enabling it on an existing codebase rewrites every deep import on the first `esl
 | `maxDepth` | `1` | How many directories a relative import may climb before it is reported. `0` reports any `../`. |
 | `imports` | `package.json` `imports` | A mapping in the same shape as the `imports` field, used instead of the one in `package.json`. Targets are relative to the nearest `package.json`, so this is where aliases only a bundler or `tsconfig.json` knows about (like `@/*`) go. |
 | `conditions` | `['import', 'default']` | Conditions used to pick a target from conditional mappings, in Node's first-match order. |
+
+### `nodecraft-stylistic`
+
+Wrappers around `@stylistic/eslint-plugin` rules where its autofix needs a nudge. Enabled from `configs.base` in place of the rule it wraps.
+
+#### `list-style`
+
+`@stylistic/list-style` decides a list's layout from its first item: on the bracket line means every item joins that line, on its own line means every item gets its own line. So a hanging list, with its first item on the bracket line and the rest wrapped, gets collapsed into one long line:
+
+```js
+logger.info('Synced %d items in %dms',
+	items.length,
+	elapsed);
+```
+
+The wrapper reports that list once, at the opening bracket, and its fix moves the first item down. The next fix pass then expands every item, so `--fix` ends up with:
+
+```js
+logger.info(
+	'Synced %d items in %dms',
+	items.length,
+	elapsed,
+);
+```
+
+A call that ends in a callback or object (`fn(a, () => {`) isn't hanging, since the break is inside the last item, so it's left as it is. Everything else is reported exactly as `@stylistic/list-style` reports it, and it takes the same options.
 
 ### `nodecraft-vue`
 

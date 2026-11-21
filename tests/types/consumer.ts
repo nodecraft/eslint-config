@@ -8,6 +8,7 @@ import antislopTests from '@nodecraft/eslint-config/plugins/antislop-tests';
 import asyncCallback from '@nodecraft/eslint-config/plugins/async-callback';
 import optionalChain from '@nodecraft/eslint-config/plugins/optional-chain.js';
 import spawnpointCodes from '@nodecraft/eslint-config/plugins/spawnpoint-codes';
+import nodecraftStylistic from '@nodecraft/eslint-config/plugins/stylistic';
 import subpathImports from '@nodecraft/eslint-config/plugins/subpath-imports';
 import nodecraftVue from '@nodecraft/eslint-config/plugins/vue';
 import typescript from '@nodecraft/eslint-config/typescript';
@@ -39,6 +40,7 @@ export default [
 			'async-callback': asyncCallback,
 			'optional-chain': optionalChain,
 			'spawnpoint-codes': spawnpointCodes,
+			'nodecraft-stylistic': nodecraftStylistic,
 			'subpath-imports': subpathImports,
 			'nodecraft-vue': nodecraftVue,
 		},

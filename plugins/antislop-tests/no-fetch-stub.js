@@ -1,5 +1,5 @@
-import { assignedValues, isMember, memberName } from './test-api.js';
 import { findVariable } from '../antislop/scope.js';
+import { assignedValues, isMember, memberName } from './test-api.js';
 
 const GLOBAL_OBJECTS = new Set(['globalThis', 'window', 'global', 'self']);
 const REPLACEMENTS = new Set([

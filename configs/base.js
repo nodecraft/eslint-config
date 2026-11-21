@@ -8,6 +8,7 @@ import globals from 'globals';
 
 import antislopTestsPlugin from '../plugins/antislop-tests.js';
 import antislopPlugin from '../plugins/antislop.js';
+import nodecraftStylisticPlugin from '../plugins/stylistic.js';
 import bestPracticesRules from '../rules/best-practices.js';
 import errorsRules from '../rules/errors.js';
 import es6Rules from '../rules/es6.js';
@@ -67,6 +68,7 @@ export default [
 			'import-newlines': importNewlines,
 			'antislop': antislopPlugin,
 			'antislop-tests': antislopTestsPlugin,
+			'nodecraft-stylistic': nodecraftStylisticPlugin,
 		},
 	},
 	{

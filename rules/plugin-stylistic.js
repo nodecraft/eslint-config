@@ -1,14 +1,5 @@
 export default {
 	rules: {
-		// enforce line breaks after opening and before closing array brackets
-		'@stylistic/array-bracket-newline': ['error', 'consistent'],
-
-		// enforce consistent spacing inside array brackets
-		'@stylistic/array-bracket-spacing': ['error', 'never'],
-
-		// enforce line breaks after each array element
-		'@stylistic/array-element-newline': ['error', 'consistent'],
-
 		// require parentheses around arrow function arguments
 		'@stylistic/arrow-parens': ['error', 'as-needed', {
 			requireForBlockBody: true,
@@ -52,12 +43,6 @@ export default {
 		// require or disallow spacing between function identifiers and their invocations
 		'@stylistic/function-call-spacing': 'error',
 
-		// enforce line breaks between arguments of a function call
-		'@stylistic/function-call-argument-newline': ['error', 'consistent'],
-
-		// enforces consistent line breaks inside parentheses of function parameters or arguments
-		'@stylistic/function-paren-newline': ['error', 'consistent'],
-
 		// enforce spacing around the * of generator functions
 		'@stylistic/generator-star-spacing': ['error', {
 			before: true,
@@ -89,6 +74,12 @@ export default {
 
 		// enforce consistent linebreak style
 		'@stylistic/linebreak-style': ['error', 'unix'],
+
+		// enforce consistent spacing and line breaks inside brackets, following the first item's style
+		// Replaces the deprecated array-bracket-*, array-element-newline, function-*-newline and object-* rules
+		// Our wrapper expands a hanging list instead of collapsing it onto one long line
+		'@stylistic/list-style': 'off',
+		'nodecraft-stylistic/list-style': 'error',
 
 		// enforces a maximum number of statements allowed per line
 		'@stylistic/max-statements-per-line': ['error', {
@@ -149,18 +140,6 @@ export default {
 
 		// enforce consistent spacing before object properties
 		'@stylistic/no-whitespace-before-property': 'error',
-
-		// enforce consistent spacing inside braces
-		'@stylistic/object-curly-newline': ['error', {
-			consistent: true,
-		}],
-
-		// enforce consistent spacing inside braces
-		'@stylistic/object-curly-spacing': ['error', 'always'],
-
-		'@stylistic/object-property-newline': ['error', {
-			allowAllPropertiesOnSameLine: true,
-		}],
 
 		// require newlines around variable declarations
 		'@stylistic/one-var-declaration-per-line': ['error', 'always'],
@@ -224,16 +203,10 @@ export default {
 		// enforce consistent spacing with template tags and their literals
 		'@stylistic/template-tag-spacing': ['error', 'never'],
 
-		// enforce specific spacing patterns around type annotations and function types in type literals
+		// enforce specific spacing patterns around type annotations, function type arrows are handled by arrow-spacing
 		'@stylistic/type-annotation-spacing': ['error', {
 			before: false,
 			after: true,
-			overrides: {
-				arrow: {
-					before: true,
-					after: true,
-				},
-			},
 		}],
 
 		// enforces consistent spacing inside TypeScript type generics.

@@ -1,5 +1,5 @@
-import { assignedValues, memberName, propertyKey } from './test-api.js';
 import { findVariable } from '../antislop/scope.js';
+import { assignedValues, memberName, propertyKey } from './test-api.js';
 
 const STARTERS = new Map([
 	['setupServer', 'listen'],
